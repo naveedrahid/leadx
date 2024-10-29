@@ -1,0 +1,43 @@
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Contracts\Validation\Validator;
+
+class FormTemplateUpdateRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            "form_name" => "required",
+            "messages" => "required|json",
+            "mails" => "required|json",
+            "categories" => "required|json",
+            "template_image" => "nullable|mimes:jpeg,jpg,png,gif,webp|max:10000", // Maximum size of 10MB (10000 KB)
+        ];
+    }
+
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            "error" => 1,
+            "data" => $validator->errors(),
+            "message" => "Validation Errors Found!"
+        ], 422));
+    }
+}
