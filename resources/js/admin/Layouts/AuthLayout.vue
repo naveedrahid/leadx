@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3'; 
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 import Loader from '@/admin/Components/Loader.vue';

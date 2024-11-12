@@ -75,6 +75,7 @@ class GuestController extends Controller
 
         $rules = [
             "email" => "required|unique:users,email",
+            "password" => "required|min:8",
             "package" => "required",
             "websites" => "required",
             "websites.*.website_name" => "required|unique:websites,website_name",
@@ -241,7 +242,7 @@ class GuestController extends Controller
                 'last_name' => $last_name,
                 'email'  => $request->email,
                 "email_verified_at" => now(),
-                'password' => bcrypt($password),
+                'password' => bcrypt($request->password),
                 'avatar_color' => get_avatar_color(),
                 'status' => 'active'
             ]);
@@ -597,7 +598,7 @@ class GuestController extends Controller
                 ]);
             }
 
-            dispatch(new SignupMailJob($user, $password));
+            dispatch(new SignupMailJob($user, $request->password));
             dispatch(new LoginMailJob($user));
 
             if (!$user->first_attempt && $user->status == 'active') {
