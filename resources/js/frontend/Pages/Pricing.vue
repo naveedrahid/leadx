@@ -189,6 +189,21 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-md-12">
+                                    <div class="form-group3">
+                                        <label class="input-label" for="password">Password<span class="text-danger">*</span></label>
+                                        <div class="input-group2">
+                                            <div class="input-group2-append"><img src="/_public_assets/img/email-address.png" alt="Password"></div>
+                                            <input :type="this.isRevealPassword ? 'text' : 'password'" v-model="password" id="password" class="input-control2 border-0" placeholder="Enter Password">
+                                            <span class="input-group-text fs-5" @click="revealPassword()">
+                                                <i class="ti" :class="this.isRevealPassword ? 'ti-eye' : 'ti-eye-off'"></i>
+                                            </span> 
+                                        </div>
+                                        <div class="text-danger my-1" v-if="errors.email">
+                                            <small>{{ errors.password }}</small>
+                                        </div>
+                                    </div>
+                                </div>
                                 <template v-if="!pack.free_plan">
                                     <div class="col-md-12">
                                         <div class="form-group3">
@@ -279,6 +294,7 @@ export default {
             cardElement: false,
             paymentMethodId: '',
             email: '',
+            password: '',
             fullname: '',
             websites: [
                 {
@@ -289,11 +305,16 @@ export default {
             card_holder_name: '',
             discount_code: '',
             errors: {},
+            isRevealPassword: false,
             loader: false
         };
     },
 
     methods: {
+        revealPassword() {
+            this.isRevealPassword = this.isRevealPassword ? false : true;
+        },
+
         priceFormat(price, symbol = true) {
             price = parseInt(price).toFixed(0);
             return symbol ? this.$page.props.currency_symbol + price : price; 
@@ -401,6 +422,7 @@ export default {
             this.loader = true;
             let form = {
                 email: this.email,
+                password: this.password,
                 fullname: this.fullname,
                 package: this.pack.id,
                 websites: this.websites,
@@ -459,6 +481,7 @@ export default {
             this.errors = {};
             let form = {
                 email: this.email,
+                password: this.password,
                 fullname: this.fullname,
                 package: this.pack.id,
                 websites: this.websites,
