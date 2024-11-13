@@ -13,6 +13,7 @@ use App\Http\Requests\{
 };
 use App\Models\{
     Lead,
+    Website,
     User
 };
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -146,6 +147,32 @@ class CustomerLeadController extends Controller
         return response()->json([
             "error" => 0,
             "data" => $forms,
+            "message" => "The forms have been successfully retrieved"
+        ], 200);
+    }
+
+    public function get_websites(Request $request)
+    {
+        $user = $this->resolveUser($request);
+        if(is_null($user)) {
+            return response()->json([
+                "error" => 1,
+                "message" => "Access Denied!"
+            ], 404);
+        }
+        $websites = Website::byUser($user->id)->has('leads')->get();
+        $websiteHas = [];
+        foreach($websites as $website) {
+            $websiteHas[] = [
+                'id' => $website->id,
+                'name' => $website->website_name
+            ];
+        }
+        
+        
+        return response()->json([
+            "error" => 0,
+            "data" => $websiteHas,
             "message" => "The forms have been successfully retrieved"
         ], 200);
     }
