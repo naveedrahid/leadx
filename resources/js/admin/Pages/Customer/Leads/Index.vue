@@ -38,6 +38,19 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="mb-3">
+                                            <label for="website" class="fs-1 mb-1 fw-bold">Website</label>
+                                            <select v-model="website" id="website" class="form-select form-select-sm" @change="getData()">
+                                                <option value="">{{ loader ? 'Loading...' : 'All Websites' }}</option>
+                                                <template v-if="!loader && websites.length>0">
+                                                    <template v-for="item in websites">
+                                                        <option :value="item.id">{{ item.name }}</option>
+                                                    </template>
+                                                </template>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="mb-3">
                                             <label for="view" class="fs-1 mb-1 fw-bold">Is View</label>
                                             <select v-model="view" id="view" class="form-select form-select-sm" @change="getData()">
                                                 <option value="">All Leads</option>
@@ -349,9 +362,11 @@ export default {
             selectedItems: [],
             renderPaginate: true,
             forms: [],
+            websites: [],
             itemId: false,
             loadFormSelectBox: false,
             form: '',
+            website: '',
             status: '',
             view: '',
             search: '',
@@ -579,6 +594,27 @@ export default {
             });
         },
 
+        async getWebsites() {
+            this.loader = true;
+            await axios.get(route('api.customer_leads.get.websites'), {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + this.token,
+                },
+            }).then((response) => {
+                let $response = response.data;
+                if($response.data.length > 0) {
+                    this.websites = $response.data;
+                    console.log($response.data);
+                }
+
+                this.loader = false;
+            }).catch((error) => {
+                this.loader = false
+                toast.error(error.response.data.message);
+            });
+        },
+
         async getData(page = this.page) {
             this.page = page;
             this.collection = [];
@@ -593,6 +629,10 @@ export default {
 
             if(this.form !== '') {
                 params.wpform_id = this.form;
+            }
+
+            if(this.website !== '') {
+                params.website_id = this.website;
             }
 
             if(this.status !== '') {
@@ -828,6 +868,8 @@ export default {
     },
 
     created() {
+        this.getForms();
+        this.getWebsites();
         this.getData();
     },
 

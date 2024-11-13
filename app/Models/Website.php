@@ -46,7 +46,7 @@ class Website extends Model
 
     public function leads(): BelongsTo
     {
-        return $this->belongsTo(Lead::class, 'website_id', 'id');
+        return $this->belongsTo(Lead::class, 'id', 'website_id');
     }
 
     public function scopeFilterWebsites(Builder $query, $request)

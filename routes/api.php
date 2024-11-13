@@ -107,6 +107,7 @@ Route::prefix('v1')->middleware(['cors', 'json.response'])->as('api.')->group(fu
             Route::post('/generate_pdf', 'generate_pdf')->name('generate.pdf');
             Route::post('/generate_excel', 'generate_excel')->name('generate.excel');
             Route::get('/forms', 'get_forms')->name('get.forms');
+            Route::get('/websites', 'get_websites')->name('get.websites');
             Route::post('/bulk_delete', 'bulk_delete')->name('bulk.delete');
             Route::post('/delete/{lead_id}', 'delete')->name('delete');
             Route::post('/status/{lead_id}', 'status')->name('update.status');
