@@ -114,10 +114,10 @@
                                         </div>
                                     </th>
                                     <th>No.</th>
+                                    <th>Date & Time</th>
                                     <th>Form Name</th>
                                     <th>Email</th>
                                     <th>Is View</th>
-                                    <th>Date</th>
                                     <th>Status</th>
                                     <th></th>
                                 </tr>
@@ -132,6 +132,7 @@
                                                 </div>
                                             </td>
                                             <td class="align-middle">{{ getItemNum(index) }}</td>
+                                            <td class="align-middle">{{ dateFormat(item.created_at, 'DD.MM.YYYY  - h:mm a') }}</td>
                                             <td class="align-middle">{{ item.wpform_name }}</td>
                                             <td class="align-middle"><a :href="'mailto:'+getEmailAddress(item.form_data?.data)">{{ getEmailAddress(item.form_data?.data) }}</a></td>
                                             <td class="align-middle">
@@ -142,7 +143,6 @@
                                                     <span class="btn btn-light-danger text-danger btn-sm px-2 fs-4"><i class="ti ti-eye-off"></i></span>
                                                 </template>
                                             </td>
-                                            <td class="align-middle">{{ dateFormat(item.created_at, 'DD.MM.YYYY') }}</td>
                                             <td class="align-middle">
                                                 <select @change.prevent="updateItemStatus($event, item, index)" class="form-select form-select-sm">
                                                     <template v-if="Object.keys(statuses).length>0">
