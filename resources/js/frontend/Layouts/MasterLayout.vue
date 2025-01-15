@@ -128,7 +128,7 @@
         </div>
         <div class="footer-bottom">
             <div class="copyright">
-                &copy; Copyright @ 2024 <Link :href="route('home')" class="text-primary">{{ $page.props.app.name }}</Link>
+                &copy; Copyright @ 2024-2025 <Link :href="route('home')" class="text-primary">{{ $page.props.app.name }}</Link>
             </div>
         </div>
     </div>

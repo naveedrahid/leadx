@@ -515,7 +515,7 @@ class SubscriptionController extends Controller
             'order' => $request->filled('order') ? $request->order : 'DESC',
         ];
         
-        $invoiceQuery = SubscriptionInvoices::filterInvoices($request)->orderBy($order->orderby, $order->order);
+        $invoiceQuery = SubscriptionInvoices::where('user_id', $user->id)->filterInvoices($request)->orderBy($order->orderby, $order->order);
 
         if ($request->filled('perpage')) {
             $invoices = $invoiceQuery->paginate($request->perpage);

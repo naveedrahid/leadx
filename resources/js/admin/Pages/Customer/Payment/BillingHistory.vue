@@ -88,7 +88,7 @@
                                                 </span>
                                             </td>
                                             <td class="align-middle">{{ item.date !== null ? dateFormat(item.date, 'DD.MM.YYYY') : '-' }}</td>
-                                            <td class="align-middle"><a :href="route('app.customer.subscription.invoice_download', [item.id, user.id])" class="btn btn-dark btn-sm"><i class="ti ti-download"></i> Download PDF</a></td>
+                                            <td class="align-middle"><a :href="route('app.customer.subscription.invoice_download', [item.id, user.id])" class="btn btn-dark btn-sm" target="_blank"><i class="ti ti-download"></i> Download PDF</a></td>
                                         </tr>
                                     </template>
                                 </template>

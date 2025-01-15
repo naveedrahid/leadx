@@ -37,10 +37,10 @@
                 </div>
                 <div class="col-md-7">
                     <div class="d-flex align-items-center justify-content-end gap-2">
-                        <Link :href="route('app.admin.customer.index')" class="btn btn-primary btn-sm">All Customers</Link>
                         <Link :href="route('app.admin.customer.subscription', [$page.props.id])" class="btn btn-primary btn-sm">All Subscriptions</Link>
+                        <Link :href="route('app.admin.customer.subscription.billing', [$page.props.id])" class="btn btn-primary btn-sm">Billing information</Link>
                         <Link :href="route('app.admin.customer.subscription.billing.history', [$page.props.id])" class="btn btn-primary btn-sm">Billing History</Link>
-                        <Link :href="route('app.admin.customer.subscription.license', [$page.props.id])" class="btn btn-primary btn-sm">Plugin License</Link>
+                        <Link :href="route('app.admin.customer.subscription.license', [$page.props.id])" class="btn btn-primary btn-sm">License</Link>
                     </div>
                 </div>
             </div>
