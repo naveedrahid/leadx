@@ -4,6 +4,7 @@
 /public/hot
 /public/wp-plugin
 /public/storage
+/public/blog
 /storage/*.key
 /vendor
 /blog
