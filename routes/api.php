@@ -154,6 +154,10 @@ Route::prefix('v1')->middleware(['cors', 'json.response'])->as('api.')->group(fu
 
         Route::controller(BlockedIPController::class)->prefix('blocked_ip')->as('blocked_ip.')->group(function() {
             Route::get('/', 'get_all')->name('get.all');
+            Route::post('/blocked/{id}', 'blockedIP')->name('blocked.ip');
+            Route::post('/unblocked/{id}', 'UnBlocked')->name('unblocked.ip');
+
+
         });
 
     });

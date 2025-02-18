@@ -2,6 +2,9 @@
     word-spacing: 2px;
 }
 
+
+
+
 a:not(.btn):hover {
     color: #000000 !important;
 }
@@ -36,25 +39,25 @@ span, p {
  .icon-rotate-reverse {
     animation: icon-rotate .5s linear reverse;
  }
- 
+
  @-webkit-keyframes icon-rotate {
     from{
         -webkit-transform:rotate(0deg);
                 transform:rotate(0deg);
     }
-   
+
     to{
         -webkit-transform:rotate(360deg);
                 transform:rotate(360deg);
     }
 }
- 
+
  @keyframes icon-rotate {
     from{
         -webkit-transform:rotate(0deg);
                 transform:rotate(0deg);
     }
-   
+
     to{
         -webkit-transform:rotate(360deg);
                 transform:rotate(360deg);

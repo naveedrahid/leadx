@@ -56,11 +56,11 @@ class SubscriptionController extends Controller
 {
     use ApiPaginate;
 
-//    protected $stripe;
-//
-//    public function __construct() {
-//        $this->stripe = new StripeClient(config('services.stripe.secret'));
-//    }
+    protected $stripe;
+
+    public function __construct() {
+        $this->stripe = new StripeClient(config('services.stripe.secret'));
+    }
 
     public function resolveUser(Request $request) {
         if($request->filled('user_id')) {

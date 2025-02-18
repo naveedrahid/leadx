@@ -114,8 +114,11 @@
 
                                             <td class="align-middle">
                                                 <div class="action-btn d-flex align-items-center gap-2">
-                                                    <button type="button" class="btn btn-danger btn-sm" @click="deleteItem($event, item)">
-                                                        <i class="ti ti-lock fs-3 pe-1"></i> Blocked IP
+                                                    <button v-if="item.lead_blocked_ip?.is_blocked === 1" type="button" class="btn btn-success btn-sm" @click="UnBlockedIP($event, item.lead_blocked_ip?.id)">
+                                                        <i class="ti ti-lock-open fs-3 pe-1"></i> UnBlocked
+                                                    </button>
+                                                    <button v-else type="button" class="btn btn-danger btn-sm" @click="BlockedIP($event, item)">
+                                                        <i class="ti ti-lock fs-3 pe-1"></i> Blocked
                                                     </button>
                                                 </div>
                                             </td>
@@ -495,6 +498,7 @@ export default {
                 },
             }).then((response) => {
                 let $response = response.data;
+
                 if($response.data.length > 0) {
                     this.collection = $response.data.map((item) => {
                         item.form_data = JSON.parse(item.form_data);
@@ -517,38 +521,21 @@ export default {
             });
         },
 
-        deleteItem(event, item) {
+
+
+        UnBlockedIP(event, item) {
             let ele = $(event.target);
             if(ele.prop("tagName").toLowerCase() != 'button') {
                 ele = ele.closest('button');
             }
-
-            Swal.fire({
-                html: "Please confirm if you want delete this.",
-                icon: 'warning',
-                buttonsStyling: false,
-                showCancelButton: true,
-                focusConfirm: false,
-                confirmButtonText: 'Delete',
-                cancelButtonText: 'Not Now',
-                customClass: {
-                    htmlContainer: 'fs-4',
-                    actions: 'm-0 mt-5 gap-3',
-                    confirmButton: "btn btn-danger m-0",
-                    cancelButton: "btn m-0"
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    this.delete(ele, item);
-                }
-            });
+            this.unblocked_ip(ele, item);
         },
 
-        async delete(ele, item) {
+        async unblocked_ip(ele, item) {
             ele.prop('disabled', true);
             ele.find('i').removeClass("ti-trash").addClass('ti-loader rotate');
             this.loader = true;
-            await axios.post(route('api.customer_leads.delete', [item.id]), {}, {
+            await axios.post(route('api.blocked_ip.unblocked.ip', [item]), {}, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: "Bearer " + this.token,
@@ -556,15 +543,42 @@ export default {
             }).then((response) => {
                 let $response = response.data;
                 toast.success($response.message);
-                this.collection.forEach((value, index) => {
-                    if (value.id === item.id) {
-                        this.collection.splice(index, 1);
-                    }
-                });
+                this.getData();
+                ele.prop('disabled', false);
+                ele.find('i').addClass("ti-trash").removeClass('ti-loader rotate');
+                this.loader = false;
+            }).catch((error) => {
+                ele.prop('disabled', false);
+                ele.find('i').addClass("ti-trash").removeClass('ti-loader rotate');
+                this.loader = false;
+                toast.error(error.response.data.message);
+            });
+        },
 
-                if(!this.collection.length) {
-                    this.getData();
-                }
+
+        BlockedIP(event, item) {
+            let ele = $(event.target);
+            if(ele.prop("tagName").toLowerCase() != 'button') {
+                ele = ele.closest('button');
+            }
+            this.blocked_ip(ele, item);
+
+
+        },
+
+        async blocked_ip(ele, item) {
+            ele.prop('disabled', true);
+            ele.find('i').removeClass("ti-trash").addClass('ti-loader rotate');
+            this.loader = true;
+            await axios.post(route('api.blocked_ip.blocked.ip', [item.id]), {}, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + this.token,
+                },
+            }).then((response) => {
+                let $response = response.data;
+                toast.success($response.message);
+                this.getData();
 
                 ele.prop('disabled', false);
                 ele.find('i').addClass("ti-trash").removeClass('ti-loader rotate');

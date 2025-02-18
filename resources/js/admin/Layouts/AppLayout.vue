@@ -9,7 +9,7 @@
         <div class="body-wrapper">
             <AdminHeader @logout="logout" v-if="$page.props.is_admin"></AdminHeader>
             <CustomerHeader @logout="logout" v-if="$page.props.is_customer"></CustomerHeader>
-            
+
             <slot></slot>
         </div>
     </div>
@@ -145,7 +145,7 @@ export default {
         this.isUserLogin();
     },
 
-    mounted() {  
+    mounted() {
         $(function() {
             // Admin Panel settings
             $.fn.AdminSettings = function (settings) {
@@ -310,7 +310,7 @@ export default {
                     $(".app-header").removeClass("fixed-header");
                 }
             });
-            
+
             $(".full-width").on("click", function() {
                 $(".container-fluid").addClass("mw-100");
                 $(".full-width i").addClass("text-primary");
@@ -321,9 +321,9 @@ export default {
                 $(".full-width i").removeClass("text-primary");
                 $(".boxed-width i").addClass("text-primary");
             });
-            
+
             $(".preloader").fadeOut();
-        });        
+        });
 
         if(!route().current('auth.*')) {
             let successMsg = this.$cookies.get('lxf-success-msg');

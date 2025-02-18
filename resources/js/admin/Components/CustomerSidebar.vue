@@ -23,20 +23,21 @@
                             <span class="hide-menu">Dashboard</span>
                         </Link>
                     </li>
-                    <li class="sidebar-item">
-                        <Link :href="route('app.customer.blocked-ip.index')" class="sidebar-link gap-2" :class="{
-                            'active': route().current('app.customer.blocked-ip.index')
-                        }">
-                            <span><i class="ti ti-list"></i></span>
-                            <span class="hide-menu">Blocked IPS</span>
-                        </Link>
-                    </li>
+
                     <li class="sidebar-item">
                         <Link :href="route('app.customer.leads.index')" class="sidebar-link gap-2" :class="{
                             'active': route().current('app.customer.leads.index')
                         }">
                             <span><i class="ti ti-list"></i></span>
                             <span class="hide-menu">Leads</span>
+                        </Link>
+                    </li>
+                    <li class="sidebar-item">
+                        <Link :href="route('app.customer.blocked-ip.index')" class="sidebar-link gap-2" :class="{
+                            'active': route().current('app.customer.blocked-ip.index')
+                        }">
+                            <span><i class="ti ti-lock"></i></span>
+                            <span class="hide-menu">Blocked IPS</span>
                         </Link>
                     </li>
                     <li class="sidebar-item">

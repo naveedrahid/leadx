@@ -25,7 +25,7 @@
             </div>
         </div>
     </section>
-    
+
     <!-- BEGIN::BRAND LOGOs COMPONENT -->
     <BrandLogos></BrandLogos>
     <!-- END::BRAND LOGOs COMPONENT -->
@@ -100,7 +100,7 @@
                                     </div>
                                 </div>
                             </slide>
-        
+
                             <template #addons>
                                 <div class="testimonials-pagination">
                                     <pagination />
@@ -192,7 +192,7 @@
             </div>
         </div>
     </section>
-    <section class="main-section blog-section bg-light overflow-hidden" id="blog">
+    <section class="main-section blog-section bg-light overflow-hidden" id="blog" style="display:none">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-6 col-md-8">
@@ -493,7 +493,7 @@ export default {
     methods: {
         priceFormat(price, symbol = true) {
             price = parseInt(price).toFixed(0);
-            return symbol ? this.$page.props.currency_symbol + price : price; 
+            return symbol ? this.$page.props.currency_symbol + price : price;
         },
 
         faqsToggle(index) {

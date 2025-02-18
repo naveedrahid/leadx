@@ -32,12 +32,12 @@ use Carbon\Carbon;
 
 class GuestController extends Controller
 {
-//    protected $stripe;
-//
-//    public function __construct()
-//    {
-//        $this->stripe = new StripeClient(config('services.stripe.secret'));
-//    }
+    protected $stripe;
+
+    public function __construct()
+    {
+        $this->stripe = new StripeClient(config('services.stripe.secret'));
+    }
 
     public function get_packages(Request $request)
     {
