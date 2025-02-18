@@ -16,34 +16,42 @@
                         <span class="hide-menu">Main Navigation</span>
                     </li>
                     <li class="sidebar-item">
-                        <Link :href="route('app.customer.dashboard')" class="sidebar-link gap-2" :class="{ 
-                            'active': route().current('app.customer.dashboard') 
+                        <Link :href="route('app.customer.dashboard')" class="sidebar-link gap-2" :class="{
+                            'active': route().current('app.customer.dashboard')
                         }">
                             <span><i class="ti ti-dashboard"></i></span>
                             <span class="hide-menu">Dashboard</span>
                         </Link>
                     </li>
                     <li class="sidebar-item">
-                        <Link :href="route('app.customer.leads.index')" class="sidebar-link gap-2" :class="{ 
-                            'active': route().current('app.customer.leads.index') 
+                        <Link :href="route('app.customer.blocked-ip.index')" class="sidebar-link gap-2" :class="{
+                            'active': route().current('app.customer.blocked-ip.index')
+                        }">
+                            <span><i class="ti ti-list"></i></span>
+                            <span class="hide-menu">Blocked IPS</span>
+                        </Link>
+                    </li>
+                    <li class="sidebar-item">
+                        <Link :href="route('app.customer.leads.index')" class="sidebar-link gap-2" :class="{
+                            'active': route().current('app.customer.leads.index')
                         }">
                             <span><i class="ti ti-list"></i></span>
                             <span class="hide-menu">Leads</span>
                         </Link>
                     </li>
                     <li class="sidebar-item">
-                        <a href="#" class="sidebar-link has-arrow gap-2" :class="{ 
-                            'active': route().current('app.customer.website.*') 
+                        <a href="#" class="sidebar-link has-arrow gap-2" :class="{
+                            'active': route().current('app.customer.website.*')
                         }">
                             <span class="d-flex"><i class="ti ti-world"></i></span>
                             <span class="hide-menu">Websites</span>
                         </a>
-                        <ul class="collapse first-level" :class="{ 
-                            'in': route().current('app.customer.website.*') 
+                        <ul class="collapse first-level" :class="{
+                            'in': route().current('app.customer.website.*')
                         }">
                             <li class="sidebar-item">
-                                <Link :href="route('app.customer.website.index')" class="sidebar-link gap-2" :class="{ 
-                                    'active': route().current('app.customer.website.index') 
+                                <Link :href="route('app.customer.website.index')" class="sidebar-link gap-2" :class="{
+                                    'active': route().current('app.customer.website.index')
                                 }">
                                     <div class="round-16 d-flex align-items-center justify-content-center">
                                         <i class="ti ti-circle fs-3"></i>
@@ -52,8 +60,8 @@
                                 </Link>
                             </li>
                             <li class="sidebar-item">
-                                <Link :href="route('app.customer.website.create')" class="sidebar-link gap-2" :class="{ 
-                                    'active': route().current('app.customer.website.create') 
+                                <Link :href="route('app.customer.website.create')" class="sidebar-link gap-2" :class="{
+                                    'active': route().current('app.customer.website.create')
                                 }">
                                     <div class="round-16 d-flex align-items-center justify-content-center">
                                         <i class="ti ti-circle fs-3"></i>
@@ -68,40 +76,40 @@
                         <span class="hide-menu">Subscription</span>
                     </li>
                     <li class="sidebar-item">
-                        <Link :href="route('app.customer.subscription.index')" class="sidebar-link gap-2" :class="{ 
-                            'active': route().current('app.customer.subscription.index') 
+                        <Link :href="route('app.customer.subscription.index')" class="sidebar-link gap-2" :class="{
+                            'active': route().current('app.customer.subscription.index')
                         }">
                             <span><i class="ti ti-coin"></i></span>
                             <span class="hide-menu">Subscriptions</span>
                         </Link>
                     </li>
                     <li class="sidebar-item">
-                        <Link :href="route('app.customer.subscription.billing')" class="sidebar-link gap-2" :class="{ 
-                            'active': route().current('app.customer.subscription.billing') 
+                        <Link :href="route('app.customer.subscription.billing')" class="sidebar-link gap-2" :class="{
+                            'active': route().current('app.customer.subscription.billing')
                         }">
                             <span><i class="ti ti-credit-card"></i></span>
                             <span class="hide-menu">Billing Information</span>
                         </Link>
                     </li>
                     <li class="sidebar-item">
-                        <Link :href="route('app.customer.subscription.billing.history')" class="sidebar-link gap-2" :class="{ 
-                            'active': route().current('app.customer.subscription.billing.history') 
+                        <Link :href="route('app.customer.subscription.billing.history')" class="sidebar-link gap-2" :class="{
+                            'active': route().current('app.customer.subscription.billing.history')
                         }">
                             <span><i class="ti ti-receipt-2"></i></span>
                             <span class="hide-menu">Billing History</span>
                         </Link>
                     </li>
                     <li class="sidebar-item">
-                        <Link :href="route('app.customer.subscription.license')" class="sidebar-link gap-2" :class="{ 
-                            'active': route().current('app.customer.subscription.license') 
+                        <Link :href="route('app.customer.subscription.license')" class="sidebar-link gap-2" :class="{
+                            'active': route().current('app.customer.subscription.license')
                         }">
                             <span><i class="ti ti-file-certificate"></i></span>
                             <span class="hide-menu">Plugin License</span>
                         </Link>
                     </li>
                     <li class="sidebar-item">
-                        <Link :href="route('app.customer.plugin.index')" class="sidebar-link gap-2" :class="{ 
-                            'active': route().current('app.customer.plugin.index') 
+                        <Link :href="route('app.customer.plugin.index')" class="sidebar-link gap-2" :class="{
+                            'active': route().current('app.customer.plugin.index')
                         }">
                             <span><i class="ti ti-download"></i></span>
                             <span class="hide-menu">Your Downlaods</span>
@@ -112,16 +120,16 @@
                         <span class="hide-menu">Account</span>
                     </li>
                     <li class="sidebar-item">
-                        <Link :href="route('app.customer.account_setting')" class="sidebar-link gap-2" :class="{ 
-                            'active': route().current('app.customer.account_setting') 
+                        <Link :href="route('app.customer.account_setting')" class="sidebar-link gap-2" :class="{
+                            'active': route().current('app.customer.account_setting')
                         }">
                             <span><i class="ti ti-user-cog"></i></span>
                             <span class="hide-menu">Account Setting</span>
                         </Link>
                     </li>
                     <li class="sidebar-item">
-                        <Link :href="route('app.customer.change_password')" class="sidebar-link gap-2" :class="{ 
-                            'active': route().current('app.customer.change_password') 
+                        <Link :href="route('app.customer.change_password')" class="sidebar-link gap-2" :class="{
+                            'active': route().current('app.customer.change_password')
                         }">
                             <span><i class="ti ti-asterisk"></i></span>
                             <span class="hide-menu">Change Password</span>

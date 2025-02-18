@@ -17,7 +17,8 @@ use App\Http\Controllers\Api\{
     AdminDashboardController,
     CustomerDashboardController,
     FormCategoryController,
-    FormTemplateController
+    FormTemplateController,
+    BlockedIPController
 };
 
 /*
@@ -149,6 +150,12 @@ Route::prefix('v1')->middleware(['cors', 'json.response'])->as('api.')->group(fu
         Route::controller(CustomerDashboardController::class)->prefix('customer_dashboard')->as('customer_dashboard.')->group(function() {
             Route::get('/get_data', 'get_data')->name('get_data');
         });
+
+
+        Route::controller(BlockedIPController::class)->prefix('blocked_ip')->as('blocked_ip.')->group(function() {
+            Route::get('/', 'get_all')->name('get.all');
+        });
+
     });
 
     Route::middleware(['throttle:100,1'])->group(function () {
@@ -162,7 +169,7 @@ Route::prefix('v1')->middleware(['cors', 'json.response'])->as('api.')->group(fu
             Route::get('/{category_id}', 'get_by')->name('get.single');
             Route::get('/', 'get_all')->name('get.all');
         });
-    
+
         Route::controller(FormTemplateController::class)->prefix('template')->as('template.')->group(function() {
             Route::post('/bulk_delete', 'bulk_delete')->name('bulk.delete');
             Route::post('/delete/{template_id}', 'delete')->name('delete');

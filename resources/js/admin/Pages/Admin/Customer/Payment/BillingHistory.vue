@@ -196,7 +196,7 @@ export default {
     methods: {
         priceFormat(price, symbol = true) {
             price = parseInt(price).toFixed(2);
-            return symbol ? this.$page.props.currency_symbol + price : price; 
+            return symbol ? this.$page.props.currency_symbol + price : price;
         },
 
         dateFormat(date, format, cformat = null) {
@@ -210,7 +210,7 @@ export default {
         checkExpiry(date, format = 'YYYY-MM-DD HH:mm:ss') {
             return moment(date, format).isAfter(moment());
         },
-        
+
         discountPrice(price, discount, type) {
             let discountPrice;
 
@@ -224,7 +224,7 @@ export default {
 
             return discountPrice.toFixed(2);
         },
-        
+
         getItemNum(index) {
             index = index+1;
             if(this.page > 1) {
@@ -243,12 +243,12 @@ export default {
             if(this.perpage == '' || this.perpage == 0) {
                 this.perpage = 1;
             }
-            
+
             this.getData();
         },
 
         selectAll() {
-            this.checkAll = this.checkAll ? false : true; 
+            this.checkAll = this.checkAll ? false : true;
             let itemsIds = [];
             if(this.collection.length) {
                 this.collection.forEach((item) => {
@@ -274,16 +274,16 @@ export default {
                 } else {
                     dateStart = moment().format('YYYY-MM-DD');
                 }
-                
+
                 if(this.dates[1] != null) {
                     dateEnd = moment(this.dates[1]).format('YYYY-MM-DD');
                 } else {
                     dateEnd = moment().format('YYYY-MM-DD');
                 }
-    
+
                 this.dates = [dateStart, dateEnd];
             }
-            
+
             this.getData();
         },
 
