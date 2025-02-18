@@ -31,15 +31,15 @@
                                                     <span class="pricing-box-duration">/ {{ item.duration_lifetime ? 'Lifetime' : item.format_duration }}</span>
                                                 </div>
                                                 <template v-if="!user">
-                                                    <button :href="`${route('pricing')}?plan=${item.id}`" class="button button-s2 button-block" :class="{ 
+                                                    <button :href="`${route('pricing')}?plan=${item.id}`" class="button button-s2 button-block" :class="{
                                                         'button-primary': item.recommended
                                                     }" @click="initPayment(item)">
                                                         {{ (pack !== '' && pack.id == item.id) ? "Selected" : "Buy Now" }}
                                                     </button>
                                                 </template>
                                                 <template v-else-if="user.user_type === 'customer'">
-                                                    <Link :href="route('app.customer.subscription.billing')" class="button button-s2 button-block" :class="{ 
-                                                        'button-primary': item.recommended 
+                                                    <Link :href="route('app.customer.subscription.billing')" class="button button-s2 button-block" :class="{
+                                                        'button-primary': item.recommended
                                                     }">Upgrade</Link>
                                                 </template>
                                             </div>
@@ -81,9 +81,9 @@
                                 <div class="col-lg-4 col-md-12 order-lg-last">
                                     <div class="ws-add-item">
                                         <label class="input-label d-lg-block d-none">&nbsp;</label>
-                                        <button 
-                                            class="button button-s2 button-primary button-block" 
-                                            :disabled="pack.website_limit != null && websites.length >= pack.website_limit" 
+                                        <button
+                                            class="button button-s2 button-primary button-block"
+                                            :disabled="pack.website_limit != null && websites.length >= pack.website_limit"
                                             @click="addWebsite()">
                                             Add Website
                                         </button>
@@ -158,7 +158,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="row align-items-center justify-content-center">
                     <div class="col-lg-6 col-md-10">
                         <div class="payment-form-wrap">
@@ -197,7 +197,7 @@
                                             <input :type="this.isRevealPassword ? 'text' : 'password'" v-model="password" id="password" class="input-control2 border-0" placeholder="Enter Password">
                                             <span class="input-group-text fs-5" @click="revealPassword()">
                                                 <i class="ti" :class="this.isRevealPassword ? 'ti-eye' : 'ti-eye-off'"></i>
-                                            </span> 
+                                            </span>
                                         </div>
                                         <div class="text-danger my-1" v-if="errors.email">
                                             <small>{{ errors.password }}</small>
@@ -249,10 +249,12 @@
                                 <h3 class="payment-info-title">Order Total</h3>
                                 <p>
                                     {{ pack.title }} <strong>{{ priceFormat(pack.price) }}</strong> / {{ pack.duration_lifetime ? 'Lifetime' : pack.format_duration }}
+                                    <br/>
+                                    Handling Fee <strong>${{handlingFee()}}</strong>
                                     {{ pack.trial_period_days ? ' with '+ pack.trial_period_days +' '+ (pack.trial_period_days > 1 ? 'Days' : 'Day') + ' Free Trial' : '' }}
                                 </p>
                             </div>
-                            <button class="button button-s2 button-white button-block" @click="payNow()">Pay Now <strong>{{ priceFormat(pack.price) }}</strong></button>
+                            <button class="button button-s2 button-white button-block" @click="payNow()">Pay Now <strong>{{ totalAmount()  }}</strong></button>
                         </div>
                     </div>
                 </div>
@@ -315,9 +317,18 @@ export default {
             this.isRevealPassword = this.isRevealPassword ? false : true;
         },
 
+        handlingFee() {
+            let price = Number(this.pack.price) || 0;
+            let fee = price * 0.0175 + 0.30;
+            return fee.toFixed(2);
+        },
+        totalAmount() {
+            let total = Number(this.pack.price) + Number(this.handlingFee());
+            return this.$page.props.currency_symbol + total.toFixed(2);
+        },
         priceFormat(price, symbol = true) {
             price = parseInt(price).toFixed(0);
-            return symbol ? this.$page.props.currency_symbol + price : price; 
+            return symbol ? this.$page.props.currency_symbol + price : price;
         },
 
         dateFormat(date, format, cformat = null) {
@@ -370,7 +381,7 @@ export default {
                         this.websites.push({
                             website_name: '',
                             website_url: ''
-                        }); 
+                        });
                     }
                 }
             }
@@ -390,7 +401,7 @@ export default {
                     $('html, body').animate({ scrollTop: $("#choose-websites").offset().top - 120}, 0);
                 }
             }, 100);
-            
+
             if(!this.pack.free_plan) {
                 this.stripe = await loadStripe(this.$page.props.stripe_key);
                 this.elements = this.stripe.elements();
@@ -456,14 +467,14 @@ export default {
                 toast.error(error.response.data.message);
             });
         },
-        
+
         create_payment_method() {
             this.errors = {};
             this.stripe.createPaymentMethod({
                 type: 'card',
                 card: this.cardElement,
-                billing_details: { 
-                    name: this.card_holder_name 
+                billing_details: {
+                    name: this.card_holder_name
                 }
             }).then((result) => {
                 if(result.error) {
@@ -500,7 +511,7 @@ export default {
                 this.$cookies.set('lxf-success-msg', $response.message, 60);
                 this.$cookies.set('lxf-token', $response.data.authorisation.token, $response.data.authorisation.expiration);
                 this.$cookies.set('lxf-user', $response.data.user, $response.data.authorisation.expiration);
-                
+
                 window.location.href = route('app.customer.subscription.index');
                 this.loader = false;
             }).catch((error) => {
@@ -517,7 +528,7 @@ export default {
     },
 
     mounted() {
-        
+
     },
 
     created() {

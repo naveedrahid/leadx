@@ -17,6 +17,7 @@ use App\Http\Controllers\Customer\{
     WebsiteController as CustomerWebsiteController,
     SubscriptionController as CustomerSubscriptionController,
     LeadsController as CustomerLeadsController,
+    BlockedIPController as CustomerBlockedIPController,
     WebhookController as CustomerWebhookController,
     PluginController as CustomerPluginController
 };
@@ -100,7 +101,12 @@ Route::prefix('app')->as('app.')->group(function() {
         Route::controller(CustomerLeadsController::class)->prefix('leads')->as('leads.')->group(function() {
             Route::get('/', 'index')->name('index');
         });
-        
+
+        Route::controller(CustomerBlockedIPController::class)->prefix('blocked-ip')->as('blocked-ip.')->group(function() {
+            Route::get('/', 'index')->name('index');
+        });
+
+
         Route::controller(CustomerWebsiteController::class)->prefix('website')->as('website.')->group(function() {
             Route::get('/create', 'create')->name('create');
             Route::get('{id}/edit', 'edit')->name('edit');

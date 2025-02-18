@@ -63,17 +63,17 @@
                             </template>
                             <div class="border p-4 rounded d-flex flex-column gap-2 mb-6">
                                 <div class="d-flex align-items-center gap-2">
-                                    <span class="fs-3 fw-bolder">Website Limit:</span> 
+                                    <span class="fs-3 fw-bolder">Website Limit:</span>
                                     <span class="fs-3 fw-bold">{{ current_subscription.package?.website_limit ? (numFormat(current_subscription.websites.length) +' / '+ numFormat(current_subscription.package?.website_limit)) : 'Unlimited' }}</span>
                                 </div>
                                 <div class="d-flex align-items-center gap-2" :class="{
                                     'text-danger': user.other.has_exceeded_leads_limit
                                 }">
-                                    <span class="fs-3 fw-bolder">Leads Limit:</span> 
+                                    <span class="fs-3 fw-bolder">Leads Limit:</span>
                                     <span class="fs-3 fw-bold">{{ current_subscription.package?.lead_limit ? (current_subscription.leads +' / '+ current_subscription.package?.lead_limit) : 'Unlimited' }}</span>
                                 </div>
                                 <div class="d-flex align-items-center gap-2">
-                                    <span class="fs-3 fw-bolder">App Access:</span> 
+                                    <span class="fs-3 fw-bolder">App Access:</span>
                                     <span class="fs-3 fw-bold">{{ current_subscription.package?.app_access ? 'Yes' : 'No' }}</span>
                                 </div>
                             </div>
@@ -236,7 +236,7 @@ export default {
         },
 
         keyRevealToggle() {
-            this.keyReveal = this.keyReveal == true ? false : true; 
+            this.keyReveal = this.keyReveal == true ? false : true;
         },
 
         isExpired(expire_at) {
@@ -248,7 +248,7 @@ export default {
 
         priceFormat(price, symbol = true) {
             price = parseInt(price).toFixed(2);
-            return symbol ? this.$page.props.currency_symbol + price : price; 
+            return symbol ? this.$page.props.currency_symbol + price : price;
         },
 
         dateFormat(date, format, cformat = null) {

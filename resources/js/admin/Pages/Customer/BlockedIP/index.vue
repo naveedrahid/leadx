@@ -3,12 +3,12 @@
     <AppLayout ref="app_layout" :loader="loader">
         <div class="container-fluid">
             <Breadcrumb>
-                <template v-slot:title>Leads</template>
-                <li class="breadcrumb-item text-muted" aria-current="page">Leads</li>
+                <template v-slot:title>Blocked IPS</template>
+                <li class="breadcrumb-item text-muted" aria-current="page">Blocked IPS</li>
             </Breadcrumb>
             <div class="mb-3">
                 <div class="d-flex align-items-center justify-content-end gap-2">
-                    <Link :href="route('app.customer.leads.index')" class="btn btn-dark btn-sm"><i class="ti ti-refresh"></i> Reload</Link>
+                    <Link :href="route('app.customer.blocked-ip.index')" class="btn btn-dark btn-sm"><i class="ti ti-refresh"></i> Reload</Link>
                 </div>
             </div>
             <div class="card">
@@ -49,27 +49,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
-                                        <div class="mb-3">
-                                            <label for="view" class="fs-1 mb-1 fw-bold">Is View</label>
-                                            <select v-model="view" id="view" class="form-select form-select-sm" @change="getData()">
-                                                <option value="">All Leads</option>
-                                                <option value="1">View</option>
-                                                <option value="0">UnView</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="mb-3">
-                                            <label for="status" class="fs-1 mb-1 fw-bold">Status</label>
-                                            <select v-model="status" id="status" class="form-select form-select-sm" @change="getData()">
-                                                <option value="">All</option>
-                                                <template v-for="(statusValue, statusKey) in statuses" :key="statusKey">
-                                                    <option :value="statusKey">{{ statusValue }}</option>
-                                                </template>
-                                            </select>
-                                        </div>
-                                    </div>
+
                                     <div class="col-md-3">
                                         <div class="mb-3">
                                             <label for="search" class="fs-1 mb-1">Search</label>
@@ -86,41 +66,37 @@
                             </div>
                         </div>
                     </div>
-                    <div class="mb-5">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="d-flex align-items-center gap-1">
-                                    <div class="input-group border rounded">
-                                        <select v-model="bulkAction" id="bulk-action" class="form-select border-none">
-                                            <option value="">Bulk Actions</option>
-                                            <option value="delete">Delete</option>
-                                            <option value="export_pdf">Export PDF</option>
-                                            <option value="export_excel">Export Excel</option>
-                                        </select>
-                                        <button class="btn btn-light text-dark input-group-text" id="bulk-action-apply" @click="bulkActionApply()">Apply</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<!--                    <div class="mb-5">-->
+<!--                        <div class="row">-->
+<!--                            <div class="col-md-3">-->
+<!--                                <div class="d-flex align-items-center gap-1">-->
+<!--                                    <div class="input-group border rounded">-->
+<!--                                        <se devlect v-model="bulkAction" id="bulk-action" class="form-select border-none">-->
+<!--                                            <option value="">Bulk Actions</option>-->
+<!--                                            <option value="delete">Delete</option>-->
+<!--                                        </select>-->
+<!--                                        <button class="btn btn-light text-dark input-group-text" id="bulk-action-apply" @click="bulkActionApply()">Apply</button>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
                     <div v-if="renderPaginate" class="text-end fs-1 fw-bold text-capitalize py-2">Showing {{ paginate.from ? paginate.from : 0 }} to {{ paginate.to ? paginate.to : 0 }} of {{ paginate.total ? paginate.total : 0 }} records</div>
                     <div class="table-responsive rounded-2 mb-4">
                         <table class="table border text-nowrap customize-table mb-0 align-middle">
                             <thead class="text-dark fs-3">
-                                <tr>
-                                    <th width="50px">
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" v-model="checkAll" @click="selectAll()">
-                                        </div>
-                                    </th>
-                                    <th>No.</th>
-                                    <th>Date & Time</th>
-                                    <th>Form Name</th>
-                                    <th>Email</th>
-                                    <th>Is View</th>
-                                    <th>Status</th>
-                                    <th></th>
-                                </tr>
+                            <tr>
+                                <th width="50px">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" v-model="checkAll" @click="selectAll()">
+                                    </div>
+                                </th>
+                                <th>No.</th>
+                                <th>Date & Time</th>
+                                <th>Form Name</th>
+                                <th>IP</th>
+                                <th></th>
+                            </tr>
                             </thead>
                             <TransitionGroup tag="tbody" name="fade" class="text-dark fs-2">
                                 <template v-if="collection.length>0">
@@ -134,40 +110,12 @@
                                             <td class="align-middle">{{ getItemNum(index) }}</td>
                                             <td class="align-middle">{{ dateFormat(item.created_at, 'DD.MM.YYYY  - h:mm a') }}</td>
                                             <td class="align-middle">{{ item.wpform_name }}</td>
-                                            <td class="align-middle"><a :href="'mailto:'+getEmailAddress(item.form_data?.data)">{{ getEmailAddress(item.form_data?.data) }}</a></td>
-                                            <td class="align-middle">
-                                                <template v-if="item.is_viewed">
-                                                    <span class="btn btn-light-primary text-primary btn-sm px-2 fs-4"><i class="ti ti-eye"></i></span>
-                                                </template>
-                                                <template v-else>
-                                                    <span class="btn btn-light-danger text-danger btn-sm px-2 fs-4"><i class="ti ti-eye-off"></i></span>
-                                                </template>
-                                            </td>
-                                            <td class="align-middle">
-                                                <select @change.prevent="updateItemStatus($event, item, index)" class="form-select form-select-sm">
-                                                    <template v-if="Object.keys(statuses).length>0">
-                                                        <template v-for="(statusValue, statusKey) in statuses" :key="statusKey">
-                                                            <option :value="statusKey"  item.status selected>{{ statusValue }}</option>
-                                                        </template>
-                                                    </template>
-                                                </select>
-                                            </td>
+                                            <td class="align-middle">{{item.form_data?.visitor_info.ip}}</td>
+
                                             <td class="align-middle">
                                                 <div class="action-btn d-flex align-items-center gap-2">
-                                                    <a href="javascript:;" class="btn btn-secondary btn-sm" @click="itemToggle(item)">
-                                                        <i class="ti fs-3 pe-1" :class="{
-                                                            'ti-eye': itemId !== item.id,
-                                                            'ti-eye-off': itemId === item.id
-                                                        }"></i> Show
-                                                    </a>
-                                                    <button type="button" class="btn btn-dark btn-sm" @click="generatePDF($event, item)">
-                                                        <i class="ti ti-download fs-3 pe-1"></i> PDF
-                                                    </button>
-                                                    <button type="button" class="btn btn-dark btn-sm" @click="generateExcel($event, item)">
-                                                        <i class="ti ti-download fs-3 pe-1"></i> Excel
-                                                    </button>
                                                     <button type="button" class="btn btn-danger btn-sm" @click="deleteItem($event, item)">
-                                                        <i class="ti ti-trash fs-3 pe-1"></i> Delete
+                                                        <i class="ti ti-lock fs-3 pe-1"></i> Blocked IP
                                                     </button>
                                                 </div>
                                             </td>
@@ -381,19 +329,6 @@ export default {
             return str.replace(/-/g, ' ').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
         },
 
-        getEmailAddress(item) {
-            if(typeof item !== undefined && typeof item !== null) {
-                if(typeof item.email !== undefined) {
-                    let emails = item.email;
-                    if(Object.keys(emails).length>0) {
-                        for(let email in emails) {
-                            return emails[email];
-                        }
-                    }
-                }
-            }
-        },
-
         dateFormat(date, format, cformat = null) {
             if(cformat) {
                 return moment(date, cformat).format(format);
@@ -476,104 +411,8 @@ export default {
             }
         },
 
-        async leadViewed(item) {
-            console.log(item);
-            await axios.post(route('api.customer_leads.update.view', [item.id]), {}, {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: "Bearer " + this.token
-                },
-            }).then((response) => {
-                let $response = response.data;
-                toast.success($response.message);
-                this.collection.map((value, index) => {
-                    if(value.id == item.id) {
-                        this.collection[index].is_viewed = 1;
-                    }
-                });
-            }).catch((error) => {
-                toast.error(error.response.data.message);
-            });
-        },
 
-        async generatePDF(event, item) {
-            let ele = $(event.target);
-            if(ele.prop("tagName").toLowerCase() != 'button') {
-                ele = ele.closest('button');
-            }
 
-            ele.prop('disabled', true);
-            this.loader = true;
-            await axios.post(route('api.customer_leads.generate.pdf'), {
-                ids: [item.id]
-            }, {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: "Bearer " + this.token,
-                },
-            }).then((response) => {
-                let $response = response.data;
-                window.open($response.data, '_blank');
-
-                ele.prop('disabled', false);
-                this.loader = false;
-            }).catch((error) => {
-                ele.prop('disabled', false);
-                this.loader = false;
-                toast.error(error.response.data.message);
-            });
-        },
-
-        async generateExcel(event, item) {
-            let ele = $(event.target);
-            if(ele.prop("tagName").toLowerCase() != 'button') {
-                ele = ele.closest('button');
-            }
-
-            ele.prop('disabled', true);
-            this.loader = true;
-            await axios.post(route('api.customer_leads.generate.excel'), {
-                ids: [item.id]
-            }, {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: "Bearer " + this.token,
-                },
-            }).then((response) => {
-                let $response = response.data;
-                window.open($response.data, '_blank');
-
-                ele.prop('disabled', false);
-                this.loader = false;
-            }).catch((error) => {
-                ele.prop('disabled', false);
-                this.loader = false;
-                toast.error(error.response.data.message);
-            });
-        },
-
-        async updateItemStatus(event, item, index) {
-            let ele = $(event.target);
-            var statusValue = event.target.value;
-            ele.prop('disabled', true);
-            await axios.post(route('api.customer_leads.update.status', [item.id]), {
-                // status: this.collection[index].status
-                status: statusValue
-            }, {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: "Bearer " + this.token
-                },
-            }).then((response) => {
-                let $response = response.data;
-                toast.success($response.message);
-
-                ele.prop('disabled', false);
-            }).catch((error) => {
-                ele.prop('disabled', false);
-                toast.error(error.response.data.message);
-            });
-        },
 
         async getForms() {
             this.loader = true;
@@ -648,7 +487,7 @@ export default {
                 params.dates = this.dates;
             }
 
-            await axios.get(route('api.customer_leads.get.all'), {
+            await axios.get(route('api.blocked_ip.get.all'), {
                 params: params,
                 headers: {
                     "Content-Type": "application/json",
@@ -738,47 +577,6 @@ export default {
             });
         },
 
-        bulkActionApply() {
-            if(this.bulkAction == '') {
-                toast.warning('Please choose a bulk action.');
-                return false;
-            }
-
-            if(this.selectedItems.length == 0) {
-                toast.warning('Please select an item for bulk action.');
-                return false;
-            }
-
-            if(this.bulkAction  == 'delete') {
-                Swal.fire({
-                    html: "Please confirm if you want delete selected items.",
-                    icon: 'warning',
-                    buttonsStyling: false,
-                    showCancelButton: true,
-                    focusConfirm: false,
-                    confirmButtonText: 'Delete',
-                    cancelButtonText: 'Not Now',
-                    customClass: {
-                        htmlContainer: 'fs-4',
-                        actions: 'm-0 mt-5 gap-3',
-                        confirmButton: "btn btn-danger m-0",
-                        cancelButton: "btn m-0"
-                    }
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        this.blukDelete();
-                    }
-                });
-            }
-
-            if(this.bulkAction  == 'export_pdf') {
-                this.exportPDF();
-            }
-
-            if(this.bulkAction  == 'export_excel') {
-                this.exportExcel();
-            }
-        },
 
         async blukDelete() {
             this.loader = true;
@@ -812,60 +610,6 @@ export default {
             });
         },
 
-        async exportPDF() {
-            this.loader = true;
-            $('#bulk-action-apply').prop('disabled', true);
-            await axios.post(route('api.customer_leads.generate.pdf'), {
-                ids: this.selectedItems
-            }, {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: "Bearer " + this.token,
-                },
-            }).then((response) => {
-                let $response = response.data;
-                this.bulkAction = '';
-                this.checkAll = false;
-                this.selectedItems = [];
-                toast.success($response.message);
-                window.open($response.data, '_blank');
-                $('#bulk-action-apply').prop('disabled', false);
-                this.loader = false;
-            }).catch((error) => {
-                $('#bulk-action-apply').prop('disabled', false);
-                this.loader = false;
-                toast.error(error.response.data.message);
-            });
-        },
-
-        async exportExcel() {
-            this.loader = true;
-            $('#bulk-action-apply').prop('disabled', true);
-            await axios.post(route('api.customer_leads.generate.excel'), {
-                ids: this.selectedItems
-            }, {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: "Bearer " + this.token,
-                },
-            }).then((response) => {
-                let $response = response.data;
-                this.bulkAction = '';
-                this.checkAll = false;
-                this.selectedItems = [];
-                toast.success($response.message);
-                window.open($response.data, '_blank');
-                $('#bulk-action-apply').prop('disabled', false);
-                this.loader = false;
-            }).catch((error) => {
-                $('#bulk-action-apply').prop('disabled', false);
-                this.loader = false;
-                this.$nextTick(() => {
-                    this.renderPaginate = true;
-                });
-                toast.error(error.response.data.message);
-            });
-        }
     },
 
     created() {

@@ -61,7 +61,7 @@ class AuthController extends Controller
         ];
 
         $user = User::create($user_data);
-        
+
         $user->customer_details()->create([
             'is_avail_trial' => 0,
             'is_avail_free_plan' => 0,
@@ -82,7 +82,7 @@ class AuthController extends Controller
         }
 
         $user->load('customer_details');
-        
+
         $tokenData = $user->createToken(config('app.name'));
         $token = $tokenData->accessToken;
         $expiration = $tokenData->token->expires_at->diffInSeconds(now());
@@ -94,7 +94,7 @@ class AuthController extends Controller
             dispatch(new WelcomeMailJob($user));
             $user->update(['first_attempt' => true]);
         }
-        
+
         return response()->json([
             "error" => 0,
             "data" => [
@@ -129,9 +129,9 @@ class AuthController extends Controller
                     ]
                 ],
                 "message" => "Unauthorized!"
-            ], 422); 
+            ], 422);
         }
-        
+
         $user = User::where('email', $request->email)->first();
         if (!Hash::check($request->password, $user->password)) {
             return response()->json([
@@ -142,9 +142,9 @@ class AuthController extends Controller
                     ]
                 ],
                 "message" => "Unauthorized!"
-            ], 422); 
+            ], 422);
         }
-        
+
         if ($user->status == 'deactive') {
             return response()->json([
                 "error" => 1,
@@ -152,7 +152,7 @@ class AuthController extends Controller
             ], 403);
         }
 
-        dispatch(new LoginMailJob($user));
+//        dispatch(new LoginMailJob($user));
 
         if (!$user->is_super && (!$user->first_attempt && $user->status == 'active')) {
             dispatch(new WelcomeMailJob($user));
@@ -166,6 +166,7 @@ class AuthController extends Controller
         $tokenData = $user->createToken(config('app.name'));
         $token = $tokenData->accessToken;
         $expiration = $tokenData->token->expires_at->diffInSeconds(now());
+
 
         return response()->json([
             "error" => 0,
@@ -235,9 +236,9 @@ class AuthController extends Controller
                 $user->forceFill([
                     'password' => Hash::make($password)
                 ])->setRememberToken(Str::random(60));
-     
+
                 $user->save();
-                    
+
                 event(new PasswordReset($user));
             }
         );
@@ -319,7 +320,7 @@ class AuthController extends Controller
             $file = $request->file('profile_image');
             $profile_image = time().uniqid().'.'.$file->getClientOriginalExtension();
             $file->storeAs('public/users', $profile_image);
-            
+
             if (Storage::exists('public/users/' . $user->profile_image)) {
                 Storage::delete('public/users/' . $user->profile_image);
             }
@@ -366,7 +367,7 @@ class AuthController extends Controller
                 "message" => "Validation Errors Found!"
             ], 422);
         }
-        
+
         $user->update([
             "password" => bcrypt($request->password)
         ]);
@@ -378,7 +379,7 @@ class AuthController extends Controller
         ], 200);
     }
 
-    public function delete_account(DeleteAccountRequest $request) 
+    public function delete_account(DeleteAccountRequest $request)
     {
         $current_user = $request->user();
         $user = User::find($current_user->id);
@@ -395,7 +396,7 @@ class AuthController extends Controller
                 "message" => "Password is incorrect"
             ], 403);
         }
-        
+
         if(!$user->is_super) {
             if($user->subscrptions()->exists()) {
                 $user->subscrptions()->update([
@@ -403,11 +404,11 @@ class AuthController extends Controller
                 ]);
                 $user->subscrptions()->delete();
             }
-    
+
             if($user->websites()->exists()) {
                 $user->websites()->delete();
             }
-    
+
             if($user->leads()->exists()) {
                 foreach($user->leads as $lead) {
                     $data = json_decode($lead->form_data);
@@ -421,7 +422,7 @@ class AuthController extends Controller
                 }
                 $user->leads()->delete();
             }
-    
+
             if($user->license()->exists()) {
                 $user->license()->delete();
             }
@@ -433,11 +434,11 @@ class AuthController extends Controller
             }
         }
         dispatch(new DeleteAccountMailJob($user->fullname, $user->email, now()->format('M d Y'), now()->format('h:i:s A')));
-        
+
         if($user->user_type == 'customer') {
             $user->customer_details()->delete();
         }
-        
+
         $user->delete();
         return response()->json([
             "error" => 0,
