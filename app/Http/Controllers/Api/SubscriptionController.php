@@ -90,7 +90,7 @@ class SubscriptionController extends Controller
         ], 200);
     }
 
-    public function get_all(Request $request) 
+    public function get_all(Request $request)
     {
         $user = $this->resolveUser($request);
         if(is_null($user)) {
@@ -104,7 +104,7 @@ class SubscriptionController extends Controller
             'orderby' => $request->filled('orderby') ? $request->orderby : 'id',
             'order' => $request->filled('order') ? $request->order : 'DESC',
         ];
-        
+
         $subscriptionQuery = Subscription::where('user_id', $user->id)->filterSubscriptions($request)->orderBy($order->orderby, $order->order);
 
         if ($request->filled('perpage')) {
@@ -127,7 +127,7 @@ class SubscriptionController extends Controller
         if($request->filled('perpage')) {
             $response['paginate'] = $this->paginate($subscriptions);
         }
-        
+
         return response()->json($response, 200);
     }
 
@@ -139,7 +139,7 @@ class SubscriptionController extends Controller
                 "message" => "Access Denied!"
             ], 404);
         }
-        
+
         $package = Package::whereId($package_id)->where('status', 'active')->first();
         if (is_null($package)) {
             return response()->json([
@@ -216,7 +216,7 @@ class SubscriptionController extends Controller
             'orderby' => $request->filled('orderby') ? $request->orderby : 'id',
             'order' => $request->filled('order') ? $request->order : 'DESC',
         ];
-        
+
         $paymentCardQuery = PaymentCard::filterPaymentCards($request)->orderBy($order->orderby, $order->order);
 
         if ($request->filled('perpage')) {
@@ -237,7 +237,7 @@ class SubscriptionController extends Controller
         if($request->filled('perpage')) {
             $response['paginate'] = $this->paginate($paymentCards);
         }
-        
+
         return response()->json($response, 200);
     }
 
@@ -260,13 +260,13 @@ class SubscriptionController extends Controller
                         'phone' => $user->phone_number,
                         'payment_method' => $request->paymentMethodId
                     ];
-    
+
                     if($request->set_to_default === true) {
                         $stripe_customer_data['invoice_settings'] = [
                             'default_payment_method' => $request->paymentMethodId
                         ];
                     }
-    
+
                     $stripe_customer = $this->stripe->customers->create($stripe_customer_data);
 
                     $user->customer_details()->update([
@@ -278,7 +278,7 @@ class SubscriptionController extends Controller
                         $this->stripe->paymentMethods->attach($request->paymentMethodId, [
                             'customer' => $user->customer_details->pm_customer_id
                         ]);
-                        
+
                         if($request->set_to_default === true) {
                             $stripe_customer = $this->stripe->customers->update($stripe_customer->id, [
                                 'invoice_settings' => [
@@ -305,7 +305,7 @@ class SubscriptionController extends Controller
                     'is_default' => 0
                 ]);
             }
-    
+
             $user_card = $user->payment_cards()->where('brand', $stripe_card->card->brand)->where('last4', $stripe_card->card->last4)->first();
             if(!is_null($user_card)) {
                 if($request->set_to_default === true) {
@@ -348,7 +348,7 @@ class SubscriptionController extends Controller
                 dispatch(new CustomerCardAddedMailJob($user->id, $new_card->id));
             }
         }
-        
+
         return response()->json([
             "error" => 0,
             "data" => $user_card,
@@ -454,7 +454,7 @@ class SubscriptionController extends Controller
                         $this->stripe->paymentMethods->attach($request->paymentMethodId, [
                             'customer' => $user->customer_details->pm_customer_id
                         ]);
-                        
+
                         $stripe_customer = $this->stripe->customers->update($stripe_customer->id, [
                             'invoice_settings' => [
                                 'default_payment_method' => $request->paymentMethodId
@@ -499,7 +499,7 @@ class SubscriptionController extends Controller
             "data" => $user_card,
             "message" => "Card has been set to default successfully."
         ], 200);
-    }    
+    }
 
     public function get_invoices(Request $request) {
         $user = $this->resolveUser($request);
@@ -514,7 +514,7 @@ class SubscriptionController extends Controller
             'orderby' => $request->filled('orderby') ? $request->orderby : 'id',
             'order' => $request->filled('order') ? $request->order : 'DESC',
         ];
-        
+
         $invoiceQuery = SubscriptionInvoices::where('user_id', $user->id)->filterInvoices($request)->orderBy($order->orderby, $order->order);
 
         if ($request->filled('perpage')) {
@@ -537,7 +537,7 @@ class SubscriptionController extends Controller
         if($request->filled('perpage')) {
             $response['paginate'] = $this->paginate($invoices);
         }
-        
+
         return response()->json($response, 200);
     }
 
@@ -545,7 +545,7 @@ class SubscriptionController extends Controller
         $user = $this->resolveUser($request);
 
         $subscriptionQuery = Subscription::where('user_id', $user->id)->orderBy('id', 'DESC');
-        
+
         if($request->filled('id')) {
             $subscriptionQuery->whereId($request->id);
         }
@@ -553,7 +553,7 @@ class SubscriptionController extends Controller
         if($request->filled('status')) {
             $subscriptionQuery->status($request->status);
         }
-        
+
         $subscription = $subscriptionQuery->first();
         if (is_null($subscription)) {
             throw new HttpResponseException(response()->json([
@@ -591,7 +591,7 @@ class SubscriptionController extends Controller
                     $stripe_subscription = $this->stripe->subscriptions->update($subscription->pm_subscription_id, [
                         'pause_collection' => [
                             'behavior' => 'mark_uncollectible'
-                        ]   
+                        ]
                     ]);
 
                     try {
@@ -609,13 +609,13 @@ class SubscriptionController extends Controller
                         $user->license()->update([
                             'status' => 'deactive'
                         ]);
-                        
+
                         if($request->filled('user_id')) {
                             dispatch(new SubscriptionPausedByAdminMailJob($user->id, $subscription->id));
                         } else {
                             dispatch(new SubscriptionPausedMailJob($user->id, $subscription->id));
                         }
-    
+
                         DB::commit();
                     } catch (\Exception $e) {
                         DB::rollBack();
@@ -664,12 +664,12 @@ class SubscriptionController extends Controller
                             'status' => $stripe_subscription->status,
                             'payload' => json_encode($stripe_subscription)
                         ]);
-    
+
                         $stripe_invoices = $this->stripe->invoices->all([
                             'subscription' => $stripe_subscription->id,
                             'limit' => 1
                         ]);
-    
+
                         if(count($stripe_invoices->data)) {
                             $stripe_invoice = $stripe_invoices->data[0];
                             $subscription->invoices()->create([
@@ -688,13 +688,13 @@ class SubscriptionController extends Controller
                         $user->license()->update([
                             'status' => 'active'
                         ]);
-                        
+
                         if($request->filled('user_id')) {
                             dispatch(new SubscriptionResumedByAdminMailJob($user->id, $subscription->id));
                         } else {
                             dispatch(new SubscriptionResumedMailJob($user->id, $subscription->id));
                         }
-    
+
                         DB::commit();
                     } catch (\Exception $e) {
                         DB::rollBack();
@@ -722,7 +722,7 @@ class SubscriptionController extends Controller
 
     public function payment(SubscriptionPaymentRequest $request) {
         $user = $this->resolveUser($request);
-        
+
         $package = $this->getPackage($request);
         $coupon = $this->handleCoupon($user, $request);
 
@@ -750,13 +750,13 @@ class SubscriptionController extends Controller
                         ], 404);
                     }
                 }
-        
+
                 $default_card = $user->payment_cards()->where('is_default', 1)->first();
                 $payment_token = $request->paymentMethodId;
                 if(!is_null($default_card)) {
                     $payment_token = ($request->default_card === false) ? $request->paymentMethodId : $default_card->pm_id;
                 }
-    
+
                 $stripe_customer = $this->createOrUpdateStripeCustomer($user, $payment_token, $request);
                 $stripe_subscription = $this->createStripeSubscription($user, $package, $coupon, $stripe_customer, $payment_token);
                 if($request->default_card === false) {
@@ -764,13 +764,13 @@ class SubscriptionController extends Controller
                 }
             }
         }
-        
+
         if($request->payment_method == 'stripe') {
             $subscription = $this->handleCreateStripeSubscriptionData($user, $package, $coupon, $stripe_customer, $stripe_subscription, $stripe_card, $payment_token, $request);
         }
 
         $user->load('customer_details');
-        
+
         return response()->json([
             "error" => 0,
             "data" => [
@@ -783,11 +783,11 @@ class SubscriptionController extends Controller
 
     public function upgrade_subscription(SubscriptionUpgradeRequest $request) {
         $user = $this->resolveUser($request);
-        
+
         $package = $this->getPackage($request);
         $coupon = $this->handleCoupon($user, $request);
         $current_subscription = $this->getSubscription($user, ['active', 'trialing', 'past_due', 'paused', 'unpaid']);
-        
+
         $stripe_customer = null;
         $stripe_subscription = null;
         $stripe_card = null;
@@ -812,7 +812,7 @@ class SubscriptionController extends Controller
                         ], 404);
                     }
                 }
-        
+
                 $default_card = $user->payment_cards()->where('is_default', 1)->first();
                 $payment_token = $request->paymentMethodId;
                 if(!is_null($default_card)) {
@@ -846,13 +846,13 @@ class SubscriptionController extends Controller
                 }
             }
         }
-        
+
         if($request->payment_method == 'stripe') {
             $subscription = $this->handleUpgradeSubscriptionData($user, $package, $coupon, $current_subscription, $stripe_customer, $stripe_subscription, $stripe_card, $payment_token, $request);
         }
 
         $user->load('customer_details');
-        
+
         return response()->json([
             "error" => 0,
             "data" => [
@@ -872,7 +872,7 @@ class SubscriptionController extends Controller
                 "message" => "You can't apply a discount."
             ], 404);
         }
-        
+
         $stripe_subscription = $this->stripe->subscriptions->retrieve($current_subscription->pm_subscription_id);
         if(! $stripe_subscription) {
             return response()->json([
@@ -882,13 +882,13 @@ class SubscriptionController extends Controller
         }
 
         $coupon = $this->handleCoupon($user, $request);
-        
+
         try {
             DB::beginTransaction();
             $new_stripe_subscription = $this->stripe->subscriptions->update($current_subscription->pm_subscription_id, [
-                'coupon' => $coupon->pm_id   
+                'coupon' => $coupon->pm_id
             ]);
-        
+
             if($coupon->duration == 'once') {
                 $coupon_expire_at = Carbon::createFromTimestamp($new_stripe_subscription->current_period_end)->toDateTimeString();
             } else {
@@ -940,7 +940,7 @@ class SubscriptionController extends Controller
 
             $coupon_id = ($coupon != null) ? $coupon->id : null;
             dispatch(new SubscriptionUpdatedMailJob($user->id, $current_subscription->id, $current_subscription->package->id, $coupon_id));
-            
+
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
@@ -967,7 +967,7 @@ class SubscriptionController extends Controller
             if(! is_null($current_subscription)) {
                 if($current_subscription->pm_subscription_id) {
                     $stripe_subscription = $this->stripe->subscriptions->retrieve($current_subscription->pm_subscription_id);
-                    if($stripe_subscription) {                        
+                    if($stripe_subscription) {
                         $stripe_subscription = $this->stripe->subscriptions->update($current_subscription->pm_subscription_id, [
                             'cancel_at_period_end' => $auto_renewal == 1 ? false : true
                         ]);
@@ -1005,9 +1005,9 @@ class SubscriptionController extends Controller
                 "message" => "Error: ". $e->getMessage()
             ], 400);
         }
-        
+
         $user->load('customer_details');
-        
+
         return response()->json([
             "error" => 0,
             "data" => [
@@ -1032,7 +1032,7 @@ class SubscriptionController extends Controller
             if($current_subscription->status == 'trialing') {
                 $subscription_data['trial_end_at'] = now();
             }
-            
+
             $current_subscription->update($subscription_data);
 
             if($current_subscription->pm_subscription_id) {
@@ -1059,7 +1059,7 @@ class SubscriptionController extends Controller
         }
 
         $user->load('customer_details');
-        
+
         return response()->json([
             "error" => 0,
             "data" => [
@@ -1193,7 +1193,7 @@ class SubscriptionController extends Controller
                         $this->stripe->paymentMethods->attach($payment_token, [
                             'customer' => $user->customer_details->pm_customer_id
                         ]);
-                        
+
                         $stripe_customer = $this->stripe->customers->update($stripe_customer->id, [
                             'invoice_settings' => [
                                 'default_payment_method' => $payment_token
@@ -1222,22 +1222,22 @@ class SubscriptionController extends Controller
                         ['plan' => $package_stripe->pm_price_id]
                     ]
                 ];
-    
+
                 if($package->trial_period_days !== null && $user->customer_details->is_avail_trial === 0) {
                     $ssData['trial_period_days'] = (int) $package->trial_period_days;
                 }
-    
+
                 if($coupon != null) {
                     $ssData['coupon'] = $coupon->pm_coupon_id;
                 }
-    
+
                 $stripe_subscription = $this->stripe->subscriptions->create($ssData);
             } else {
                 $price = $package->price;
                 if($coupon != null) {
                     $price = discount_price($package->price, $coupon->amount, $coupon->type);
                 }
-                
+
                 $stripe_subscription = $this->stripe->paymentIntents->create([
                     'customer' => $stripe_customer->id,
                     'amount' => $price * 100,
@@ -1272,30 +1272,30 @@ class SubscriptionController extends Controller
                         ],
                     ]
                 ];
-    
+
                 if($package->trial_period_days !== null && $user->trial === 0) {
                     $ssData['trial_end'] = 'now';
                 }
-    
+
                 if($coupon != null) {
                     $ssData['coupon'] = $coupon->pm_id;
                 } else {
                     $ssData['coupon'] = null;
                 }
-    
+
                 $stripe_subscription = $this->stripe->subscriptions->update($current_subscription->pm_subscription_id, $ssData);
             } else {
                 $subscription_data = [
                     'status' => 'canceled',
                     'ended_at' => now()
                 ];
-    
+
                 if($current_subscription->status == 'trialing') {
                     $subscription_data['trial_end_at'] = now();
                 }
-                
+
                 $current_subscription->update($subscription_data);
-    
+
                 if($current_subscription->pm_subscription_id) {
                     $this->stripe->subscriptions->cancel($current_subscription->pm_subscription_id);
                 }
@@ -1355,7 +1355,7 @@ class SubscriptionController extends Controller
                     foreach ($stripe_subscription->items->data as $item) {
                         $amount += $item->plan->amount / 100;
                     }
-        
+
                     $ssData = [
                         'user_id' => $user->id,
                         'package_id' => $package->id,
@@ -1376,20 +1376,20 @@ class SubscriptionController extends Controller
                         'leads' => 0,
                         'payload' => json_encode($stripe_subscription)
                     ];
-    
+
                     if($package->trial_period_days !== null && $user->customer_details->is_avail_trial === 0) {
                         if($stripe_subscription->trial_start) {
                             $ssData['trial_start_at'] = Carbon::createFromTimestamp($stripe_subscription->trial_start)->toDateTimeString();
                         }
                     }
-    
+
                     if($coupon != null) {
                         if($coupon->duration == 'once') {
                             $coupon_expire_at = Carbon::createFromTimestamp($stripe_subscription->current_period_end)->toDateTimeString();
                         } else {
                             $coupon_expire_at = Carbon::now()->addMonths($coupon->duration_month)->toDateTimeString();
                         }
-    
+
                         $ssData['coupon_id'] = $coupon->id;
                         $ssData['coupon_expire_at'] = $coupon_expire_at;
                     } else {
@@ -1397,12 +1397,12 @@ class SubscriptionController extends Controller
                         $ssData['coupon_expire_at'] = null;
                     }
                     $subscription = Subscription::create($ssData);
-    
+
                     $stripe_invoices = $this->stripe->invoices->all([
                         'subscription' => $stripe_subscription->id,
                         'limit' => 1
                     ]);
-        
+
                     if(count($stripe_invoices->data)) {
                         $stripe_invoice = $stripe_invoices->data[0];
                         $invoiceData = [
@@ -1416,21 +1416,21 @@ class SubscriptionController extends Controller
                             'status' => $stripe_invoice->status,
                             'date' => Carbon::createFromTimestamp($stripe_invoice->created)->toDateTimeString()
                         ];
-        
+
                         if($coupon != null) {
                             if($coupon->duration == 'once') {
                                 $coupon_expire_at = Carbon::createFromTimestamp($stripe_subscription->current_period_end)->toDateTimeString();
                             } else {
                                 $coupon_expire_at = Carbon::now()->addMonths($coupon->duration_month)->toDateTimeString();
                             }
-    
+
                             $invoiceData['coupon_id'] = $coupon->id;
                             $invoiceData['coupon_expire_at'] = $coupon_expire_at;
                         } else {
                             $invoiceData['coupon_id'] = null;
                             $invoiceData['coupon_expire_at'] = null;
                         }
-        
+
                         $subscription->invoices()->create($invoiceData);
                     }
                 } else {
@@ -1489,7 +1489,7 @@ class SubscriptionController extends Controller
                 if(!is_null($stripe_customer)) {
                     $customer_data['pm_customer_id'] = $stripe_customer->id;
                 }
-    
+
                 if($package->trial_period_days !== null && $user->customer_details->is_avail_trial === 0) {
                     $customer_data['is_avail_trial'] = 1;
                 }
@@ -1654,7 +1654,7 @@ class SubscriptionController extends Controller
                 ], 422));
             }
         }
-        
+
         try {
             DB::beginTransaction();
             $package_pm = $package->payment_methods()->stripe()->first();
@@ -1664,7 +1664,7 @@ class SubscriptionController extends Controller
                     foreach ($stripe_subscription->items->data as $item) {
                         $amount += $item->plan->amount / 100;
                     }
-    
+
                     $ssData = [
                         'package_id' => $package->id,
                         'pm_subscription_id' => $stripe_subscription->id,
@@ -1690,14 +1690,14 @@ class SubscriptionController extends Controller
                             $ssData['trial_start_at'] = Carbon::createFromTimestamp($stripe_subscription->trial_start)->toDateTimeString();
                         }
                     }
-    
+
                     if($coupon != null) {
                         if($coupon->duration == 'once') {
                             $coupon_expire_at = Carbon::createFromTimestamp($stripe_subscription->current_period_end)->toDateTimeString();
                         } else {
                             $coupon_expire_at = Carbon::now()->addMonths($coupon->duration_month)->toDateTimeString();
                         }
-    
+
                         $ssData['coupon_id'] = $coupon->id;
                         $ssData['coupon_expire_at'] = $coupon_expire_at;
                     } else {
@@ -1710,7 +1710,7 @@ class SubscriptionController extends Controller
                         'subscription' => $stripe_subscription->id,
                         'limit' => 1
                     ]);
-        
+
                     if(count($stripe_invoices->data)) {
                         $stripe_invoice = $stripe_invoices->data[0];
                         $invoiceData = [
@@ -1724,21 +1724,21 @@ class SubscriptionController extends Controller
                             'status' => $stripe_invoice->status,
                             'date' => Carbon::createFromTimestamp($stripe_invoice->created)->toDateTimeString()
                         ];
-        
+
                         if($coupon != null) {
                             if($coupon->duration == 'once') {
                                 $coupon_expire_at = Carbon::createFromTimestamp($stripe_subscription->current_period_end)->toDateTimeString();
                             } else {
                                 $coupon_expire_at = Carbon::now()->addMonths($coupon->duration_month)->toDateTimeString();
                             }
-                            
+
                             $invoiceData['coupon_id'] = $coupon->id;
                             $invoiceData['coupon_expire_at'] = $coupon_expire_at;
                         } else {
                             $invoiceData['coupon_id'] = null;
                             $invoiceData['coupon_expire_at'] = null;
                         }
-        
+
                         $subscription->invoices()->create($invoiceData);
                     }
                 } else {
@@ -1788,7 +1788,7 @@ class SubscriptionController extends Controller
                     }
                     $subscription->invoices()->create($invoiceData);
                 }
-    
+
                 if($coupon != null) {
                     $coupon->users()->attach($user->id);
                 }
@@ -1797,12 +1797,12 @@ class SubscriptionController extends Controller
                 if(!is_null($stripe_customer)) {
                     $customer_data['pm_customer_id'] = $stripe_customer->id;
                 }
-    
+
                 if($package->trial_period_days !== null && $user->customer_details->is_avail_trial === 0) {
                     $customer_data['is_avail_trial'] = 1;
                 }
                 $user->customer_details()->update($customer_data);
-    
+
                 if($request->default_card === false) {
                     $user->payment_cards()->where('is_default', 1)->update([
                         'is_default' => 0
@@ -1933,7 +1933,7 @@ class SubscriptionController extends Controller
                     $user_payment_link->delete();
                 }
             }
-            
+
             $coupon_id = ($coupon != null) ? $coupon->id : null;
             if($request->filled('user_id')) {
                 dispatch(new SubscriptionUpdatedByAdminMailJob($user->id, $subscription->id, $package->id, $coupon_id));
@@ -1949,7 +1949,7 @@ class SubscriptionController extends Controller
                 "error" => 1,
                 "message" => "Error: " . $exception->getMessage()
             ], 404));
-        }        
+        }
     }
 
     public function website_update(SubscriptionWebsitesUpdateRequest $request) {

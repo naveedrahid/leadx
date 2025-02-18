@@ -126,17 +126,17 @@
                             </template>
                             <div class="border p-4 rounded d-flex flex-column gap-2 mb-6">
                                 <div class="d-flex align-items-center gap-2">
-                                    <span class="fs-2 fw-bolder">Website Limit:</span> 
+                                    <span class="fs-2 fw-bolder">Website Limit:</span>
                                     <span class="fs-2 fw-bold">{{ current_subscription.package?.website_limit ? (numFormat(current_subscription.websites.length) +' / '+ numFormat(current_subscription.package?.website_limit)) : 'Unlimited' }}</span>
                                 </div>
                                 <div class="d-flex align-items-center gap-2" :class="{
                                     'text-danger': user.other.has_exceeded_leads_limit
                                 }">
-                                    <span class="fs-2 fw-bolder">Leads Limit:</span> 
+                                    <span class="fs-2 fw-bolder">Leads Limit:</span>
                                     <span class="fs-2 fw-bold">{{ current_subscription.package?.lead_limit ? (current_subscription.leads +' / '+ current_subscription.package?.lead_limit) : 'Unlimited' }}</span>
                                 </div>
                                 <div class="d-flex align-items-center gap-2">
-                                    <span class="fs-2 fw-bolder">App Access:</span> 
+                                    <span class="fs-2 fw-bolder">App Access:</span>
                                     <span class="fs-2 fw-bold">{{ current_subscription.package?.app_access ? 'Yes' : 'No' }}</span>
                                 </div>
                             </div>
@@ -594,7 +594,7 @@
                                                 <div class="mb-3">
                                                     <h2 class="fw-bolder fs-6 mb-0" v-if="item.free_plan">Free</h2>
                                                     <h2 class="fw-bolder fs-6 mb-0" v-else>
-                                                        {{ priceFormat(item.price) }} 
+                                                        {{ priceFormat(item.price) }}
                                                         <span class="fs-2 text-capitalize">/ {{ item.duration_lifetime ? 'Lifetime' : item.format_duration }}</span>
                                                     </h2>
                                                     <div class="fs-3 fw-bold" v-if="item.sale_price !== null">Normally <del class="text-dark">{{ priceFormat(item.regular_price) }}</del></div>
@@ -722,7 +722,7 @@
                             <div class="text-muted fw-bold fs-3">
                                 {{ pack.title }}
                                 <span class="text-dark fw-bold" v-if="pack.free_plan">Free</span>
-                                <span class="text-dark fw-bold" v-else>{{ priceFormat(pack.price) }}</span> 
+                                <span class="text-dark fw-bold" v-else>{{ priceFormat(pack.price) }}</span>
                                 <span class="fs-2 text-capitalize">/ {{ pack.duration_lifetime ? 'Lifetime' : pack.format_duration }}</span>
                                 <template v-if="pack.trial_period_days && user.customer_details?.is_avail_trial == 0">
                                     with <span class="text-dark fw-bold">{{ pack.trial_period_days }} {{ pack.trial_period_days > 1 ? 'Days' : 'Day' }} Free Trial</span>
@@ -790,7 +790,7 @@ export default {
                 add_new_card: {
                     card_holder_name: '',
                     paymentMethodId: '',
-                    set_to_default: false 
+                    set_to_default: false
                 },
                 change_payment_method: {
                     paymentMethodId: ''
@@ -901,9 +901,8 @@ export default {
 
         priceFormat(price, symbol = true) {
             price = parseInt(price).toFixed(2);
-            return symbol ? this.$page.props.currency_symbol + price : price; 
+            return symbol ? this.$page.props.currency_symbol + price : price;
         },
-
         dateFormat(date, format, cformat = null) {
             if(cformat) {
                 return moment(date, cformat).format(format);
@@ -937,8 +936,8 @@ export default {
                 await this.stripe.createPaymentMethod({
                     type: 'card',
                     card: this.cardElement,
-                    billing_details: { 
-                        name: this.form.add_new_card.card_holder_name 
+                    billing_details: {
+                        name: this.form.add_new_card.card_holder_name
                     }
                 }).then((result) => {
                     if(result.error) {
@@ -993,7 +992,7 @@ export default {
                 this.form.change_payment_method.paymentMethodId = false;
                 return;
             }
-            
+
             this.form.change_payment_method.paymentMethodId = pm_id;
         },
 
@@ -1038,7 +1037,7 @@ export default {
             if(ele.prop("tagName").toLowerCase() != 'button') {
                 ele = ele.closest('button');
             }
-    
+
             this.errors = {};
             Swal.fire({
                 html: 'Please confirm if you want remove this card.',
@@ -1092,7 +1091,7 @@ export default {
             if(ele.prop("tagName").toLowerCase() != 'button') {
                 ele = ele.closest('button');
             }
-            
+
             this.errors = {};
             let newValue = this.user.customer_details?.auto_renewal_subscription ? 'disabled' : 'enabled';
             let confirm_button_class = this.user.customer_details?.auto_renewal_subscription ? 'btn-danger' : 'btn-info';
@@ -1162,7 +1161,7 @@ export default {
                 console.log(error.response.data.message);
             });
         },
-        
+
         async getCurrentSubscription() {
             this.current_subscription = {};
             this.loader = true;
@@ -1252,7 +1251,7 @@ export default {
                 if($response.data.length > 0) {
                     this.packages = $response.data;
                 }
-                
+
                 this.loader = false;
             }).catch((error) => {
                 this.loader = false;
@@ -1449,8 +1448,8 @@ export default {
                     await this.stripe.createPaymentMethod({
                         type: 'card',
                         card: this.cardElement,
-                        billing_details: { 
-                            name: this.form.payment.card_holder_name 
+                        billing_details: {
+                            name: this.form.payment.card_holder_name
                         }
                     }).then((result) => {
                         if(result.error) {
@@ -1494,7 +1493,7 @@ export default {
                 let $response = response.data;
                 this.$cookies.set('lxf-success-msg', $response.message, 10);
                 this.$cookies.set('lxf-user', $response.data.user, moment(moment()).add(1, 'years').diff(moment(), 'seconds'));
-                
+
                 document.body.classList.remove('overflow-hidden');
                 this.$inertia.visit(route(route().current()));
                 this.loader = false;
@@ -1534,7 +1533,7 @@ export default {
                 let $response = response.data;
                 this.$cookies.set('lxf-success-msg', $response.message, 10);
                 this.$cookies.set('lxf-user', $response.data.user, moment(moment()).add(1, 'years').diff(moment(), 'seconds'));
-                
+
                 document.body.classList.remove('overflow-hidden');
                 this.$inertia.visit(route(route().current()));
                 this.loader = false;
@@ -1581,7 +1580,7 @@ export default {
             this.loader = true;
             await axios.get(route('api.website.get.all'), {
                 params: {
-                    orderby: 'website_name', 
+                    orderby: 'website_name',
                     order: 'ASC',
                     status: 'active'
                 },

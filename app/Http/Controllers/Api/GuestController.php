@@ -34,11 +34,11 @@ class GuestController extends Controller
 {
     protected $stripe;
 
-    public function __construct() 
+    public function __construct()
     {
         $this->stripe = new StripeClient(config('services.stripe.secret'));
     }
-    
+
     public function get_packages(Request $request)
     {
         $order = (object) [
@@ -59,11 +59,11 @@ class GuestController extends Controller
             "data" => $packages,
             "message" => "Packages have been successfully retrieved"
         ];
-        
+
         return response()->json($response, 200);
     }
 
-    public function validate_subscription(Request $request) 
+    public function validate_subscription(Request $request)
     {
         $package = Package::whereId($request->package)->status('active')->first();
         if (is_null($package)) {
@@ -157,7 +157,7 @@ class GuestController extends Controller
         ], 200);
     }
 
-    public function create_subscription(NewSubscriptionRequest $request) 
+    public function create_subscription(NewSubscriptionRequest $request)
     {
         $package = Package::whereId($request->package)->status('active')->first();
         $user = User::where('email', $request->email)->first();
@@ -262,7 +262,7 @@ class GuestController extends Controller
                             "message" => "Token Not Found!"
                         ], 404);
                     }
-                    
+
                     $payment_token = $request->paymentMethodId;
                     if($user->customer_details()->exists() && $user->customer_details->pm_customer_id === null) {
                         $stripe_customer = $this->stripe->customers->create([
@@ -275,7 +275,7 @@ class GuestController extends Controller
                             ]
                         ]);
                     }
-    
+
                     if(!$package->duration_lifetime) {
                         $package_pm = $package->payment_methods()->stripe()->first();
                         $ssData = [
@@ -284,19 +284,19 @@ class GuestController extends Controller
                                 ['plan' => $package_pm->pm_price_id]
                             ]
                         ];
-        
+
                         if($package->trial_period_days !== null && $user->customer_details->is_avail_trial === 0) {
                             $ssData['trial_period_days'] = (int) $package->trial_period_days;
                         }
-            
+
                         if($coupon != null) {
                             $ssData['coupon'] = $coupon->pm_coupon_id;
                         }
-            
+
                         $stripe_subscription = $this->stripe->subscriptions->create($ssData);
                         $stripe_card = $this->stripe->paymentMethods->retrieve($payment_token);
                     } else {
-                        $price = $package->price;
+                        $price = ($package->price * 0.0175) + 0.30;
                         if($coupon != null) {
                             $price = discount_price($package->price, $coupon->amount, $coupon->type);
                         }
@@ -343,20 +343,20 @@ class GuestController extends Controller
                             'leads' => 0,
                             'payload' => json_encode($stripe_subscription)
                         ];
-        
+
                         if($package->trial_period_days !== null && $user->customer_details->is_avail_trial === 0) {
                             if($stripe_subscription->trial_start) {
                                 $ssData['trial_start_at'] = Carbon::createFromTimestamp($stripe_subscription->trial_start)->toDateTimeString();
                             }
                         }
-        
+
                         if($coupon != null) {
                             if($coupon->duration == 'once') {
                                 $coupon_expire_at = Carbon::createFromTimestamp($stripe_subscription->current_period_end)->toDateTimeString();
                             } else {
                                 $coupon_expire_at = Carbon::now()->addMonths($coupon->duration_month)->toDateTimeString();
                             }
-                            
+
                             $ssData['coupon_id'] = $coupon->id;
                             $ssData['coupon_expire_at'] = $coupon_expire_at;
                         } else {
@@ -374,18 +374,18 @@ class GuestController extends Controller
                         if(!is_null($stripe_customer)) {
                             $user_data['pm_customer_id'] = $stripe_customer->id;
                         }
-            
+
                         if($package->trial_period_days !== null && $user->customer_details->is_avail_trial === 0) {
                             $user_data['is_avail_trial'] = 1;
                         }
-                        
+
                         $user->customer_details()->update($user_data);
 
                         $stripe_invoices = $this->stripe->invoices->all([
                             'subscription' => $stripe_subscription->id,
                             'limit' => 1
                         ]);
-    
+
                         if(count($stripe_invoices->data)) {
                             $stripe_invoice = $stripe_invoices->data[0];
                             $invoiceData = [
@@ -399,7 +399,7 @@ class GuestController extends Controller
                                 'status' => $stripe_invoice->status,
                                 'date' => Carbon::createFromTimestamp($stripe_invoice->created)->toDateTimeString()
                             ];
-            
+
                             if($coupon != null) {
                                 if($coupon->duration == 'once') {
                                     $coupon_expire_at = Carbon::createFromTimestamp($stripe_subscription->current_period_end)->toDateTimeString();
@@ -452,7 +452,7 @@ class GuestController extends Controller
                         if(!is_null($stripe_customer)) {
                             $user_data['pm_customer_id'] = $stripe_customer->id;
                         }
-            
+
                         if($package->trial_period_days !== null && $user->customer_details->is_avail_trial === 0) {
                             $user_data['is_avail_trial'] = 1;
                         }
@@ -527,7 +527,7 @@ class GuestController extends Controller
                         'leads' => 0,
                         'payload' => null
                     ];
-    
+
                     $subscription = Subscription::create($ssData);
                     $user->customer_details()->update(['is_avail_free_plan' => 1]);
 
@@ -568,7 +568,7 @@ class GuestController extends Controller
                 "uuid" => Str::uuid(),
                 "status" => "deactive"
             ]);
-            
+
             $websites_ids = [];
             if(count($request->websites)>0) {
                 foreach($request->websites as $website) {
@@ -605,10 +605,10 @@ class GuestController extends Controller
                 dispatch(new WelcomeMailJob($user));
                 $user->update(['first_attempt' => 1]);
             }
-            
+
             $coupon_id = ($coupon != null) ? $coupon->id : null;
             dispatch(new SubscriptionCreatedMailJob($user->id, $subscription->id, $package->id, $coupon_id));
-            
+
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
@@ -637,7 +637,7 @@ class GuestController extends Controller
         ], 200);
     }
 
-    public function create_feedback(FeedBackRequest $request) 
+    public function create_feedback(FeedBackRequest $request)
     {
         $clientIP = $request->ip();
         $clientInfo = @json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip=".$clientIP));
@@ -666,5 +666,5 @@ class GuestController extends Controller
             "error" => 0,
             "message" => "Your message has been sent. Thank you!"
         ], 200);
-    } 
+    }
 }
