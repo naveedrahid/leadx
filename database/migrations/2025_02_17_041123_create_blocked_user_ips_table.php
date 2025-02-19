@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('ip_address')->nullable();
             $table->boolean("is_blocked")->default(0);
-            $table->integer('form_id')->nullable();
+            $table->integer('lead_id')->nullable();
             $table->timestamps();
         });
     }
