@@ -41,6 +41,14 @@
                         </Link>
                     </li>
                     <li class="sidebar-item">
+                        <Link :href="route('app.customer.spam-keywords.index')" class="sidebar-link gap-2" :class="{
+                            'active': route().current('app.customer.spam-keywords.index')
+                        }">
+                            <span><i class="ti ti-ban"></i></span>
+                            <span class="hide-menu">Spam Keywords</span>
+                        </Link>
+                    </li>
+                    <li class="sidebar-item">
                         <a href="#" class="sidebar-link has-arrow gap-2" :class="{
                             'active': route().current('app.customer.website.*')
                         }">
@@ -100,6 +108,21 @@
                             <span class="hide-menu">Billing History</span>
                         </Link>
                     </li>
+
+
+
+                    <li class="nav-small-cap">
+                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                        <span class="hide-menu">Plugin Integration</span>
+                    </li>
+                    <li class="sidebar-item">
+                        <Link :href="route('app.customer.subscription.license')" class="sidebar-link gap-2" :class="{
+                            'active': route().current('app.customer.subscription.license')
+                        }">
+                            <span><i class="ti ti-file"></i></span>
+                            <span class="hide-menu">Plugin Doc</span>
+                        </Link>
+                    </li>
                     <li class="sidebar-item">
                         <Link :href="route('app.customer.subscription.license')" class="sidebar-link gap-2" :class="{
                             'active': route().current('app.customer.subscription.license')
@@ -116,6 +139,8 @@
                             <span class="hide-menu">Your Downlaods</span>
                         </Link>
                     </li>
+
+
                     <li class="nav-small-cap">
                         <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                         <span class="hide-menu">Account</span>

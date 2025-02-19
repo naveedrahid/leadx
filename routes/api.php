@@ -18,7 +18,8 @@ use App\Http\Controllers\Api\{
     CustomerDashboardController,
     FormCategoryController,
     FormTemplateController,
-    BlockedIPController
+    BlockedIPController,
+    SpamKeywordController
 };
 
 /*
@@ -156,8 +157,10 @@ Route::prefix('v1')->middleware(['cors', 'json.response'])->as('api.')->group(fu
             Route::get('/', 'get_all')->name('get.all');
             Route::post('/blocked/{id}', 'blockedIP')->name('blocked.ip');
             Route::post('/unblocked/{id}', 'UnBlocked')->name('unblocked.ip');
+        });
 
-
+        Route::controller(SpamKeywordController::class)->prefix('spam-keywords')->as('spam-keywords.')->group(function() {
+            Route::get('/', 'get_all')->name('get.all');
         });
 
     });
