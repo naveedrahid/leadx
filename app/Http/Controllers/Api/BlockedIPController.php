@@ -76,7 +76,7 @@ class BlockedIPController extends Controller
             "lead_id" => $id,
             "blocked_by" => auth()->id()
         ];
-        $lead = LeadBlockedIP::create($input);
+        $lead = LeadBlockedIP::updateOrCreate(['ip_address'=>$formData['visitor_info']['ip']],$input);
 
         $response = [
             "error" => 0,
