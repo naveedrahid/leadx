@@ -33,6 +33,14 @@
                         </Link>
                     </li>
                     <li class="sidebar-item">
+                        <Link :href="route('app.customer.spam-leads.index')" class="sidebar-link gap-2" :class="{
+                            'active': route().current('app.customer.spam-leads.index')
+                        }">
+                            <span><i class="ti ti-ban"></i></span>
+                            <span class="hide-menu">Spam</span>
+                        </Link>
+                    </li>
+                    <li class="sidebar-item">
                         <Link :href="route('app.customer.blocked-ip.index')" class="sidebar-link gap-2" :class="{
                             'active': route().current('app.customer.blocked-ip.index')
                         }">
@@ -40,14 +48,7 @@
                             <span class="hide-menu">Blocked IPS</span>
                         </Link>
                     </li>
-                    <li class="sidebar-item">
-                        <Link :href="route('app.customer.spam-keywords.index')" class="sidebar-link gap-2" :class="{
-                            'active': route().current('app.customer.spam-keywords.index')
-                        }">
-                            <span><i class="ti ti-ban"></i></span>
-                            <span class="hide-menu">Spam Keywords</span>
-                        </Link>
-                    </li>
+
                     <li class="sidebar-item">
                         <a href="#" class="sidebar-link has-arrow gap-2" :class="{
                             'active': route().current('app.customer.website.*')
@@ -116,8 +117,8 @@
                         <span class="hide-menu">Plugin Integration</span>
                     </li>
                     <li class="sidebar-item">
-                        <Link :href="route('app.customer.subscription.license')" class="sidebar-link gap-2" :class="{
-                            'active': route().current('app.customer.subscription.license')
+                        <Link :href="route('app.customer.plugin.documentation')" class="sidebar-link gap-2" :class="{
+                            'active': route().current('app.customer.plugin.documentation')
                         }">
                             <span><i class="ti ti-file"></i></span>
                             <span class="hide-menu">Plugin Doc</span>

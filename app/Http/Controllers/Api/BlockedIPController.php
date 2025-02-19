@@ -27,6 +27,10 @@ class BlockedIPController extends Controller
             ->filterLeads($request)
             ->orderBy($order->orderby, $order->order);
 
+        if($request->website_id) {
+            $leadsQuery->where('website_id', $request->website_id);
+        }
+
         if ($request->filled('perpage')) {
             $leads = $leadsQuery->paginate($request->perpage);
             $filteredLeads = collect($leads->items())->unique(function ($lead) {
@@ -43,7 +47,6 @@ class BlockedIPController extends Controller
                 return data_get($formData, 'visitor_info.ip');
             })->values();
         }
-
 
 
         $response = [
@@ -74,7 +77,9 @@ class BlockedIPController extends Controller
             "ip_address" => $formData['visitor_info']['ip'],
             "is_blocked" => 1,
             "lead_id" => $id,
-            "blocked_by" => auth()->id()
+            "blocked_by" => auth()->id(),
+            "website_id" => $lead->website_id,
+            "form_id" => $lead->wpform_id,
         ];
         $lead = LeadBlockedIP::updateOrCreate(['ip_address'=>$formData['visitor_info']['ip']],$input);
 

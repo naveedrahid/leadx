@@ -13,4 +13,8 @@ class PluginController extends Controller
     {
         return Inertia::render('Customer/Plugin/Index');
     }
+
+    public function documentation() : Response{
+        return Inertia::render('Customer/Plugin/documentation');
+    }
 }

@@ -159,7 +159,7 @@ Route::prefix('v1')->middleware(['cors', 'json.response'])->as('api.')->group(fu
             Route::post('/unblocked/{id}', 'UnBlocked')->name('unblocked.ip');
         });
 
-        Route::controller(SpamKeywordController::class)->prefix('spam-keywords')->as('spam-keywords.')->group(function() {
+        Route::controller(SpamKeywordController::class)->prefix('spam-leads')->as('spam-leads.')->group(function() {
             Route::get('/', 'get_all')->name('get.all');
         });
 
