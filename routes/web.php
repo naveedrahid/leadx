@@ -18,6 +18,7 @@ use App\Http\Controllers\Customer\{
     SubscriptionController as CustomerSubscriptionController,
     LeadsController as CustomerLeadsController,
     BlockedIPController as CustomerBlockedIPController,
+    SpamKeywordController as CustomerSpamKeywordController,
     WebhookController as CustomerWebhookController,
     PluginController as CustomerPluginController
 };
@@ -105,6 +106,12 @@ Route::prefix('app')->as('app.')->group(function() {
         Route::controller(CustomerBlockedIPController::class)->prefix('blocked-ip')->as('blocked-ip.')->group(function() {
             Route::get('/', 'index')->name('index');
         });
+
+        Route::controller(CustomerSpamKeywordController::class)->prefix('spam-keywords')->as('spam-keywords.')->group(function() {
+            Route::get('/', 'index')->name('index');
+        });
+
+
 
 
         Route::controller(CustomerWebsiteController::class)->prefix('website')->as('website.')->group(function() {
