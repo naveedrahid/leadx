@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('form_blocked_ips', function (Blueprint $table) {
+        Schema::create('lead_blocked_ips', function (Blueprint $table) {
             $table->id();
             $table->string('ip_address')->nullable();
             $table->boolean("is_blocked")->default(0);
+            $table->integer('lead_id')->nullable();
             $table->integer('form_id')->nullable();
+            $table->integer('website_id')->nullable();
             $table->timestamps();
         });
     }
