@@ -45,7 +45,7 @@
                             'active': route().current('app.customer.blocked-ip.index')
                         }">
                             <span><i class="ti ti-lock"></i></span>
-                            <span class="hide-menu">Blocked IPS</span>
+                            <span class="hide-menu">IP Tracking</span>
                         </Link>
                     </li>
 

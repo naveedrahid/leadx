@@ -3,8 +3,8 @@
     <AppLayout ref="app_layout" :loader="loader">
         <div class="container-fluid">
             <Breadcrumb>
-                <template v-slot:title>Blocked IPS</template>
-                <li class="breadcrumb-item text-muted" aria-current="page">Blocked IPS</li>
+                <template v-slot:title>IP Tracking</template>
+                <li class="breadcrumb-item text-muted" aria-current="page">IP Tracking</li>
             </Breadcrumb>
             <div class="mb-3">
                 <div class="d-flex align-items-center justify-content-end gap-2">
