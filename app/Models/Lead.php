@@ -26,6 +26,10 @@ class Lead extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
+    public function spam_keyword_leads(){
+        return $this->belongsTo(SpamKeywordLead::class,'id','lead_id');
+    }
+
 
     public function lead_blocked_ip(): BelongsTo
     {

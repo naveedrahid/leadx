@@ -97,6 +97,8 @@ Route::prefix('app')->as('app.')->group(function() {
     Route::prefix('customer')->as('customer.')->group(function() {
         Route::controller(CustomerPluginController::class)->prefix('your_downloads')->as('plugin.')->group(function() {
             Route::get('/', 'index')->name('index');
+            Route::get('/documentation', 'documentation')->name('documentation');
+
         });
 
         Route::controller(CustomerLeadsController::class)->prefix('leads')->as('leads.')->group(function() {
@@ -107,7 +109,7 @@ Route::prefix('app')->as('app.')->group(function() {
             Route::get('/', 'index')->name('index');
         });
 
-        Route::controller(CustomerSpamKeywordController::class)->prefix('spam-keywords')->as('spam-keywords.')->group(function() {
+        Route::controller(CustomerSpamKeywordController::class)->prefix('spam-leads')->as('spam-leads.')->group(function() {
             Route::get('/', 'index')->name('index');
         });
 
