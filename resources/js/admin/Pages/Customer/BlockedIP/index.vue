@@ -3,8 +3,8 @@
     <AppLayout ref="app_layout" :loader="loader">
         <div class="container-fluid">
             <Breadcrumb>
-                <template v-slot:title>Blocked IPS</template>
-                <li class="breadcrumb-item text-muted" aria-current="page">Blocked IPS</li>
+                <template v-slot:title>IP Tracking</template>
+                <li class="breadcrumb-item text-muted" aria-current="page">IP Tracking</li>
             </Breadcrumb>
             <div class="mb-3">
                 <div class="d-flex align-items-center justify-content-end gap-2">
@@ -115,10 +115,10 @@
                                             <td class="align-middle">
                                                 <div class="action-btn d-flex align-items-center gap-2">
                                                     <button v-if="item.lead_blocked_ip?.is_blocked === 1" type="button" class="btn btn-success btn-sm" @click="UnBlockedIP($event, item.lead_blocked_ip?.id)">
-                                                        <i class="ti ti-lock-open fs-3 pe-1"></i> UnBlocked
+                                                        <i class="ti ti-lock-open fs-3 pe-1"></i> Unblock
                                                     </button>
                                                     <button v-else type="button" class="btn btn-danger btn-sm" @click="BlockedIP($event, item)">
-                                                        <i class="ti ti-lock fs-3 pe-1"></i> Blocked
+                                                        <i class="ti ti-lock fs-3 pe-1"></i> Block
                                                     </button>
                                                 </div>
                                             </td>
