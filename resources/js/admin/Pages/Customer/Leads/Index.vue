@@ -25,19 +25,6 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="mb-3">
-                                            <label for="form" class="fs-1 mb-1 fw-bold">Forms</label>
-                                            <select v-model="form" id="form" class="form-select form-select-sm" @change="getData()">
-                                                <option value="">{{ loader ? 'Loading...' : 'All Forms' }}</option>
-                                                <template v-if="!loader && forms.length>0">
-                                                    <template v-for="item in forms">
-                                                        <option :value="item.id">{{ item.name }}</option>
-                                                    </template>
-                                                </template>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="mb-3">
                                             <label for="website" class="fs-1 mb-1 fw-bold">Website</label>
                                             <select v-model="website" id="website" class="form-select form-select-sm" @change="getData()">
                                                 <option value="">{{ loader ? 'Loading...' : 'All Websites' }}</option>
@@ -46,6 +33,14 @@
                                                         <option :value="item.id">{{ item.name }}</option>
                                                     </template>
                                                 </template>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div :class="{'d-none': !showForm}" class="col-md-3" id="form-id" >
+                                        <div class="mb-3">
+                                            <label for="form" class="fs-1 mb-1 fw-bold">Forms</label>
+                                            <select v-model="form" id="form" class="form-select form-select-sm" @change="getData()">
+                                                <option value="">{{ loader ? 'Loading...' : 'All Forms' }}</option>
                                             </select>
                                         </div>
                                     </div>
@@ -115,7 +110,7 @@
                                     </th>
                                     <th>No.</th>
                                     <th>Date & Time</th>
-                                    <th>Form Name</th>
+<!--                                    <th>Form Name</th>-->
                                     <th>Email</th>
                                     <th>Is View</th>
                                     <th>Status</th>
@@ -133,7 +128,7 @@
                                             </td>
                                             <td class="align-middle">{{ getItemNum(index) }}</td>
                                             <td class="align-middle">{{ dateFormat(item.created_at, 'DD.MM.YYYY  - h:mm a') }}</td>
-                                            <td class="align-middle">{{ item.wpform_name }}</td>
+<!--                                            <td class="align-middle">{{ item.wpform_name }}</td>-->
                                             <td class="align-middle"><a :href="'mailto:'+getEmailAddress(item.form_data?.data)">{{ getEmailAddress(item.form_data?.data) }}</a></td>
                                             <td class="align-middle">
                                                 <template v-if="item.is_viewed">
@@ -144,10 +139,14 @@
                                                 </template>
                                             </td>
                                             <td class="align-middle">
-                                                <select @change.prevent="updateItemStatus($event, item, index)" class="form-select form-select-sm">
+                                                <select @change.prevent="updateItemStatus($event, item, index)"
+                                                        class="form-select form-select-sm">
                                                     <template v-if="Object.keys(statuses).length>0">
-                                                        <template v-for="(statusValue, statusKey) in statuses" :key="statusKey">
-                                                            <option :value="statusKey"  item.status selected>{{ statusValue }}</option>
+                                                        <template v-for="(statusValue, statusKey) in statuses"
+                                                                  :key="statusKey">
+                                                            <option :value="statusKey" :selected="item.status == statusKey">
+                                                                {{ statusValue }}
+                                                            </option>
                                                         </template>
                                                     </template>
                                                 </select>
@@ -226,7 +225,7 @@
                                                                                 </li>
                                                                                 <li class="list-group-item d-flex gap-2 px-0">
                                                                                     <strong class="d-flex align-items-center gap-2"><i class="fs-3 ti ti-link"></i> Referrer URL:</strong>
-                                                                                    <span><a :href="item.form_data?.visitor_info.ref_url" target="_blank">{{ item.form_data?.visitor_info.ref_url }}</a></span>
+                                                                                    <span style="max-width: 73%;"><a :href="item.form_data?.visitor_info.ref_url" target="_blank">{{ item.form_data?.visitor_info.ref_url }}</a></span>
                                                                                 </li>
                                                                                 <li class="list-group-item d-flex gap-2 px-0">
                                                                                     <strong class="d-flex align-items-center gap-2"><i class="fs-3 ti ti-map-pin"></i> Continent:</strong>
@@ -355,6 +354,7 @@ export default {
             collection: [],
             paginate: {},
             perpage: 10,
+            showForm: false,
             page: 1,
             orderBy: 'id',
             order: 'DESC',

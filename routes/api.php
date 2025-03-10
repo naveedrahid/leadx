@@ -161,6 +161,7 @@ Route::prefix('v1')->middleware(['cors', 'json.response'])->as('api.')->group(fu
 
         Route::controller(SpamKeywordController::class)->prefix('spam-leads')->as('spam-leads.')->group(function() {
             Route::get('/', 'get_all')->name('get.all');
+            Route::post('store', 'store')->name('store');
         });
 
     });
@@ -196,6 +197,16 @@ Route::prefix('v1')->middleware(['cors', 'json.response'])->as('api.')->group(fu
         Route::post('/signup', 'signup')->name('signup');
     });
 
+
+    Route::controller(SpamKeywordController::class)->middleware('auth.license')->prefix('keyword')->as('keyword.')->group(function () {
+        Route::post('updateOrCreate', 'updateOrCreate');
+        Route::get('selectBoxKeyword','selectBoxKeyword');
+    });
+
+    Route::controller(BlockedIPController::class)->prefix('track-ip')->as('track-ip.')->group(function() {
+        Route::get('/{id}/{ip}', 'trackIP');
+    });
+
     Route::controller(LeadController::class)->middleware('auth.license')->prefix('lead')->as('lead.')->group(function () {
         Route::post('/generate_pdf', 'generate_pdf')->name('generate.pdf');
         Route::post('/generate_excel', 'generate_excel')->name('generate.excel');
@@ -209,6 +220,9 @@ Route::prefix('v1')->middleware(['cors', 'json.response'])->as('api.')->group(fu
         Route::get('/', 'get_all')->name('get.all');
     });
 
+
+
+
     Route::controller(GuestController::class)->prefix('guest')->as('guest.')->group(function () {
         Route::post('/validate_subscription', 'validate_subscription')->name('validate.subscription');
         Route::post('/create_subscription', 'create_subscription')->name('create.subscription');
@@ -221,3 +235,7 @@ Route::prefix('v1')->middleware(['cors', 'json.response'])->as('api.')->group(fu
         Route::get('/details', 'get_details')->name('get.details');
     });
 });
+
+
+
+
