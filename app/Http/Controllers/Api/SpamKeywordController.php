@@ -13,18 +13,14 @@ use App\Http\Requests\{
     LeadStatusRequest,
     LeadBulkDeleteRequest
 };
-use App\Models\{
-    Lead,
-    Website,
-    License,
-    Subscription
-};
+use App\Models\{FormSettingKeyword, Lead, Website, License, Subscription};
 
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Exports\LeadsExport;
 use App\Exports\LeadsExport2;
 use Maatwebsite\Excel\Excel as MWExcel;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Arr;
 
 class SpamKeywordController extends Controller
 {
@@ -101,6 +97,50 @@ class SpamKeywordController extends Controller
         return response()->json($response, 200);
     }
 
+
+    public function updateOrCreate(Request $request){
+
+        $rawData = $request->getContent();
+        preg_match('/name="form_id"\s+(.*?)\s+--/s', $rawData, $formId);
+        preg_match('/name="form_name"\s+(.*?)\s+--/s', $rawData, $formName);
+        preg_match('/name="user_id"\s+(.*?)\s+--/s', $rawData, $userId);
+        preg_match('/name="setting"\s+(.*?)\s+--/s', $rawData, $settings);
+
+        $cleanData = [
+            'form_id' => trim($formId[1] ?? null),
+            'form_name' => trim($formName[1] ?? null),
+            'user_id' => trim($userId[1] ?? null),
+        ];
+
+
+        $cleanedSettings = stripslashes($settings[1]);
+        $decodedSettings = json_decode($cleanedSettings, true);
+        if (isset($decodedSettings['keyword_block'])) {
+            $cleanData['keyword'] = $decodedSettings['keyword_block'];
+        }
+
+        $FormSetting = FormSettingKeyword::updateOrCreate(["form_id" => $cleanData['form_id'],"user_id"=>$cleanData["user_id"]],$cleanData);
+        return response()->json($FormSetting);
+    }
+
+
+
+    public function selectBoxKeyword(Request $request){
+        $loadKeyword = FormSettingKeyword::where('user_id', $request->user_id)
+            ->whereNotNull('keyword')
+            ->where('form_id',$request->form_id)
+            ->pluck('keyword')
+            ->toArray();
+
+        $loadKeyword = array_filter($loadKeyword, function ($keyword) {
+            return !empty($keyword);
+        });
+
+        $loadKeyword = Arr::flatten($loadKeyword);
+
+        return response()->json(["keyword_block"=>$loadKeyword]);
+    }
+
     public function get_by(Request $request, $id)
     {
         $lead = Lead::byUser($this->user->id)->whereId($id)->first();
@@ -118,41 +158,6 @@ class SpamKeywordController extends Controller
         ], 200);
     }
 
-    public function store(LeadStoreRequest $request)
-    {
-        $form_data = json_decode($request->form_data);
-        if(!empty($form_data) && isset($form_data->data->file)) {
-            foreach($form_data->data->file as $key => $value) {
-                $url_arr = explode('/', $value->url);
-                $url = end($url_arr);
-                $filename = uniqid() . '.' . pathinfo($url, PATHINFO_EXTENSION);
-                Storage::disk('public')->put('leads/'. $filename, file_get_contents($value->url));
-
-                $form_data->data->file->{$key}->name = $filename;
-                $form_data->data->file->{$key}->url = asset('storage/leads/' . $filename);
-            }
-        }
-
-        $lead = Lead::create([
-            'user_id' => $this->user->id,
-            'website_id' => $this->website->id,
-            'wpform_id' => $request->wpform_id,
-            'wpform_name' => $request->wpform_name,
-            'uuid' => Str::uuid(),
-            'form_data' => json_encode($form_data)
-        ]);
-
-        $subscription = Subscription::where('user_id', $this->user->id)->status(['active', 'trialing'])->first();
-        $subscription->update([
-            'leads' => $subscription->leads+=1
-        ]);
-
-        return response()->json([
-            "error" => 0,
-            "data" => $lead,
-            "message" => "Lead has been successfully created"
-        ], 200);
-    }
 
     public function status(LeadStatusRequest $request, $id)
     {

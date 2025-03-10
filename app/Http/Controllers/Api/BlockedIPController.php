@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\LeadBlockedIP;
 use App\Models\Lead;
+use App\Models\Website;
 use App\Traits\ApiPaginate;
 use Illuminate\Http\Request;
 
@@ -60,6 +61,23 @@ class BlockedIPController extends Controller
         }
 
         return response()->json($response, 200);
+    }
+
+
+    public function trackIP(Request $request,$id,$ip){
+      $formId = LeadBlockedIP::where('form_id',$id)->where('ip_address',$ip)->where('is_blocked',1)->first();
+      if(!$formId){
+          if($request->domain){
+              $website = Website::where('website_url',$request->domain)->first();
+              if($website){
+                  $formId = LeadBlockedIP::where('website_id',$website->id)->where('ip_address',$ip)->where('is_blocked',1)->first();
+              }else{
+                  return response()->json(["error"=>"not found"],404);
+              }
+
+          }
+      }
+     return response()->json(["data"=>$formId],200);
     }
 
 
