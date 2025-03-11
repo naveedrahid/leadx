@@ -23,14 +23,12 @@ class BlockedIPController extends Controller
             'order' => $request->filled('order') ? $request->order : 'DESC',
         ];
 
-        $leadsQuery = Lead::with(['user', 'website','lead_blocked_ip'])
+        $leadsQuery = Lead::with(['user', 'website', 'lead_blocked_ip'])
             ->byUser($user->id)
             ->filterLeads($request)
             ->orderBy($order->orderby, $order->order);
 
-        if($request->website_id) {
-            $leadsQuery->where('website_id', $request->website_id);
-        }
+        $leadsQuery->orWhere('website_id', $request->website_id);
 
         if ($request->filled('perpage')) {
             $leads = $leadsQuery->paginate($request->perpage);
@@ -64,27 +62,29 @@ class BlockedIPController extends Controller
     }
 
 
-    public function trackIP(Request $request,$id,$ip){
-      $formId = LeadBlockedIP::where('form_id',$id)->where('ip_address',$ip)->where('is_blocked',1)->first();
-      if(!$formId){
-          if($request->domain){
-              $website = Website::where('website_url',$request->domain)->first();
-              if($website){
-                  $formId = LeadBlockedIP::where('website_id',$website->id)->where('ip_address',$ip)->where('is_blocked',1)->first();
-              }else{
-                  return response()->json(["error"=>"not found"],404);
-              }
+    public function trackIP(Request $request, $id, $ip)
+    {
+        $formId = LeadBlockedIP::where('form_id', $id)->where('ip_address', $ip)->where('is_blocked', 1)->first();
+        if (!$formId) {
+            if ($request->domain) {
+                $website = Website::where('website_url', $request->domain)->first();
+                if ($website) {
+                    $formId = LeadBlockedIP::where('website_id', $website->id)->where('ip_address', $ip)->where('is_blocked', 1)->first();
+                } else {
+                    return response()->json(["error" => "not found"], 404);
+                }
 
-          }
-      }
-     return response()->json(["data"=>$formId],200);
+            }
+        }
+        return response()->json(["data" => $formId], 200);
     }
 
 
-    public function blockedIP($id){
+    public function blockedIP($id)
+    {
 
         $lead = Lead::find($id);
-        if(empty($lead)){
+        if (empty($lead)) {
             $response = [
                 "error" => 1,
                 "message" => "Lead not found"
@@ -99,7 +99,7 @@ class BlockedIPController extends Controller
             "website_id" => $lead->website_id,
             "form_id" => $lead->wpform_id,
         ];
-        $lead = LeadBlockedIP::updateOrCreate(['ip_address'=>$formData['visitor_info']['ip']],$input);
+        $lead = LeadBlockedIP::updateOrCreate(['ip_address' => $formData['visitor_info']['ip']], $input);
 
         $response = [
             "error" => 0,
@@ -110,9 +110,10 @@ class BlockedIPController extends Controller
     }
 
 
-    public function UnBlocked($id){
+    public function UnBlocked($id)
+    {
         $lead = LeadBlockedIP::find($id);
-        if(empty($lead)){
+        if (empty($lead)) {
             $response = [
                 "error" => 1,
                 "message" => "Lead not found"
