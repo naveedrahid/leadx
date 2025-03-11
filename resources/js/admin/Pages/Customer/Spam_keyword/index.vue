@@ -27,7 +27,23 @@
                                                    @input="perPageSet()">
                                         </div>
                                     </div>
+
                                     <div class="col-md-3">
+                                        <div class="mb-3">
+                                            <label for="website" class="fs-1 mb-1 fw-bold">Website</label>
+                                            <select v-model="website" id="website" class="form-select form-select-sm"
+                                                    @change="handleWebsiteForms">
+                                                <option value="">{{ loader ? 'Loading...' : 'All Websites' }}</option>
+                                                <template v-if="!loader && websites.length>0">
+                                                    <template v-for="item in websites">
+                                                        <option :value="item.id">{{ item.name }}</option>
+                                                    </template>
+                                                </template>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div :class="{'d-none': !showForm}" class="col-md-3">
                                         <div class="mb-3">
                                             <label for="form" class="fs-1 mb-1 fw-bold">Forms</label>
                                             <select v-model="form" id="form" class="form-select form-select-sm"
@@ -35,20 +51,6 @@
                                                 <option value="">{{ loader ? 'Loading...' : 'All Forms' }}</option>
                                                 <template v-if="!loader && forms.length>0">
                                                     <template v-for="item in forms">
-                                                        <option :value="item.id">{{ item.name }}</option>
-                                                    </template>
-                                                </template>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="mb-3">
-                                            <label for="website" class="fs-1 mb-1 fw-bold">Website</label>
-                                            <select v-model="website" id="website" class="form-select form-select-sm"
-                                                    @change="getData()">
-                                                <option value="">{{ loader ? 'Loading...' : 'All Websites' }}</option>
-                                                <template v-if="!loader && websites.length>0">
-                                                    <template v-for="item in websites">
                                                         <option :value="item.id">{{ item.name }}</option>
                                                     </template>
                                                 </template>
@@ -473,6 +475,7 @@ export default {
             selectedItems: [],
             renderPaginate: true,
             forms: [],
+            showForm:'',
             websites: [],
             itemId: false,
             loadFormSelectBox: false,
@@ -491,6 +494,34 @@ export default {
         formatText(str) {
             return str.replace(/-/g, ' ').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
         },
+
+        async handleWebsiteForms() {
+            this.loader = true;
+            this.showForm = this.website !== '';
+            this.getData();
+
+            await axios.get(route('api.customer_leads.website.forms'), {
+                params: { website_id: this.website },
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + this.token,
+                },
+            }).then((response) => {
+                let $response = response.data;
+                if ($response.data.length > 0) {
+                    this.forms = $response.data;
+                    if (!this.forms.some(item => item.id === this.form)) {
+                        this.form = '';
+                    }
+                }
+
+                this.loader = false;
+            }).catch((error) => {
+                this.loader = false
+                toast.error(error.response.data.message);
+            });
+        },
+
 
         getEmailAddress(item) {
             if (typeof item !== undefined && typeof item !== null) {
