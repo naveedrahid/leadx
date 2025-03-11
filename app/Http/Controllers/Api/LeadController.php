@@ -13,12 +13,7 @@ use App\Http\Requests\{
     LeadStatusRequest,
     LeadBulkDeleteRequest
 };
-use App\Models\{
-    Lead,
-    Website,
-    License,
-    Subscription
-};
+use App\Models\{FormSettingKeyword, Lead, Website, License, Subscription};
 
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Exports\LeadsExport;
@@ -117,7 +112,9 @@ class LeadController extends Controller
 
     public function store(LeadStoreRequest $request)
     {
+
         $form_data = json_decode($request->form_data);
+        $isSpam = 0;
         if(!empty($form_data) && isset($form_data->data->file)) {
             foreach($form_data->data->file as $key => $value) {
                 $url_arr = explode('/', $value->url);
@@ -128,6 +125,22 @@ class LeadController extends Controller
                 $form_data->data->file->{$key}->name = $filename;
                 $form_data->data->file->{$key}->url = asset('storage/leads/' . $filename);
             }
+
+
+
+            $spamKeywords = explode(',', FormSettingKeyword::where('form_id', $request->wpform_id)->value('keyword'));
+
+            foreach ($form_data->data as $field) {
+                if (is_string($field)) {
+                    foreach ($spamKeywords as $keyword) {
+                        if (stripos($field, trim($keyword)) !== false) {
+                            $isSpam = 1;
+                            break 2;
+                        }
+                    }
+                }
+            }
+
         }
 
         $lead = Lead::create([
@@ -136,8 +149,10 @@ class LeadController extends Controller
             'wpform_id' => $request->wpform_id,
             'wpform_name' => $request->wpform_name,
             'uuid' => Str::uuid(),
-            'form_data' => json_encode($form_data)
+            'form_data' => json_encode($form_data),
+            'is_spam' => $isSpam
         ]);
+
 
         $subscription = Subscription::where('user_id', $this->user->id)->status(['active', 'trialing'])->first();
         $subscription->update([
@@ -247,7 +262,7 @@ class LeadController extends Controller
         ], 200);
     }
 
-    public function generate_pdf(Request $request) 
+    public function generate_pdf(Request $request)
     {
         $user = $this->user;
         $leads = Lead::byUser($user->id)->whereIn('id', $request->ids)->get();
@@ -270,7 +285,7 @@ class LeadController extends Controller
         ], 200);
     }
 
-    public function generate_excel(Request $request) 
+    public function generate_excel(Request $request)
     {
         $user = $this->user;
         $leads = Lead::byUser($user->id)->whereIn('id', $request->ids)->get();
@@ -291,81 +306,81 @@ class LeadController extends Controller
                 $data[$index][]['Lead Details'] = [
                     'key' => 'Lead Details'
                 ];
-    
+
                 $data[$index][]['id'] = [
                     'key' => 'Lead ID',
                     'value' => '#' . ($lead->id > 9 ? $lead->id : '0'. $lead->id)
                 ];
-    
+
                 $data[$index][]['wpform_name'] = [
                     'key' => 'Form Name',
                     'value' => $lead->wpform_name,
                 ];
-    
+
                 $data[$index][]['status'] = [
                     'key' => 'Lead Status',
                     'value' => leadStatus($lead->status),
                 ];
-    
+
                 $data[$index][]['created_at'] = [
                     'key' => 'Submitted on',
                     'value' => $lead->created_at->format('F j, Y'),
                 ];
-    
+
                 $data[$index][]['User Information'] = [
                     'key' => 'User Information'
                 ];
-    
+
                 $data[$index][]['visitor_ip'] = [
                     'key' => 'IP Address',
                     'value' => $form_data->visitor_info->ip,
                 ];
-    
+
                 $data[$index][]['visitor_platform'] = [
                     'key' => 'Platform',
                     'value' => $form_data->visitor_info->platform,
                 ];
-    
+
                 $data[$index][]['visitor_browser'] = [
                     'key' => 'Browser/OS',
                     'value' => $form_data->visitor_info->browser,
                 ];
-    
+
                 $data[$index][]['visitor_ref_url'] = [
                     'key' => 'Referrer URL',
                     'value' => $form_data->visitor_info->ref_url,
                 ];
-    
+
                 $data[$index][]['visitor_continent'] = [
                     'key' => 'Continent',
                     'value' => ($form_data->visitor_info->continent !== '' && $form_data->visitor_info->continent !== 'unknown') ? $form_data->visitor_info->continent : 'Not Available',
                 ];
-    
+
                 $data[$index][]['visitor_country'] = [
                     'key' => 'Country',
                     'value' => ($form_data->visitor_info->country !== '' && $form_data->visitor_info->country !== 'unknown') ? $form_data->visitor_info->country : 'Not Available',
                 ];
-    
+
                 $data[$index][]['visitor_country_code'] = [
                     'key' => 'Country Code',
                     'value' => ($form_data->visitor_info->country_code !== '' && $form_data->visitor_info->country_code !== 'unknown') ? $form_data->visitor_info->country_code : 'Not Available',
                 ];
-    
+
                 $data[$index][]['visitor_state'] = [
                     'key' => 'State',
                     'value' => ($form_data->visitor_info->state !== '' && $form_data->visitor_info->state !== 'unknown') ? $form_data->visitor_info->state : 'Not Available',
                 ];
-    
+
                 $data[$index][]['visitor_city'] = [
                     'key' => 'City',
                     'value' => ($form_data->visitor_info->city !== '' && $form_data->visitor_info->city !== 'unknown') ? $form_data->visitor_info->city : 'Not Available',
                 ];
-    
+
                 if($form_data->data) {
                     $data[$index][]['Form Lead Details'] = [
                         'key' => 'Form Lead Details'
                     ];
-    
+
                     foreach($form_data->data as $field => $item) {
                         if($field == 'checkbox-list') {
                             foreach($item as $key => $checkbox_list) {
