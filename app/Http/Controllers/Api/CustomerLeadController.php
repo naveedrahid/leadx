@@ -120,6 +120,36 @@ class CustomerLeadController extends Controller
         ], 200);
     }
 
+    public function website_forms(Request $request){
+        $user = $this->resolveUser($request);
+        if(is_null($user)) {
+            return response()->json([
+                "error" => 1,
+                "message" => "Access Denied!"
+            ], 404);
+        }
+        $leads = Lead::byUser($user->id)->where('website_id',$request->website_id)->get();
+        $forms = [];
+        $usedForms = [];
+        if($leads->count()) {
+            foreach($leads as $lead) {
+                if ( !in_array($lead->wpform_id, $usedForms) ) {
+                    $usedForms[] = $lead->wpform_id;
+                    $forms[] = [
+                        'id' => $lead->wpform_id,
+                        'name' => $lead->wpform_name
+                    ];
+                }
+            }
+        }
+
+        return response()->json([
+            "error" => 0,
+            "data" => $forms,
+            "message" => "The website forms have been successfully retrieved"
+        ], 200);
+
+    }
     public function get_forms(Request $request)
     {
         $user = $this->resolveUser($request);

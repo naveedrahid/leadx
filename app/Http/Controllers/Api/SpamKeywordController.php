@@ -70,7 +70,7 @@ class SpamKeywordController extends Controller
         ];
 
 
-        $leadsQuery = Lead::with(['user', 'website','spam_keyword_leads'])->whereHas('spam_keyword_leads')->byUser(auth()->id())->where('status','spam')->filterLeads($request)->orderBy($order->orderby, $order->order);
+        $leadsQuery = Lead::with(['user', 'website','spam_keyword_leads'])->whereHas('spam_keyword_leads')->byUser(auth()->id())->where('is_spam',1)->filterLeads($request)->orderBy($order->orderby, $order->order);
 
         if($request->website_id) {
             $leadsQuery->where('website_id', $request->website_id);
