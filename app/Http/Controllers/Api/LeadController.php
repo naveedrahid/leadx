@@ -125,22 +125,33 @@ class LeadController extends Controller
                 $form_data->data->file->{$key}->name = $filename;
                 $form_data->data->file->{$key}->url = asset('storage/leads/' . $filename);
             }
+        }
 
+        $keywordString = FormSettingKeyword::where('form_id', $request->wpform_id)->pluck('keyword')->first();
 
-
-            $spamKeywords = explode(',', FormSettingKeyword::where('form_id', $request->wpform_id)->value('keyword'));
-
-            foreach ($form_data->data as $field) {
-                if (is_string($field)) {
-                    foreach ($spamKeywords as $keyword) {
-                        if (stripos($field, trim($keyword)) !== false) {
-                            $isSpam = 1;
-                            break 2;
+        foreach ($form_data->data as $key => $field) {
+            if (is_object($field)) {
+                $field = (array) $field;
+            }
+            if (is_array($field)) {
+                foreach ($field as $subField) {
+                    if (is_string($subField)) {
+                        foreach ($keywordString as $keyword) {
+                            if (stripos($subField, trim($keyword)) !== false) {
+                                $isSpam = 1;
+                                break 3;
+                            }
                         }
                     }
                 }
+            } elseif (is_string($field)) {
+                foreach ($keywordString as $keyword) {
+                    if (stripos($field, trim($keyword)) !== false) {
+                        $isSpam = 1;
+                        break 2;
+                    }
+                }
             }
-
         }
 
         $lead = Lead::create([
@@ -161,6 +172,7 @@ class LeadController extends Controller
 
         return response()->json([
             "error" => 0,
+            "is_spam" => $isSpam,
             "data" => $lead,
             "message" => "Lead has been successfully created"
         ], 200);
