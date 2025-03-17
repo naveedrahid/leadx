@@ -159,7 +159,7 @@
                                                         <i class="ti fs-3 pe-1" :class="{
                                                             'ti-eye': itemId !== item.id,
                                                             'ti-eye-off': itemId === item.id
-                                                        }"></i> Show Keywords
+                                                        }"></i> Show
                                                     </a>
                                                     <button type="button" class="btn btn-dark btn-sm"
                                                             @click="generatePDF($event, item)">
@@ -384,9 +384,17 @@
                                                             <div class="col-md-12">
                                                                 <div class="card border mt-0 mb-3">
                                                                     <div class="card-body p-3">
-                                                                        <h5 class="card-title mb-3 fs-3 fw-bolder">Spam Keyword</h5>
-                                                                        <ul class="list-group list-group-flush">
-                                                                            Danger, Kill
+                                                                        <h5 class="card-title mb-3 fs-3 fw-bolder">Spam Keywords Found: </h5>
+                                                                        <ul class="spam-words d-flex flex-wrap gap-2">
+                                                                            <li v-for="(keyword, index) in flatSpamKeywords(item.spam_keywords)" :key="index">
+                                                                                {{ keyword }}
+                                                                            </li>
+                                                                        </ul>
+                                                                        <h5 class="card-title mb-3 fs-3 fw-bolder">Spam Keywords:</h5>
+                                                                        <ul class="spam-words d-flex flex-wrap gap-2">
+                                                                            <li v-for="(keyword, index) in flatSpamKeywordsList(item.spam_keyword_lists)" :key="index">
+                                                                                {{ keyword }}
+                                                                            </li>
                                                                         </ul>
                                                                     </div>
                                                                 </div>
@@ -495,6 +503,15 @@ export default {
             return str.replace(/-/g, ' ').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
         },
 
+        flatSpamKeywords(spamKeywords) {
+            if (!Array.isArray(spamKeywords)) return [];
+            return spamKeywords.flatMap(obj => obj.found_keywords || []);
+        },
+        flatSpamKeywordsList(spamKeywordsList){
+            console.log(spamKeywordsList);
+            if (!Array.isArray(spamKeywordsList)) return [];
+            return spamKeywordsList.flatMap(obj => obj.keyword || []);
+        },
         async handleWebsiteForms() {
             this.loader = true;
             this.showForm = this.website !== '';

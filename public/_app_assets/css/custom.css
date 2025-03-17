@@ -2,7 +2,13 @@
     word-spacing: 2px;
 }
 
-
+.spam-words li{
+    background-color: #008744;
+    color: white;
+    padding: 5px 10px 5px 10px;
+    font-family: inherit;
+    border-radius: 6px;
+}
 
 
 a:not(.btn):hover {

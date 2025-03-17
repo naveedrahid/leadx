@@ -26,8 +26,12 @@ class Lead extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function spam_keyword_leads(){
-        return $this->belongsTo(SpamKeywordLead::class,'id','lead_id');
+    public function spam_keywords(){
+        return $this->hasMany(SpamKeywordLead::class,'lead_id','id');
+    }
+
+    public function spam_keyword_lists(){
+        return $this->hasMany(FormSettingKeyword::class,'form_id','wpform_id');
     }
 
 
