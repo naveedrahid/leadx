@@ -13,7 +13,7 @@ use App\Http\Requests\{
     LeadStatusRequest,
     LeadBulkDeleteRequest
 };
-use App\Models\{FormSettingKeyword, Lead, Website, License, Subscription};
+use App\Models\{FormSettingKeyword, Lead, SpamKeywordLead, Website, License, Subscription};
 
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Exports\LeadsExport;
@@ -128,7 +128,7 @@ class LeadController extends Controller
         }
 
         $keywordString = FormSettingKeyword::where('form_id', $request->wpform_id)->pluck('keyword')->first();
-
+        $foundKeywords = [];
         foreach ($form_data->data as $key => $field) {
             if (is_object($field)) {
                 $field = (array) $field;
@@ -139,6 +139,7 @@ class LeadController extends Controller
                         foreach ($keywordString as $keyword) {
                             if (stripos($subField, trim($keyword)) !== false) {
                                 $isSpam = 1;
+                                $foundKeywords[] = $keyword;
                                 break 3;
                             }
                         }
@@ -148,6 +149,7 @@ class LeadController extends Controller
                 foreach ($keywordString as $keyword) {
                     if (stripos($field, trim($keyword)) !== false) {
                         $isSpam = 1;
+                        $foundKeywords[] = $keyword;
                         break 2;
                     }
                 }
@@ -162,6 +164,13 @@ class LeadController extends Controller
             'uuid' => Str::uuid(),
             'form_data' => json_encode($form_data),
             'is_spam' => $isSpam
+        ]);
+
+        $insertKeyword = SpamKeywordLead::create([
+            "lead_id" => $lead->id,
+            "website_id" => $this->website->id,
+            "form_id" => $request->wpform_id,
+            "found_keywords" => json_encode($foundKeywords)
         ]);
 
 

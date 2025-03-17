@@ -10,4 +10,8 @@ class SpamKeywordLead extends Model
     use HasFactory;
 
     protected  $table = 'spam_leads';
+
+    protected $casts = [
+        "found_keywords" => "array"
+    ];
 }
