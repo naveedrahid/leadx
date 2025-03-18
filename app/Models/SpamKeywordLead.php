@@ -11,6 +11,7 @@ class SpamKeywordLead extends Model
 
     protected  $table = 'spam_leads';
 
+    protected $guarded = ['id'];
     protected $casts = [
         "found_keywords" => "array"
     ];
