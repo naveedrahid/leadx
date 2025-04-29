@@ -121,7 +121,7 @@
                             'active': route().current('app.customer.plugin.documentation')
                         }">
                             <span><i class="ti ti-file"></i></span>
-                            <span class="hide-menu">Plugin Doc</span>
+                            <span class="hide-menu">Plugin Guide</span>
                         </Link>
                     </li>
                     <li class="sidebar-item">

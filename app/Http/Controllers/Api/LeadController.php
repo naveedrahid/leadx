@@ -130,34 +130,34 @@ class LeadController extends Controller
         $keywordString = FormSettingKeyword::where('form_id', $request->wpform_id)->pluck('keyword')->first();
         $foundKeywords = [];
 
-        if(isset($form_data->data)){
-            foreach ($form_data->data as $key => $field) {
-                if (is_object($field)) {
-                    $field = (array) $field;
-                }
-                if (is_array($field)) {
-                    foreach ($field as $subField) {
-                        if (is_string($subField)) {
-                            foreach ($keywordString as $keyword) {
-                                if (stripos($subField, trim($keyword)) !== false) {
-                                    $isSpam = 1;
-                                    $foundKeywords[] = $keyword;
-                                    break 3;
-                                }
-                            }
-                        }
-                    }
-                } elseif (is_string($field)) {
-                    foreach ($keywordString as $keyword) {
-                        if (stripos($field, trim($keyword)) !== false) {
-                            $isSpam = 1;
-                            $foundKeywords[] = $keyword;
-                            break 2;
-                        }
-                    }
-                }
-            }
-        }
+//        if (!isset($form_data->data)) {
+//            foreach ($form_data->data as $key => $field) {
+//                if (is_object($field)) {
+//                    $field = (array) $field;
+//                }
+//                if (is_array($field)) {
+//                    foreach ($field as $subField) {
+//                        if (is_string($subField)) {
+//                            foreach ($keywordString as $keyword) {
+//                                if (stripos($subField, trim($keyword)) !== false) {
+//                                    $isSpam = 1;
+//                                    $foundKeywords[] = $keyword;
+//                                    break 3;
+//                                }
+//                            }
+//                        }
+//                    }
+//                } elseif (is_string($field)) {
+//                    foreach ($keywordString as $keyword) {
+//                        if (stripos($field, trim($keyword)) !== false) {
+//                            $isSpam = 1;
+//                            $foundKeywords[] = $keyword;
+//                            break 2;
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
 
         $lead = Lead::create([
