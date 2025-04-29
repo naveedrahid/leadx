@@ -150,4 +150,6 @@ Route::post('/stripe/webhook', [CustomerWebhookController::class, 'handleStripeW
 Route::post('/webhook/stripe', [CustomerWebhookController::class, 'handleStripeWebhook']);
 
 Route::get('/pricing', [HomeController::class, 'pricing'])->name('pricing');
+Route::get('/privacy-policy', [HomeController::class, 'privacy_policy'])->name('privacy_policy');
+
 Route::get('/', [HomeController::class, 'home'])->name('home');
