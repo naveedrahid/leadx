@@ -57,7 +57,6 @@ class CustomerLeadController extends Controller
 
     public function get_all(Request $request)
     {
-
         $user = $this->resolveUser($request);
         if(is_null($user)) {
             return response()->json([

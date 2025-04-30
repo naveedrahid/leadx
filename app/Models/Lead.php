@@ -59,12 +59,15 @@ class Lead extends Model
             $query->where('uuid', $request->uuid);
         }
 
-        if ($request->get('is_viewed') == "1") {
-            $query->whereNotNull('is_viewed', 1);
-        }
-
-        if ($request->get('is_viewed') == "0") {
-            $query->whereNotNull('is_viewed', 0);
+//        if ($request->get('is_viewed') == "1") {
+//            $query->whereNotNull('is_viewed', 1);
+//        }
+//
+//        if ($request->get('is_viewed') == "0") {
+//            $query->whereNotNull('is_viewed', 0);
+//        }
+        if ($request->filled('is_viewed')) {
+            $query->where('is_viewed', $request->get('is_viewed'));
         }
 
         if ($request->filled('status')) {

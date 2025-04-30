@@ -25,7 +25,7 @@ class CustomerDashboardController extends Controller
                 "message" => "Access Denied!"
             ], 404);
         }
-        
+
         $leads = Lead::byUser($user->id)->filterLeads($request)->get();
         $leadsCount = $leads->count();
         $viewed_count = $leads->where('is_viewed', 1)->count();
