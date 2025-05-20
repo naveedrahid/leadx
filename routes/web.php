@@ -147,7 +147,7 @@ Route::prefix('app')->as('app.')->group(function() {
 });
 
 Route::post('/stripe/webhook', [CustomerWebhookController::class, 'handleStripeWebhook']);
-Route::post('/webhook/stripe', [CustomerWebhookController::class, 'handleStripeWebhook']);
+Route::get('/webhook/stripe', [CustomerWebhookController::class, 'handleStripeWebhook']);
 
 Route::get('/pricing', [HomeController::class, 'pricing'])->name('pricing');
 Route::get('/privacy-policy', [HomeController::class, 'privacy_policy'])->name('privacy_policy');
