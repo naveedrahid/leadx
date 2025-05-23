@@ -39,6 +39,9 @@ class WebhookController extends Controller
         $sigHeader = $request->header('Stripe-Signature');
         $event = null;
         Log::info('WebHook Start');
+        Log::info('WebHook Start22');
+        Log::info($sigHeader);
+        Log::info($payload);
         try {
 //            $event = Event::constructFrom(
 //                json_decode($payload, true),
@@ -57,8 +60,9 @@ class WebhookController extends Controller
                 "message" => "Invalid webhook signature"
             ], 400);
         }
-
+        Log::info($event->type);
         switch ($event->type) {
+
             case 'customer.subscription.created':
                 $stripe_subscription = $event->data->object;
                 $stripe_plan_id = $stripe_subscription->items->data[0]->price->id;
@@ -244,6 +248,7 @@ class WebhookController extends Controller
                 $stripe_subscription = $event->data->object;
                 $stripe_plan_id = $stripe_subscription->items->data[0]->price->id;
                 Log::info('WebHook 1',$stripe_plan_id);
+                Log::info('2');
                 try {
                     DB::beginTransaction();
 
