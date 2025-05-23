@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Stripe\StripeClient;
 use Stripe\Event;
 use Carbon\Carbon;
+use Stripe\Webhook;
 use App\Models\{
     User,
     Package,
@@ -39,11 +40,17 @@ class WebhookController extends Controller
         $event = null;
         Log::info('WebHook Start');
         try {
-            $event = Event::constructFrom(
-                json_decode($payload, true),
+//            $event = Event::constructFrom(
+//                json_decode($payload, true),
+//                $sigHeader,
+//                config('services.stripe.webhook_secret')
+//            );
+            $event = Webhook::constructEvent(
+                $payload,
                 $sigHeader,
                 config('services.stripe.webhook_secret')
             );
+            Log::info($event);
         } catch (\Exception $e) {
             return response()->json([
                 "error" => 1,
