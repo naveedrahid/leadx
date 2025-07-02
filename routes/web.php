@@ -153,3 +153,4 @@ Route::get('/pricing', [HomeController::class, 'pricing'])->name('pricing');
 Route::get('/privacy-policy', [HomeController::class, 'privacy_policy'])->name('privacy_policy');
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
+Route::get('/demo', [HomeController::class, 'homeDemo'])->name('home-demo');

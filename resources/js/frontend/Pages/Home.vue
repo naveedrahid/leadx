@@ -26,6 +26,36 @@
         </div>
     </section>
 
+     <!-- <section class="hero-section overflow-hidden" id="hero">
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-12 col-md-9 col-lg-9">
+                    <div class="hero__wrapper text-center">
+                        <div class="hero__info__box">
+                            <span>UltimateAI</span>
+                            <span>#1 ai text to audio platform</span>
+                        </div>
+                        <div class="hero-content">
+                            <h1>Welcome To {{ $page.props.app.name }}</h1>
+                            <p>The Unlimited solution for creating custom forms and flows to connect users and enhance engagement and broaden your online presence.</p>
+                            <div class="mt-5">
+                                <a href="#pricing" class="button button-s2 button-primary me-lg-2 me-xl-2 me-md-2 me-0">Buy Now</a>
+                                <a href="javascript:;" class="button button-s2  button-outline ms-lg-2 ms-xl-2 ms-md-2 ms-0">Explore All Tools</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="hero-image mt-5 pt-5">
+                        <img src="/_app_assets/images/banner/tts.png" :alt="'Welcome To' + $page.props.app.name" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> -->
+
     <!-- BEGIN::BRAND LOGOs COMPONENT -->
     <BrandLogos></BrandLogos>
     <!-- END::BRAND LOGOs COMPONENT -->

@@ -316,4 +316,5 @@ export default {
 @import '/public/_public_assets/vendor/bootstrap-icons/bootstrap-icons.css';
 @import '/public/_app_assets/css/style.min.css';
 @import '/public/_public_assets/css/style.css';
+@import '/public/_app_assets/css/main.css';
 </style>

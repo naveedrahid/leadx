@@ -1,5 +1,17 @@
 <template>
     <section class="brand-logos-section overflow-hidden" id="brand-logos">
+        <div class="marquee-container">
+            <div class="marquee-track" v-if="brands.length > 0">
+                <div class="marquee-item" v-for="(brand, index) in brands" :key="index">
+                    <img :src="brand.image" :alt="brand.name" />
+                </div>
+                <div class="marquee-item" v-for="(brand, index) in brands" :key="'dup-' + index">
+                    <img :src="brand.image" :alt="brand.name" />
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- <section class="brand-logos-section overflow-hidden" id="brand-logos">
         <div class="container">
             <div class="brand-logos" v-if="brands.length>0">
                 <div v-for="(brand, index) in brands" :key="index" class="brand-logo-item">
@@ -7,7 +19,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
 </template>
 
 <script>
