@@ -17,7 +17,7 @@
                             <h1 class="outfit-heading banner-heading text-center">
                                 Welcome To <br />{{ $page.props.app.name }}
                             </h1>
-                            <p class="inter-text text-center">
+                            <p class="inter-text text-center my-4">
                                 The Unlimited solution for creating custom forms
                                 and flows to <br />connect users and enhance
                                 engagement and broaden your <br />online
@@ -448,7 +448,7 @@ tesimonial, index
                                                 <span class="plan-price text-black">$109.00<sup class="text-muted"
                                                         style="font-size: 20px">
                                                         /lifetime</sup></span>
-                                                <button class="button button-primary button-s2 px-4 fw-semibold" style="
+                                                <button class="button button-secondary button-s2 px-4 fw-semibold" style="
                                                         width: 100%;
                                                         border-radius: 10px;
                                                         padding-top: 12px;
@@ -716,7 +716,7 @@ tesimonial, index
                 </div>
             </section>
             <section class="latest-blog linear-gradient-bg">
-                <div class="container py-5 my-5">
+                <div class="container py-5 mt-5">
                     <div class="row align-items-center">
                         <div class="col-lg-12 col-md-12 col-sm-12">
                             <div class="banner-title d-flex justify-content-center mb-3">
@@ -1106,10 +1106,32 @@ export default {
         },
     },
 
-    mounted() { },
+    mounted() {},
 
     created() {
         this.getPackages();
     },
 };
 </script>
+<style>
+.leadxhome section.banner {
+    padding: 130px 0px 40px 0px !important;
+    background: linear-gradient(180deg, rgb(0 135 68 / 41%) -4%, rgba(255, 255, 255, 1) 100%);
+}
+.main-header {
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: transparent !important;
+}
+
+.main-header .col-md-8.d-lg-block.d-none .d-flex.align-items-center.justify-content-end.gap-5 {
+    justify-content: space-between !important;
+}
+
+body.down header.fixed-header {
+    position: fixed !important;
+    background: #fff !important;
+}
+</style>

@@ -151,6 +151,8 @@ Route::post('/stripe/webhook', [CustomerWebhookController::class, 'handleStripeW
 
 Route::get('/pricing', [HomeController::class, 'pricing'])->name('pricing');
 Route::get('/privacy-policy', [HomeController::class, 'privacy_policy'])->name('privacy_policy');
+Route::get('/terms-conditions', [HomeController::class, 'terms_conditions'])->name('terms_conditions');
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('/demo', [HomeController::class, 'homeDemo'])->name('home-demo');
+// Route::get('/privacy-policy', [HomeController::class, 'privacyPolicy'])->name('privacy.policy');

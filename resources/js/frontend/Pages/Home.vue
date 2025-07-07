@@ -3,22 +3,23 @@
 <MasterLayout :loader="loader">
     <section class="hero-section overflow-hidden" id="hero">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6 col-md-6">
-                    <div class="hero-content">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-lg-12 col-md-8">
+                    <div class="hero-content text-center">
                         <h1>Welcome To {{ $page.props.app.name }}</h1>
-                        <div class="row">
-                            <div class="col-lg-9">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
                                 <p>The Unlimited solution for creating custom forms and flows to connect users and enhance engagement and broaden your online presence.</p>
-                                <div class="mt-5">
-                                    <a href="#pricing" class="button button-s2 button-primary">Buy Now</a>
+                                <div class="my-5 ">
+                                    <a href="#pricing" class="button me-2 button-s2 button-primary">Buy Now</a>
+                                    <a href="#pricing" class="button ms-2 button-s2 button-secondary">Buy Now</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-6">
-                    <div class="hero-image">
+                <div class="col-lg-8 col-md-6">
+                    <div class="hero-image text-center">
                         <img src="/_public_assets/img/welcome-to-leadxforms.png" :alt="'Welcome To' + $page.props.app.name" class="img-fluid">
                     </div>
                 </div>
@@ -130,7 +131,6 @@
                                     </div>
                                 </div>
                             </slide>
-
                             <template #addons>
                                 <div class="testimonials-pagination">
                                     <pagination />
@@ -149,7 +149,7 @@
                     <div class="main-head text-center">
                         <h4 class="subheading">Why Choose Us</h4>
                         <h2 class="heading mb-4">Top 7 Reasons Why Users Love <span class="text-primary">{{ $page.props.app.name }}</span></h2>
-                        <p>WPForms is the ultimate WordPress form solution for YOU. Discover why over 6,000,000 savvy business owners, designers, and developers trust and love WPForms, and why you will too!</p>
+                        <p>LeadXForms is the ultimate WordPress form solution for YOU. Discover why over 6,000,000 savvy business owners, designers, and developers trust and love WPForms, and why you will too!</p>
                     </div>
                 </div>
             </div>
@@ -273,7 +273,7 @@
             </div>
         </div>
     </section>
-    <section class="main-section faqs-section bg-light-green overflow-hidden" id="faqs">
+    <section class="main-section faqs-section bg-light-green overflow-hidden pb-250" id="faqs">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-6 col-md-8">
@@ -302,79 +302,6 @@
                                 <div class="faq-content">
                                     <p>{{ faq.answer }}</p>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="main-section contact-section overflow-hidden" id="contact">
-        <div class="container">
-            <div class="row justify-content-center align-items-center">
-                <div class="col-lg-12 col-md-9">
-                    <div class="row justify-content-between align-items-center">
-                        <div class="col-lg-6 order-lg-last">
-                            <div class="contact-content">
-                                <div class="main-head main-head2">
-                                    <h2 class="heading">Contact Us</h2>
-                                    <p>Our professional support team is here to help you:</p>
-                                </div>
-                                <div class="contact-form-wrap">
-                                    <form @submit.prevent="sendFeedBack()" class="contact-form">
-                                        <div class="row gx-3">
-                                            <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <input type="text" v-model="contact_form.name" class="input-control" placeholder="Name">
-                                                    <div class="text-danger" v-if="errors.name">
-                                                        <small>{{ errors.name }}</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <input type="email" v-model="contact_form.email" class="input-control" placeholder="Email">
-                                                    <div class="text-danger" v-if="errors.email">
-                                                        <small>{{ errors.email }}</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-12">
-                                                <div class="form-group">
-                                                    <input type="text" v-model="contact_form.subject" class="input-control" placeholder="Subject">
-                                                    <div class="text-danger" v-if="errors.subject">
-                                                        <small>{{ errors.subject }}</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-12">
-                                                <div class="form-group">
-                                                    <textarea v-model="contact_form.message"  class="input-control" placeholder="Leave a Message"></textarea>
-                                                    <div class="text-danger" v-if="errors.message">
-                                                        <small>{{ errors.message }}</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-12">
-                                                <div class="contact-formbtn-group">
-                                                    <button class="button button-primary" :disabled="contactFormLoader">
-                                                        <template v-if="contactFormLoader">
-                                                            <i class="bi bi-arrow-clockwise spin"></i> Sending...
-                                                        </template>
-                                                        <template v-else>
-                                                            <i class="bi bi-send"></i> Send Message
-                                                        </template>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 order-lg-first">
-                            <div class="contact-img">
-                                <img src="/_public_assets/img/contact-us.png" alt="Contact Us" class="img-fluid">
                             </div>
                         </div>
                     </div>
@@ -463,7 +390,7 @@ export default {
                 }
             ],
             tesimonials_slider_settings: {
-                itemsToShow: 3,
+                itemsToShow: 6,
                 autoplay: 5000,
                 wrapAround: true
             },
@@ -472,7 +399,7 @@ export default {
                     itemsToShow: 1,
                 },
                 992: {
-                    itemsToShow: 3,
+                    itemsToShow:3,
                 }
             },
             faqs: [
@@ -508,12 +435,12 @@ export default {
                 }
             ],
             packages: [],
-            contact_form: {
-                name: '',
-                email: '',
-                subject: '',
-                message: ''
-            },
+            // contact_form: {
+            //     name: '',
+            //     email: '',
+            //     subject: '',
+            //     message: ''
+            // },
             errors: {},
             contactFormLoader: false,
             loader: false
@@ -549,32 +476,32 @@ export default {
             });
         },
 
-        async sendFeedBack() {
-            this.contactFormLoader = true;
-            this.errors = {};
-            await axios.post(route('api.guest.create.feedback'), this.contact_form, {
-                headers: {
-                    "Content-Type": "application/json"
-                },
-            }).then((response) => {
-                this.contactFormLoader = false;
-                let $response = response.data;
-                this.contact_form.name = '';
-                this.contact_form.subject = '';
-                this.contact_form.email = '';
-                this.contact_form.message = '';
-                toast.success($response.message);
-            }).catch((error) => {
-                this.contactFormLoader = false;
-                if (error.response.status == 422) {
-                    for (const key in error.response.data.data) {
-                        this.errors[key] = error.response.data.data[key][0];
-                    }
-                }
+        // async sendFeedBack() {
+        //     this.contactFormLoader = true;
+        //     this.errors = {};
+        //     await axios.post(route('api.guest.create.feedback'), this.contact_form, {
+        //         headers: {
+        //             "Content-Type": "application/json"
+        //         },
+        //     }).then((response) => {
+        //         this.contactFormLoader = false;
+        //         let $response = response.data;
+        //         this.contact_form.name = '';
+        //         this.contact_form.subject = '';
+        //         this.contact_form.email = '';
+        //         this.contact_form.message = '';
+        //         toast.success($response.message);
+        //     }).catch((error) => {
+        //         this.contactFormLoader = false;
+        //         if (error.response.status == 422) {
+        //             for (const key in error.response.data.data) {
+        //                 this.errors[key] = error.response.data.data[key][0];
+        //             }
+        //         }
 
-                toast.error(error.response.data.message);
-            });
-        }
+        //         toast.error(error.response.data.message);
+        //     });
+        // }
     },
 
     mounted() {

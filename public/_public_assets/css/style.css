@@ -381,6 +381,9 @@ button.aside-menu-close {
     display: block;
     width: 164px;
     margin-bottom: 20px;
+    padding:10px;
+    background-color:#fff;
+    border-radius:10px;
 }
 
 .footer-head h3 {
