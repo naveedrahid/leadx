@@ -134,7 +134,7 @@
                         <h5 class="text-white mb-4">Quick Links</h5>
                         <ul class="unstyled-list">
                             <li><Link :href="route('home')" class="text-white">Home</Link></li>
-                            <li><Link :href="route('pricing')" class="text-white">Pricing</Link></li>
+                            <li><a href="#pricing" class="nav-link text-white">Pricing</a></li>
                             <li><Link :href="route('customer.reviews')" class="text-white">Reviews</Link></li>
                         </ul>
                     </div>
