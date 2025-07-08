@@ -1,4 +1,5 @@
 <template>
+
     <Head title="Terms and Conditions" />
     <MasterLayout :loader="false">
         <section class="hero-section main-section overflow-hidden bg-light-green" id="hero">
@@ -25,67 +26,12 @@
                 <div class="row justify-content-center align-items-center">
                     <div class="col-lg-12 col-md-9">
                         <div class="row justify-content-between align-items-center">
-                            <div class="col-lg-6 order-lg-last">
+                            <div class="col-lg-10 order-lg-last">
                                 <div class="contact-content">
                                     <div class="main-head main-head2">
-                                        <h2 class="heading">Contact Us</h2>
+                                        <h2 class="heading">Terms and Conditions</h2>
                                         <p>Our professional support team is here to help you:</p>
                                     </div>
-                                    <div class="contact-form-wrap">
-                                        <form @submit.prevent="sendFeedBack()" class="contact-form">
-                                            <div class="row gx-3">
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <input type="text" v-model="contact_form.name" class="input-control" placeholder="Name">
-                                                        <div class="text-danger" v-if="errors.name">
-                                                            <small>{{ errors.name }}</small>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <input type="email" v-model="contact_form.email" class="input-control" placeholder="Email">
-                                                        <div class="text-danger" v-if="errors.email">
-                                                            <small>{{ errors.email }}</small>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-12">
-                                                    <div class="form-group">
-                                                        <input type="text" v-model="contact_form.subject" class="input-control" placeholder="Subject">
-                                                        <div class="text-danger" v-if="errors.subject">
-                                                            <small>{{ errors.subject }}</small>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-12">
-                                                    <div class="form-group">
-                                                        <textarea v-model="contact_form.message"  class="input-control" placeholder="Leave a Message"></textarea>
-                                                        <div class="text-danger" v-if="errors.message">
-                                                            <small>{{ errors.message }}</small>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-12">
-                                                    <div class="contact-formbtn-group">
-                                                        <button class="button button-primary" :disabled="contactFormLoader">
-                                                            <template v-if="contactFormLoader">
-                                                                <i class="bi bi-arrow-clockwise spin"></i> Sending...
-                                                            </template>
-                                                            <template v-else>
-                                                                <i class="bi bi-send"></i> Send Message
-                                                            </template>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 order-lg-first">
-                                <div class="contact-img">
-                                    <img src="/_public_assets/img/contact-us.png" alt="Contact Us" class="img-fluid">
                                 </div>
                             </div>
                         </div>

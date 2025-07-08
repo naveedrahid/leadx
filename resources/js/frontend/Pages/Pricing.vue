@@ -1,7 +1,26 @@
 <template>
 <Head title="Pricing" />
 <MasterLayout :loader="loader">
-    <section class="pp-section plan-section">
+    <section class="hero-section main-section overflow-hidden bg-light-green" id="hero">
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-lg-6 col-md-8">
+                    <div class="hero-content text-center">
+                        <h1>Terms and Conditions</h1>
+                        <!-- <div class="row">
+                            <div class="col-lg-9">
+                                <p>The Unlimited solution for creating custom forms and flows to connect users and enhance engagement and broaden your online presence.</p>
+                                <div class="mt-5">
+                                    <a href="#pricing" class="button button-s2 button-primary">Buy Now</a>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="main-section pricing-section overflow-hidden pb-250">
         <div class="container">
             <div class="pp-step">Step <span class="stepnum">1</span></div>
             <div class="row justify-content-center">
@@ -15,7 +34,61 @@
             <div class="row justify-content-center">
                 <div class="col-lg-12 col-md-8 col-sm-10">
                     <div class="pricing-area">
-                        <template v-if="packages.length>0">
+                        <template v-if="packages.length > 0">
+                            <div class="row">
+                                <template v-for="(item, index) in packages" :key="index">
+                                    <div class="col-lg-4 pricing-box-wrap" :class="{
+                                            'pricing-featured': item.recommended,
+                                            'pricing-box-seleted': pack !== '' && pack.id == item.id
+                                        }">
+                                        <div class="pricing-box" :class="{
+                                            'pricing-box-featured': item.recommended
+                                        }">
+                                            <span v-if="item.recommended"
+                                                class="pricing-box-featured_label">Featured Plan</span>
+                                            <div class="pricing-box-head">
+                                                <h3 class="pricing-box-title">{{ item.title }}</h3>
+                                                <div class="pricing-box-price">
+                                                    <div class="pricing-box-amount">{{ priceFormat(item.price) }}
+                                                    </div>
+                                                    <span class="pricing-box-duration">/ {{ item.duration_lifetime ?
+                                                        'Lifetime' : item.format_duration }}</span>
+                                                </div>
+                                                <template v-if="!user">
+                                                    <button :href="`${route('pricing')}?plan=${item.id}`" class="button button-s2 button-primary button-block" :class="{
+                                                        'button-primary': item.recommended
+                                                    }" @click="initPayment(item)">
+                                                        {{ (pack !== '' && pack.id == item.id) ? "Selected" : "Get Started →" }}
+                                                    </button>
+                                                </template>
+                                                <template v-else-if="user.user_type === 'customer'">
+                                                    <Link :href="route('app.customer.subscription.billing')" class="button button-s2 button-primary button-block" :class="{
+                                                        'button-primary': item.recommended
+                                                    }">Upgrade →</Link>
+                                                </template>
+
+
+                                                <!-- <Link v-if="!user" :href="`${route('pricing')}?plan=${item.id}`"
+                                                    class="button button-s2 button-primary button-block">Get Started →
+                                                </Link>
+                                                <Link v-else-if="user.user_type === 'customer'"
+                                                    :href="route('app.customer.subscription.billing')"
+                                                    class="button button-s2 button-primary button-block">Upgrade →
+                                                </Link> -->
+                                            </div>
+                                            <div class="pricing-box-body" v-if="item.features">
+                                                <h4 class="pricing-box-title">Features</h4>
+                                                <ul class="pricing-box-features">
+                                                    <li v-for="(feature, index) in JSON.parse(item.features)"
+                                                        :key="index">{{ feature }}</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+                        <!-- <template v-if="packages.length>0">
                             <div class="row">
                                 <template v-for="(item, index) in packages" :key="index">
                                     <div class="col-lg-4">
@@ -53,7 +126,7 @@
                                     </div>
                                 </template>
                             </div>
-                        </template>
+                        </template> -->
                         <template v-else>
                             <div class="notfound">No Packages Found</div>
                         </template>

@@ -22,6 +22,14 @@ class HomeController extends Controller
         return Inertia::render('Privacy-policy');
     }
 
+    public function customerReviews(){
+        return Inertia::render('CustomerReviews');
+    }
+    
+    public function contact(){
+        return Inertia::render('Contact');
+    }
+
     public function terms_conditions(){
         return Inertia::render('Terms-conditions');
     }

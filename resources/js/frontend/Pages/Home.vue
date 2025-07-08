@@ -1,33 +1,38 @@
 <template>
-<Head title="Home" />
-<MasterLayout :loader="loader">
-    <section class="hero-section overflow-hidden" id="hero">
-        <div class="container">
-            <div class="row align-items-center justify-content-center">
-                <div class="col-lg-12 col-md-8">
-                    <div class="hero-content text-center">
-                        <h1>Welcome To {{ $page.props.app.name }}</h1>
-                        <div class="row justify-content-center">
-                            <div class="col-lg-8">
-                                <p>The Unlimited solution for creating custom forms and flows to connect users and enhance engagement and broaden your online presence.</p>
-                                <div class="my-5 ">
-                                    <a href="#pricing" class="button me-2 button-s2 button-primary">Buy Now</a>
-                                    <a href="#pricing" class="button ms-2 button-s2 button-secondary">Buy Now</a>
+
+    <Head title="Home" />
+    <MasterLayout :loader="loader">
+        <section class="hero-section overflow-hidden" id="hero">
+            <div class="container">
+                <div class="row align-items-center justify-content-center">
+                    <div class="col-lg-12 col-md-8">
+                        <div class="hero-content text-center">
+                            <h1>Welcome To {{ $page.props.app.name }}</h1>
+                            <div class="row justify-content-center">
+                                <div class="col-lg-8">
+                                    <p>The Unlimited solution for creating custom forms and flows to connect users and
+                                        enhance engagement and broaden your online presence.</p>
+                                    <div class="my-5 ">
+                                        <a href="#pricing" class="button me-2 button-s2 button-primary">Get Started
+                                            →</a>
+                                        <a href="#pricing" class="button ms-2 button-s2 button-secondary">Free Trail
+                                            -<small>1 Month</small></a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-8 col-md-6">
-                    <div class="hero-image text-center">
-                        <img src="/_public_assets/img/welcome-to-leadxforms.png" :alt="'Welcome To' + $page.props.app.name" class="img-fluid">
+                    <div class="col-lg-8 col-md-6">
+                        <div class="hero-image text-center">
+                            <img src="/_public_assets/img/welcome-to-leadxforms.png"
+                                :alt="'Welcome To' + $page.props.app.name" class="img-fluid">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-     <!-- <section class="hero-section overflow-hidden" id="hero">
+        <!-- <section class="hero-section overflow-hidden" id="hero">
         <div class="container">
             <div class="row align-items-center justify-content-center">
                 <div class="col-12 col-md-9 col-lg-9">
@@ -57,259 +62,586 @@
         </div>
     </section> -->
 
-    <!-- BEGIN::BRAND LOGOs COMPONENT -->
-    <BrandLogos></BrandLogos>
-    <!-- END::BRAND LOGOs COMPONENT -->
+        <!-- BEGIN::BRAND LOGOs COMPONENT -->
+        <BrandLogos></BrandLogos>
+        <!-- END::BRAND LOGOs COMPONENT -->
 
-    <section class="main-section features-section overflow-hidden" id="features">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-6 col-md-8">
-                    <div class="main-head text-center">
-                        <h4 class="subheading">{{ $page.props.app.name }} Features</h4>
-                        <h2 class="heading">WordPress <span class="text-primary">{{ $page.props.app.name }}</span> Plugin that's Easy to Create</h2>
+        <section class="main-section pb-0 overflow-hidden">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-5 col-md-6 col-sm-12">
+                        <img src="/_public_assets/testImg/Assistants.png" class="img-fluid rounded-top" alt="">
                     </div>
-                </div>
-            </div>
-            <div class="features-area" v-if="features.length>0">
-                <div class="row g-2">
-                    <div v-for="(feature, index) in features" :key="index" class="col-lg-4 col-md-6 equal-height">
-                        <div class="feature-box">
-                            <div class="feature-icon-box">
-                                <img :src="feature.image" :alt="feature.title" class="feature-icon">
-                                <h3 class="feature-title">{{ feature.title }}</h3>
-                            </div>
-                            <p>{{ feature.description }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="main-section testimonials-section bg-light overflow-hidden" id="testimonials">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-6 col-md-8">
-                    <div class="main-head text-center">
-                        <h4 class="subheading">Testimonials</h4>
-                        <h2 class="heading">Our <span class="text-primary">Customer</span> says</h2>
-                    </div>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-lg-12 col-md-8">
-                    <div class="testimonials-area" v-if="tesimonials.length>0">
-                        <carousel v-bind="tesimonials_slider_settings" :breakpoints="tesimonials_slider_breakpoints">
-                            <slide class="testimonial-slide" v-for="(tesimonial, index) in tesimonials" :key="index">
-                                <div class="testimonial-item">
-                                    <div class="testimonial-rate">
-                                        <i :class="{
-                                            'bi bi-star-fill': tesimonial.rating >= 1,
-                                            'bi bi-star': tesimonial.rating < 1,
-                                        }"></i>
-                                        <i :class="{
-                                            'bi bi-star-fill': tesimonial.rating >= 2,
-                                            'bi bi-star': tesimonial.rating < 2,
-                                        }"></i>
-                                        <i :class="{
-                                            'bi bi-star-fill': tesimonial.rating >= 3,
-                                            'bi bi-star': tesimonial.rating < 3,
-                                        }"></i>
-                                        <i :class="{
-                                            'bi bi-star-fill': tesimonial.rating >= 4,
-                                            'bi bi-star': tesimonial.rating < 4,
-                                        }"></i>
-                                        <i :class="{
-                                            'bi bi-star-fill': tesimonial.rating == 5,
-                                            'bi bi-star': tesimonial.rating < 5,
-                                        }"></i>
-                                    </div>
-                                    <p>{{ tesimonial.text }}</p>
-                                    <div class="testimonial-author">
-                                        <h4 class="testimonial-author-name">{{ tesimonial.author }}</h4>
-                                        <span class="testimonial-author-verified" v-if="tesimonial.verified">Verified Customer</span>
-                                    </div>
-                                </div>
-                            </slide>
-                            <template #addons>
-                                <div class="testimonials-pagination">
-                                    <pagination />
-                                </div>
-                            </template>
-                        </carousel>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="main-section whychooseus-section bg-light-green overflow-hidden" id="whychooseus">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-10">
-                    <div class="main-head text-center">
-                        <h4 class="subheading">Why Choose Us</h4>
-                        <h2 class="heading mb-4">Top 7 Reasons Why Users Love <span class="text-primary">{{ $page.props.app.name }}</span></h2>
-                        <p>LeadXForms is the ultimate WordPress form solution for YOU. Discover why over 6,000,000 savvy business owners, designers, and developers trust and love WPForms, and why you will too!</p>
-                    </div>
-                </div>
-            </div>
-            <div class="whychooseus-area">
-                <div class="row align-items-center justify-content-between">
-                    <div class="col-lg-5 col-md-5">
-                        <div class="whychooseus-image">
-                            <img src="/_public_assets/img/why-choose-us.png" alt="Why Choose Us" class="img-fluid rounded">
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6">
-                        <div class="whychooseus-content">
-                            <ul class="whychooseus-list">
-                                <li>Create Custom Online Forms in Minutes, Not Hours</li>
-                                <li>Seamlessly Connect with your favorite apps</li>
-                                <li>Advance WordPress form features at a great value</li>
-                            </ul>
-                            <a href="#pricing" class="button button-s2 button-primary">Buy Now</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="main-section pricing-section overflow-hidden" id="pricing">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-6 col-md-8">
-                    <div class="main-head text-center">
-                        <h2 class="heading">Check Out <span class="text-primary">Pricing</span></h2>
-                    </div>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-lg-12 col-md-8 col-sm-10">
-                    <div class="pricing-area">
-                        <template v-if="packages.length>0">
+                    <div class="col-lg-7 col-md-6 col-sm-12 ps-4">
+                        <h2 class="heading">Fully customizable AI companion - Anytime you need</h2>
+                        <p>Conversational experiences that 3x Efficiency with even better quality.</p>
+                        <div class="icon-content pt-4">
                             <div class="row">
-                                <template v-for="(item, index) in packages" :key="index">
-                                    <div class="col-lg-4">
-                                        <div class="pricing-box" :class="{
-                                            'pricing-box-featured': item.recommended
-                                        }">
-                                            <span v-if="item.recommended" class="pricing-box-featured_label">Featured Plan</span>
-                                            <div class="pricing-box-head">
-                                                <h3 class="pricing-box-title">{{ item.title }}</h3>
-                                                <div class="pricing-box-price">
-                                                    <div class="pricing-box-amount">{{ priceFormat(item.price) }}</div>
-                                                    <span class="pricing-box-duration">/ {{ item.duration_lifetime ? 'Lifetime' : item.format_duration }}</span>
-                                                </div>
-                                                <Link v-if="!user" :href="`${route('pricing')}?plan=${item.id}`" class="button button-s2 button-primary button-block">Buy Now</Link>
-                                                <Link v-else-if="user.user_type === 'customer'" :href="route('app.customer.subscription.billing')" class="button button-s2 button-primary button-block">Upgrade</Link>
-                                            </div>
-                                            <div class="pricing-box-body" v-if="item.features">
-                                                <h3 class="pricing-box-title text-uppercase">Features</h3>
-                                                <ul class="pricing-box-features">
-                                                    <li v-for="(feature, index) in JSON.parse(item.features)" :key="index">{{ feature }}</li>
-                                                </ul>
-                                            </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                    <div class="pb-3 d-flex gap-3">
+                                        <div class="icon">
+                                            <span>
+                                                <i class="rounded-3 d-inline-flex bg-black p-1">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28"
+                                                        viewBox="0 0 24 24" fill="none">
+                                                        <path
+                                                            d="M22 22H2C1.59 22 1.25 21.66 1.25 21.25C1.25 20.84 1.59 20.5 2 20.5H22C22.41 20.5 22.75 20.84 22.75 21.25C22.75 21.66 22.41 22 22 22Z"
+                                                            fill="white"></path>
+                                                        <path
+                                                            d="M9.75 4V22H14.25V4C14.25 2.9 13.8 2 12.45 2H11.55C10.2 2 9.75 2.9 9.75 4Z"
+                                                            fill="white"></path>
+                                                        <path opacity="0.4"
+                                                            d="M3 10V22H7V10C7 8.9 6.6 8 5.4 8H4.6C3.4 8 3 8.9 3 10Z"
+                                                            fill="white"></path>
+                                                        <path opacity="0.4"
+                                                            d="M17 15V22H21V15C21 13.9 20.6 13 19.4 13H18.6C17.4 13 17 13.9 17 15Z"
+                                                            fill="white"></path>
+                                                    </svg>
+                                                </i>
+                                            </span>
                                         </div>
+                                        <div class="icon-content">
+                                            <h5 class="icon-title text-black mb-0">Real-Time Data with GPT-4</h5>
+                                            <p class="pt-2 inter-text">Lorem ipsum is a placeholder text commonly used
+                                                to demo.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                    <div class="pb-3 d-flex gap-3">
+                                        <div class="icon">
+                                            <span>
+                                                <i class="rounded-3 d-inline-flex bg-black p-1">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28"
+                                                        viewBox="0 0 24 24" fill="none">
+                                                        <path opacity="0.4"
+                                                            d="M12 17V19.38C12 21.25 11.25 22 9.37 22H4.62C2.75 22 2 21.25 2 19.38V14.63C2 12.75 2.75 12 4.62 12H7V14.37C7 16.25 7.75 17 9.62 17H12Z"
+                                                            fill="white"></path>
+                                                        <path opacity="0.6"
+                                                            d="M17 12V14.37C17 16.25 16.25 17 14.37 17H9.62C7.75 17 7 16.25 7 14.37V9.62C7 7.75 7.75 7 9.62 7H12V9.37C12 11.25 12.75 12 14.62 12H17Z"
+                                                            fill="white"></path>
+                                                        <path
+                                                            d="M22 4.62V9.37C22 11.25 21.25 12 19.37 12H14.62C12.75 12 12 11.25 12 9.37V4.62C12 2.75 12.75 2 14.62 2H19.37C21.25 2 22 2.75 22 4.62Z"
+                                                            fill="white"></path>
+                                                    </svg>
+                                                </i>
+                                            </span>
+                                        </div>
+                                        <div class="icon-content">
+                                            <h5 class="icon-title text-black mb-0">Customizations</h5>
+                                            <p class="pt-2 inter-text">Lorem ipsum is a placeholder text commonly used
+                                                to demo.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                    <div class="pb-3 d-flex gap-3">
+                                        <div class="icon">
+                                            <span>
+                                                <i class="rounded-3 d-inline-flex bg-black p-1">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28"
+                                                        viewBox="0 0 24 24" fill="none">
+                                                        <path
+                                                            d="M22 22H2C1.59 22 1.25 21.66 1.25 21.25C1.25 20.84 1.59 20.5 2 20.5H22C22.41 20.5 22.75 20.84 22.75 21.25C22.75 21.66 22.41 22 22 22Z"
+                                                            fill="white"></path>
+                                                        <path
+                                                            d="M9.75 4V22H14.25V4C14.25 2.9 13.8 2 12.45 2H11.55C10.2 2 9.75 2.9 9.75 4Z"
+                                                            fill="white"></path>
+                                                        <path opacity="0.4"
+                                                            d="M3 10V22H7V10C7 8.9 6.6 8 5.4 8H4.6C3.4 8 3 8.9 3 10Z"
+                                                            fill="white"></path>
+                                                        <path opacity="0.4"
+                                                            d="M17 15V22H21V15C21 13.9 20.6 13 19.4 13H18.6C17.4 13 17 13.9 17 15Z"
+                                                            fill="white"></path>
+                                                    </svg>
+                                                </i>
+                                            </span>
+                                        </div>
+                                        <div class="icon-content">
+                                            <h5 class="icon-title text-black mb-0">Personalized Chat Experience</h5>
+                                            <p class="pt-2 inter-text">Lorem ipsum is a placeholder text commonly used
+                                                to demo.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                    <div class="pb-3 d-flex gap-3">
+                                        <div class="icon">
+                                            <span>
+                                                <i class="rounded-3 d-inline-flex bg-black p-1">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28"
+                                                        viewBox="0 0 24 24" fill="none">
+                                                        <path
+                                                            d="M22 22H2C1.59 22 1.25 21.66 1.25 21.25C1.25 20.84 1.59 20.5 2 20.5H22C22.41 20.5 22.75 20.84 22.75 21.25C22.75 21.66 22.41 22 22 22Z"
+                                                            fill="white"></path>
+                                                        <path
+                                                            d="M9.75 4V22H14.25V4C14.25 2.9 13.8 2 12.45 2H11.55C10.2 2 9.75 2.9 9.75 4Z"
+                                                            fill="white"></path>
+                                                        <path opacity="0.4"
+                                                            d="M3 10V22H7V10C7 8.9 6.6 8 5.4 8H4.6C3.4 8 3 8.9 3 10Z"
+                                                            fill="white"></path>
+                                                        <path opacity="0.4"
+                                                            d="M17 15V22H21V15C21 13.9 20.6 13 19.4 13H18.6C17.4 13 17 13.9 17 15Z"
+                                                            fill="white"></path>
+                                                    </svg>
+                                                </i>
+                                            </span>
+                                        </div>
+                                        <div class="icon-content">
+                                            <h5 class="icon-title text-black mb-0">Easy, Flexible Setup</h5>
+                                            <p class="pt-2 inter-text">Lorem ipsum is a placeholder text commonly used
+                                                to demo.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section-link">
+                                <a href="#">Explore Integrations →</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section class="main-section features-section overflow-hidden" id="features">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6 col-md-8">
+                        <div class="main-head text-center">
+                            <h4 class="subheading">{{ $page.props.app.name }} Features</h4>
+                            <h2 class="heading">WordPress <span class="text-primary">{{ $page.props.app.name }}</span>
+                                Plugin that's Easy to Create</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="features-area" v-if="features.length > 0">
+                    <div class="row g-4">
+                        <div v-for="(feature, index) in features" :key="index" class="col-lg-4 col-md-6 equal-height">
+                            <div class="feature-box">
+                                <div class="feature-icon-box">
+                                    <img :src="feature.image" :alt="feature.title" class="feature-icon">
+                                    <h3 class="feature-title">{{ feature.title }}</h3>
+                                    <p>{{ feature.description }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="main-section testimonials-section bg-light overflow-hidden" id="testimonials">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6 col-md-8">
+                        <div class="main-head text-center">
+                            <h4 class="subheading">Testimonials</h4>
+                            <h2 class="heading">Our <span class="text-primary">Customer</span> says</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-lg-12 col-md-8">
+                        <div class="testimonials-area" v-if="tesimonials.length > 0">
+                            <carousel v-bind="tesimonials_slider_settings"
+                                :breakpoints="tesimonials_slider_breakpoints">
+                                <slide class="testimonial-slide" v-for="(tesimonial, index) in tesimonials"
+                                    :key="index">
+                                    <div class="testimonial-item">
+                                        <div class="testimonial-rate">
+                                            <i :class="{
+                                                'bi bi-star-fill': tesimonial.rating >= 1,
+                                                'bi bi-star': tesimonial.rating < 1,
+                                            }"></i>
+                                            <i :class="{
+                                                'bi bi-star-fill': tesimonial.rating >= 2,
+                                                'bi bi-star': tesimonial.rating < 2,
+                                            }"></i>
+                                            <i :class="{
+                                                'bi bi-star-fill': tesimonial.rating >= 3,
+                                                'bi bi-star': tesimonial.rating < 3,
+                                            }"></i>
+                                            <i :class="{
+                                                'bi bi-star-fill': tesimonial.rating >= 4,
+                                                'bi bi-star': tesimonial.rating < 4,
+                                            }"></i>
+                                            <i :class="{
+                                                'bi bi-star-fill': tesimonial.rating == 5,
+                                                'bi bi-star': tesimonial.rating < 5,
+                                            }"></i>
+                                        </div>
+                                        <p>{{ tesimonial.text }}</p>
+                                        <div class="testimonial-author">
+                                            <h4 class="testimonial-author-name">{{ tesimonial.author }}</h4>
+                                            <span class="testimonial-author-verified"
+                                                v-if="tesimonial.verified">Verified Customer</span>
+                                        </div>
+                                    </div>
+                                </slide>
+                                <template #addons>
+                                    <div class="testimonials-pagination">
+                                        <pagination />
                                     </div>
                                 </template>
-                            </div>
-                        </template>
-                        <template v-else>
-                            <div class="notfound">No Packages Found</div>
-                        </template>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="main-section blog-section bg-light overflow-hidden" id="blog" style="display:none">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-6 col-md-8">
-                    <div class="main-head text-center">
-                        <h2 class="heading"><span class="text-primary">{{ $page.props.app.name }}</span> Blog & Resources</h2>
-                    </div>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-lg-12 col-md-8">
-                    <div class="blog-area">
-                        <div class="blog-posts-grid">
-                            <div class="row">
-                                <div class="col-lg-4">
-                                    <article class="blog-post">
-                                        <a href="#" class="blog-post-img">
-                                            <img src="/_public_assets/img/dummy.png" alt="Top 5 Tips for Creating High-Converting WordPress Forms" class="img-fluid">
-                                        </a>
-                                        <div class="blog-post-content">
-                                            <h3><a href="#">Top 5 Tips for Creating High-Converting WordPress Forms</a></h3>
-                                        </div>
-                                    </article>
-                                </div>
-                                <div class="col-lg-4">
-                                    <article class="blog-post">
-                                        <a href="#" class="blog-post-img">
-                                            <img src="/_public_assets/img/dummy.png" alt="Why Every Business Needs a Custom WordPress Form Builder" class="img-fluid">
-                                        </a>
-                                        <div class="blog-post-content">
-                                            <h3><a href="#">Why Every Business Needs a Custom WordPress Form Builder</a></h3>
-                                        </div>
-                                    </article>
-                                </div>
-                                <div class="col-lg-4">
-                                    <article class="blog-post">
-                                        <a href="#" class="blog-post-img">
-                                            <img src="/_public_assets/img/dummy.png" alt="The Future of Online Forms: Trends to Watch in 2024" class="img-fluid">
-                                        </a>
-                                        <div class="blog-post-content">
-                                            <h3><a href="#">The Future of Online Forms: Trends to Watch in 2024</a></h3>
-                                        </div>
-                                    </article>
-                                </div>
-                            </div>
+                            </carousel>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-    <section class="main-section faqs-section bg-light-green overflow-hidden pb-250" id="faqs">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-6 col-md-8">
-                    <div class="main-head text-center">
-                        <h4 class="subheading">Question & Answers</h4>
-                        <h2 class="heading">Frequently Asked Questions</h2>
-                    </div>
-                </div>
-            </div>
-            <div class="faqs-area">
+        </section>
+        <section class="main-section whychooseus-section overflow-hidden d-none" id="whychooseus">
+            <div class="container">
                 <div class="row justify-content-center">
-                    <div class="col-lg-8">
-                        <div v-for="(faq, index) in faqs" :key="index" class="faq-item" :class="{
-                            'show': faq.show,
-                            'border-0': index+1 == (faqs.length)
-                        }">
-                            <div class="faq-header">
-                                <button class="faq-button" @click.prevent="faqsToggle(index)">
-                                    <h3>{{ faq.question }}</h3>
-                                    <span class="faq-toggle-icon">
-                                        <i :class="faq.show ? 'bi bi-chevron-down' : 'bi bi-chevron-right'"></i>
-                                    </span>
-                                </button>
+                    <div class="col-lg-10">
+                        <div class="main-head text-center">
+                            <h4 class="subheading">Why Choose Us</h4>
+                            <h2 class="heading mb-4">Top 7 Reasons Why Users Love <span class="text-primary">{{
+                                $page.props.app.name }}</span></h2>
+                            <p>LeadXForms is the ultimate WordPress form solution for YOU. Discover why over 6,000,000
+                                savvy
+                                business owners, designers, and developers trust and love WPForms, and why you will too!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="whychooseus-area">
+                    <div class="row align-items-center justify-content-between">
+                        <div class="col-lg-5 col-md-5">
+                            <div class="whychooseus-image">
+                                <img src="/_public_assets/img/why-choose-us.png" alt="Why Choose Us"
+                                    class="img-fluid rounded">
                             </div>
-                            <div class="faq-body">
-                                <div class="faq-content">
-                                    <p>{{ faq.answer }}</p>
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <div class="whychooseus-content">
+                                <ul class="whychooseus-list">
+                                    <li>Create Custom Online Forms in Minutes, Not Hours</li>
+                                    <li>Seamlessly Connect with your favorite apps</li>
+                                    <li>Advance WordPress form features at a great value</li>
+                                </ul>
+                                <a href="#pricing" class="button button-s2 button-primary">Get Started →</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="main-section whychooseus-section bg-light-green overflow-hidden">
+            <div class="container">
+                <div class="row justify-content-between align-items-center pb-5">
+                    <div class="col-lg-5 col-md-6 col-sm-12">
+                        <h2 class="heading">Transform AI ideas to SaasS Platform</h2>
+                        <p class="border-bottom border-dark pb-3 mb-4">Enjoy premium AI at budget-friendly prices
+                            :sparkles:</p>
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="pb-3 d-flex gap-3">
+                                <div class="icon">
+                                    <span>
+                                        <i class="rounded-pill d-inline-flex bg-white p-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+                                                viewBox="0 0 32 32" fill="none">
+                                                <g opacity="0.12">
+                                                    <path
+                                                        d="M1.33594 25.0667C1.33594 24.6953 1.33594 24.5096 1.34416 24.3527C1.50488 21.286 3.95522 18.8356 7.02192 18.6749C7.17882 18.6667 7.36453 18.6667 7.73594 18.6667H13.6026C13.974 18.6667 14.1597 18.6667 14.3166 18.6749C17.3833 18.8356 19.8337 21.286 19.9944 24.3527C20.0026 24.5096 20.0026 24.6953 20.0026 25.0667C20.0026 25.3143 20.0026 25.4381 19.9971 25.5427C19.89 27.5872 18.2564 29.2207 16.2119 29.3279C16.1073 29.3333 15.9835 29.3333 15.7359 29.3333H5.6026C5.355 29.3333 5.23119 29.3333 5.12659 29.3279C3.08212 29.2207 1.44857 27.5872 1.34142 25.5427C1.33594 25.4381 1.33594 25.3143 1.33594 25.0667Z"
+                                                        fill="#005E54"></path>
+                                                    <path
+                                                        d="M16.0026 8.00001C16.0026 10.9455 13.6148 13.3333 10.6693 13.3333C7.72375 13.3333 5.33594 10.9455 5.33594 8.00001C5.33594 5.05449 7.72375 2.66667 10.6693 2.66667C13.6148 2.66667 16.0026 5.05449 16.0026 8.00001Z"
+                                                        fill="#005E54"></path>
+                                                </g>
+                                                <path
+                                                    d="M20.0026 13.3333C22.9481 13.3333 25.3359 10.9455 25.3359 8.00001C25.3359 5.05449 22.9481 2.66667 20.0026 2.66667M22.6693 29.3333H26.4026C26.6502 29.3333 26.774 29.3333 26.8786 29.3279C28.9231 29.2207 30.5566 27.5872 30.6638 25.5427C30.6693 25.4381 30.6693 25.3143 30.6693 25.0667V25.0667C30.6693 24.6953 30.6693 24.5096 30.661 24.3527C30.5003 21.286 28.05 18.8356 24.9833 18.6749C24.8264 18.6667 24.6407 18.6667 24.2693 18.6667H22.6693M16.0026 8.00001C16.0026 10.9455 13.6148 13.3333 10.6693 13.3333C7.72375 13.3333 5.33594 10.9455 5.33594 8.00001C5.33594 5.05449 7.72375 2.66667 10.6693 2.66667C13.6148 2.66667 16.0026 5.05449 16.0026 8.00001ZM5.6026 29.3333H15.7359C15.9835 29.3333 16.1073 29.3333 16.2119 29.3279C18.2564 29.2207 19.89 27.5872 19.9971 25.5427C20.0026 25.4381 20.0026 25.3143 20.0026 25.0667V25.0667C20.0026 24.6953 20.0026 24.5096 19.9944 24.3527C19.8337 21.286 17.3833 18.8356 14.3166 18.6749C14.1597 18.6667 13.974 18.6667 13.6026 18.6667H7.73594C7.36453 18.6667 7.17882 18.6667 7.02192 18.6749C3.95522 18.8356 1.50488 21.286 1.34416 24.3527C1.33594 24.5096 1.33594 24.6953 1.33594 25.0667V25.0667C1.33594 25.3143 1.33594 25.4381 1.34142 25.5427C1.44857 27.5872 3.08212 29.2207 5.12659 29.3279C5.23119 29.3333 5.355 29.3333 5.6026 29.3333Z"
+                                                    stroke="#005E54" stroke-width="1.5" stroke-linecap="round"
+                                                    stroke-linejoin="round"></path>
+                                            </svg>
+                                        </i>
+                                    </span>
+                                </div>
+                                <div class="icon-content">
+                                    <h5 class="icon-title text-dark">Easily collaborate with team members</h5>
+                                    <p class="pt-2 inter-text ">Lorem ipsum is placeholder text commonly used in the graphics and publishing industries.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="section-link">
+                            <a class="" href="#">Explore Integrations →</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 ps-4">
+                        <img src="/_public_assets/testImg/user-management.png" class="img-fluid rounded-top" alt="">
+                    </div>
+                </div>
+                <div class="features-area">
+                    <div class="row g-4">
+                        <div class="col-lg-3 col-md-6 equal-height">
+                            <div class="feature-box">
+                                <div class="feature-icon-box">
+                                    <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="0 0 24 24"
+                                    fill="none">
+                                    <rect x="18" y="9" width="4" height="4" rx="2" transform="rotate(90 18 9)"
+                                        fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2"></rect>
+                                    <rect x="18" y="17" width="4" height="4" rx="2" transform="rotate(90 18 17)"
+                                        fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2"></rect>
+                                    <rect x="3" y="7" width="4" height="4" rx="2" transform="rotate(-90 3 7)"
+                                        fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2"></rect>
+                                    <path d="M5 8V15C5 16.8856 5 17.8284 5.58579 18.4142C6.17157 19 7.11438 19 9 19H14"
+                                        stroke="#222222" stroke-width="1.2"></path>
+                                    <path d="M5 7V7C5 8.88562 5 9.82843 5.58579 10.4142C6.17157 11 7.11438 11 9 11H14"
+                                        stroke="#222222" stroke-width="1.2"></path>
+                                </svg>
+
+                                    <h3 class="feature-title">User-Friendly</h3>
+                                    <p>LeadXForms is fully mobile, tablet, and desktop responsive.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 equal-height">
+                            <div class="feature-box">
+                                <div class="feature-icon-box">
+                                    <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="0 0 24 24"
+                                    fill="none">
+                                    <rect x="18" y="9" width="4" height="4" rx="2" transform="rotate(90 18 9)"
+                                        fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2"></rect>
+                                    <rect x="18" y="17" width="4" height="4" rx="2" transform="rotate(90 18 17)"
+                                        fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2"></rect>
+                                    <rect x="3" y="7" width="4" height="4" rx="2" transform="rotate(-90 3 7)"
+                                        fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2"></rect>
+                                    <path d="M5 8V15C5 16.8856 5 17.8284 5.58579 18.4142C6.17157 19 7.11438 19 9 19H14"
+                                        stroke="#222222" stroke-width="1.2"></path>
+                                    <path d="M5 7V7C5 8.88562 5 9.82843 5.58579 10.4142C6.17157 11 7.11438 11 9 11H14"
+                                        stroke="#222222" stroke-width="1.2"></path>
+                                </svg>
+
+                                    <h3 class="feature-title">User-Friendly</h3>
+                                    <p>LeadXForms is fully mobile, tablet, and desktop responsive.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 equal-height">
+                            <div class="feature-box">
+                                <div class="feature-icon-box">
+                                    <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="0 0 24 24"
+                                    fill="none">
+                                    <rect x="18" y="9" width="4" height="4" rx="2" transform="rotate(90 18 9)"
+                                        fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2"></rect>
+                                    <rect x="18" y="17" width="4" height="4" rx="2" transform="rotate(90 18 17)"
+                                        fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2"></rect>
+                                    <rect x="3" y="7" width="4" height="4" rx="2" transform="rotate(-90 3 7)"
+                                        fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2"></rect>
+                                    <path d="M5 8V15C5 16.8856 5 17.8284 5.58579 18.4142C6.17157 19 7.11438 19 9 19H14"
+                                        stroke="#222222" stroke-width="1.2"></path>
+                                    <path d="M5 7V7C5 8.88562 5 9.82843 5.58579 10.4142C6.17157 11 7.11438 11 9 11H14"
+                                        stroke="#222222" stroke-width="1.2"></path>
+                                </svg>
+
+                                    <h3 class="feature-title">User-Friendly</h3>
+                                    <p>LeadXForms is fully mobile, tablet, and desktop responsive.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 equal-height">
+                            <div class="feature-box">
+                                <div class="feature-icon-box">
+                                    <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="0 0 24 24"
+                                    fill="none">
+                                    <rect x="18" y="9" width="4" height="4" rx="2" transform="rotate(90 18 9)"
+                                        fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2"></rect>
+                                    <rect x="18" y="17" width="4" height="4" rx="2" transform="rotate(90 18 17)"
+                                        fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2"></rect>
+                                    <rect x="3" y="7" width="4" height="4" rx="2" transform="rotate(-90 3 7)"
+                                        fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2"></rect>
+                                    <path d="M5 8V15C5 16.8856 5 17.8284 5.58579 18.4142C6.17157 19 7.11438 19 9 19H14"
+                                        stroke="#222222" stroke-width="1.2"></path>
+                                    <path d="M5 7V7C5 8.88562 5 9.82843 5.58579 10.4142C6.17157 11 7.11438 11 9 11H14"
+                                        stroke="#222222" stroke-width="1.2"></path>
+                                </svg>
+
+                                    <h3 class="feature-title">User-Friendly</h3>
+                                    <p>LeadXForms is fully mobile, tablet, and desktop responsive.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="main-section pricing-section overflow-hidden" id="pricing">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6 col-md-8">
+                        <div class="main-head text-center pb-4">
+                            <h2 class="heading">Check Out <span class="text-primary">Pricing</span></h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-lg-12 col-md-8 col-sm-10">
+                        <div class="pricing-area">
+                            <template v-if="packages.length > 0">
+                                <div class="row">
+                                    <template v-for="(item, index) in packages" :key="index">
+                                        <div class="col-lg-4 pricing-box-wrap" :class="{
+                                            'pricing-featured': item.recommended
+                                        }">
+                                            <div class="pricing-box" :class="{
+                                                'pricing-box-featured': item.recommended
+                                            }">
+                                                <span v-if="item.recommended"
+                                                    class="pricing-box-featured_label">Featured Plan</span>
+                                                <div class="pricing-box-head">
+                                                    <h3 class="pricing-box-title">{{ item.title }}</h3>
+                                                    <div class="pricing-box-price">
+                                                        <div class="pricing-box-amount">{{ priceFormat(item.price) }}
+                                                        </div>
+                                                        <span class="pricing-box-duration">/ {{ item.duration_lifetime ?
+                                                            'Lifetime' : item.format_duration }}</span>
+                                                    </div>
+                                                    <Link v-if="!user" :href="`${route('pricing')}?plan=${item.id}`"
+                                                        class="button button-s2 button-primary button-block">Get Started
+                                                    →
+                                                    </Link>
+                                                    <Link v-else-if="user.user_type === 'customer'"
+                                                        :href="route('app.customer.subscription.billing')"
+                                                        class="button button-s2 button-primary button-block">Upgrade →
+                                                    </Link>
+                                                </div>
+                                                <div class="pricing-box-body" v-if="item.features">
+                                                    <h4 class="pricing-box-title">Features</h4>
+                                                    <ul class="pricing-box-features">
+                                                        <li v-for="(feature, index) in JSON.parse(item.features)"
+                                                            :key="index">{{ feature }}</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                            <template v-else>
+                                <div class="notfound">No Packages Found</div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center border-cst p-4 bg-light-green">
+                    <div class="col-lg-3 col-md-5 col-sm-12">
+                        <img src="/_public_assets/testImg/Money-Back-Guarantee-1.svg" width="270" height="270"
+                            alt="Back-Guarantee img-fluid" />
+                    </div>
+                    <div class="col-lg-9 col-md-7 col-sm-12">
+                        <h4 class="fw-bold">Our 100% No-Risk money back guarantee!</h4>
+                        <p class="inter-text text-dark text-muted">
+                            We’re excited to have you experience UltimateAI
+                            Pro. Over the next 30 days, if UltimateAI isn’t
+                            the best fit, simply reach out! We’ll happily
+                            refund 100% of your money. No questions asked.
+                        </p>
+                        <img src="/_public_assets/testImg/payment2-1.webp" width="350" alt="payment cards" />
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="main-section blog-section bg-light overflow-hidden" id="blog" style="display:none">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6 col-md-8">
+                        <div class="main-head text-center">
+                            <h2 class="heading"><span class="text-primary">{{ $page.props.app.name }}</span> Blog &
+                                Resources
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-lg-12 col-md-8">
+                        <div class="blog-area">
+                            <div class="blog-posts-grid">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <article class="blog-post">
+                                            <a href="#" class="blog-post-img">
+                                                <img src="/_public_assets/img/dummy.png"
+                                                    alt="Top 5 Tips for Creating High-Converting WordPress Forms"
+                                                    class="img-fluid">
+                                            </a>
+                                            <div class="blog-post-content">
+                                                <h3><a href="#">Top 5 Tips for Creating High-Converting WordPress
+                                                        Forms</a></h3>
+                                            </div>
+                                        </article>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <article class="blog-post">
+                                            <a href="#" class="blog-post-img">
+                                                <img src="/_public_assets/img/dummy.png"
+                                                    alt="Why Every Business Needs a Custom WordPress Form Builder"
+                                                    class="img-fluid">
+                                            </a>
+                                            <div class="blog-post-content">
+                                                <h3><a href="#">Why Every Business Needs a Custom WordPress Form
+                                                        Builder</a>
+                                                </h3>
+                                            </div>
+                                        </article>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <article class="blog-post">
+                                            <a href="#" class="blog-post-img">
+                                                <img src="/_public_assets/img/dummy.png"
+                                                    alt="The Future of Online Forms: Trends to Watch in 2024"
+                                                    class="img-fluid">
+                                            </a>
+                                            <div class="blog-post-content">
+                                                <h3><a href="#">The Future of Online Forms: Trends to Watch in 2024</a>
+                                                </h3>
+                                            </div>
+                                        </article>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-</MasterLayout>
+        </section>
+        <section class="main-section faqs-section bg-light-green overflow-hidden pb-250" id="faqs">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6 col-md-8">
+                        <div class="main-head text-center">
+                            <h4 class="subheading">Question & Answers</h4>
+                            <h2 class="heading">Frequently Asked Questions</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="faqs-area">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div v-for="(faq, index) in faqs" :key="index" class="faq-item" :class="{
+                                'show': faq.show,
+                                'border-0': index + 1 == (faqs.length)
+                            }">
+                                <div class="faq-header">
+                                    <button class="faq-button" @click.prevent="faqsToggle(index)">
+                                        <h3>{{ faq.question }}</h3>
+                                        <span class="faq-toggle-icon">
+                                            <i :class="faq.show ? 'bi bi-chevron-down' : 'bi bi-chevron-right'"></i>
+                                        </span>
+                                    </button>
+                                </div>
+                                <div class="faq-body">
+                                    <div class="faq-content">
+                                        <p>{{ faq.answer }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </MasterLayout>
 </template>
 
 <script>
@@ -399,38 +731,38 @@ export default {
                     itemsToShow: 1,
                 },
                 992: {
-                    itemsToShow:3,
+                    itemsToShow: 3,
                 }
             },
             faqs: [
                 {
-                    question: 'Who is '+ this.$page.props.app.name +' for?',
+                    question: 'Who is ' + this.$page.props.app.name + ' for?',
                     answer:
-                        ''+ this.$page.props.app.name +' is ideal for business owners, bloggers, designers, developers, photographers, and anyone looking to create custom WordPress forms.',
+                        '' + this.$page.props.app.name + ' is ideal for business owners, bloggers, designers, developers, photographers, and anyone looking to create custom WordPress forms.',
                     show: false,
                 },
                 {
-                    question: 'Do I need coding skills to use '+ this.$page.props.app.name +'?',
+                    question: 'Do I need coding skills to use ' + this.$page.props.app.name + '?',
                     answer:
-                        'No, '+ this.$page.props.app.name +' is designed to be user-friendly for anyone, regardless of coding skills.',
+                        'No, ' + this.$page.props.app.name + ' is designed to be user-friendly for anyone, regardless of coding skills.',
                     show: false,
                 },
                 {
-                    question: 'What are the requirements to use '+ this.$page.props.app.name +'?',
+                    question: 'What are the requirements to use ' + this.$page.props.app.name + '?',
                     answer:
                         'You need a WordPress site and basic knowledge of form creation.',
                     show: false,
                 },
                 {
-                    question: 'Is '+ this.$page.props.app.name +' translation-ready?',
+                    question: 'Is ' + this.$page.props.app.name + ' translation-ready?',
                     answer:
-                        'Yes, '+ this.$page.props.app.name +' supports multiple languages and is fully translation-ready.',
+                        'Yes, ' + this.$page.props.app.name + ' supports multiple languages and is fully translation-ready.',
                     show: false,
                 },
                 {
-                    question: 'Will '+ this.$page.props.app.name +' affect my website’s speed?',
+                    question: 'Will ' + this.$page.props.app.name + ' affect my website’s speed?',
                     answer:
-                        ''+ this.$page.props.app.name +' is optimized for performance and will not affect your website’s speed.',
+                        '' + this.$page.props.app.name + ' is optimized for performance and will not affect your website’s speed.',
                     show: false,
                 }
             ],

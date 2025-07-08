@@ -12,13 +12,15 @@
                     </div>
                 </div>
                 <div class="col-md-8 d-lg-block d-none">
-                    <div class="d-flex align-items-center justify-content-end gap-5">
+                    <div class="d-flex align-items-center justify-content-between gap-5">
                         <nav class="main-menu">
                             <template v-if="route().current('home')">
                                 <a href="#home" class="nav-link active">Home</a>
                                 <a href="#features" class="nav-link">Features</a>
                                 <a href="#pricing" class="nav-link">Pricing</a>
-                                <a href="#contact" class="nav-link">Contact</a>
+                                <Link :href="route('customer.reviews')">Reviews</Link>
+                                <Link :href="route('contact')">Contact</Link>
+                                <!-- <a href="#contact" class="nav-link">Contact</a> -->
                             </template>
                             <template v-else>
                                 <Link :href="route('home')">Home</Link>
@@ -26,6 +28,7 @@
                                 <Link :href="route('pricing')" :class="{
                                     'active': route().current('pricing')
                                 }">Pricing</Link>
+                                <Link :href="route('customer.reviews')">Reviews</Link>
                                 <Link :href="route('home') + '#contact'">Contact</Link>
                             </template>
                         </nav>
@@ -94,25 +97,18 @@
                     style="background-color: #f5f9f9;">
                     <div class="container px-4">
                         <div class="row align-items-center">
-                            <div class="col-lg-7 col-md-7 col-sm-12 col-first">
+                            <div class="col-lg-8 col-md-7 col-sm-12 col-first">
                                 <span class="colFirstTxt">Now Available on Mobile!</span>
                                 <h2 class="my-4">Grab the LeadXForms Mobile App <br><span style="color: #008543;">Your
                                         Leads, On-the-Go!</span></h2>
                                 <div class="py-2 d-flex gap-3">
                                     <img src="/_public_assets/testImg/Button (1).png" width="150" class="img-fluid">
                                     <img src="/_public_assets/testImg/Button.png" width="150" class="img-fluid">
-                                    <!-- <button class="btn bg-black text-white px-4" style="border-radius: 10px; padding-top: 12px;
-                        padding-bottom: 15px;">
-                                        Start For Free
-                                    </button>
-                                    <button class="btn btn-outline-light text-white px-4" style="border-radius: 10px; padding-top: 12px;
-                        padding-bottom: 15px;">
-                                        Get LeadXForm →
-                                    </button> -->
                                 </div>
                             </div>
-                            <div class="col-lg-5 col-md-4 col-sm-12 d-flex align-items-end">
-                                <img src="/_public_assets/testImg/Mobile.png" class="img-fluid" alt="Shape Man img-fluid">
+                            <div class="col-lg-4 col-md-4 col-sm-12 d-flex justify-content-end">
+                                <img src="/_public_assets/testImg/Mobile.png" class="img-fluid footer-mobile"
+                                    alt="Shape Man img-fluid">
                             </div>
                         </div>
                     </div>
@@ -137,15 +133,9 @@
                     <div class="footer-list">
                         <h5 class="text-white mb-4">Quick Links</h5>
                         <ul class="unstyled-list">
-                            <li><a href="#" class="text-white">
-                                <li class="text-white ">Home</li>
-                            </a></li>
-                            <li><a href="#" class="text-white">
-                                Pricing
-                            </a></li>
-                            <li><a href="#" class="text-white">
-                                Testimonials
-                            </a></li>
+                            <li><Link :href="route('home')" class="text-white">Home</Link></li>
+                            <li><Link :href="route('pricing')" class="text-white">Pricing</Link></li>
+                            <li><Link :href="route('customer.reviews')" class="text-white">Reviews</Link></li>
                         </ul>
                     </div>
                 </div>
@@ -153,15 +143,15 @@
                     <div class="footer-list">
                         <h5 class="text-white mb-4">Helpful Links</h5>
                         <ul class="unstyled-list">
-                            <li><a :href="route('privacy_policy')" class="text-white">
-                                Privacy Policy
-                            </a></li>
-                            <li><a href="#" class="text-white">
-                                Terms &amp; Conditions
-                            </a></li>
-                            <li><a href="#" class="text-white">
-                                Contact Us
-                            </a></li>
+                            <li>
+                                <Link :href="route('privacy_policy')" class="text-white">Privacy Policy</Link>
+                            </li>
+                            <li>
+                                <Link :href="route('terms_conditions')" class="text-white">Terms &amp; Conditions</Link>
+                            </li>
+                            <li>
+                                <Link :href="route('contact')" class="text-white">Contact Us</Link>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -169,13 +159,12 @@
                     <div class="footer-list">
                         <h5 class="text-white mb-4">Contact</h5>
                         <ul class="unstyled-list infoIcon">
+                            <li><a class="text-white" :href="'mailto:' + $page.props.app.support_mail">{{ $page.props.app.support_mail}}</a>
+                            </li>
                             <li><a href="#" class="text-white">
-                                  support@leadxforms.com
-                            </a></li>
-                            <li><a href="#" class="text-white">
-                                 Level 4/260 Queen St, Brisbane City QLD
+                                    Level 4/260 Queen St, Brisbane City QLD
                                     4000
-                            </a></li>
+                                </a></li>
                         </ul>
                     </div>
                 </div>
@@ -188,24 +177,6 @@
                         <p class="m-0 text-white">© Copyright @ 2024-2025 LeadXForms</p>
                     </div>
                 </div>
-                <!-- <div class="col-lg-5 col-md-6 col-sm-12 d-flex justify-content-end p-0">
-              <div class="footer-social-icons">
-                <div class="d-flex">
-                  <a href="#" class="d-inline-flex align-items-center justify-content-center text-dark" style="font-size: 18px; width: 35px; height: 35px;">
-                    <i class="fab fa-facebook-f"></i>
-                  </a>
-                  <a href="#" class="d-inline-flex align-items-center justify-content-center text-dark" style="font-size: 18px; width: 35px; height: 35px;">
-                    <i class="fab fa-twitter"></i>
-                  </a>
-                  <a href="#" class="d-inline-flex align-items-center justify-content-center text-dark" style="font-size: 18px; width: 35px; height: 35px;">
-                    <i class="fab fa-linkedin-in"></i>
-                  </a>
-                  <a href="#" class="d-inline-flex align-items-center justify-content-center text-dark" style="font-size: 18px; width: 35px; height: 35px;">
-                    <i class="fab fa-youtube"></i>
-                  </a>
-                </div>
-              </div>
-            </div> -->
             </div>
         </div>
     </footer>
