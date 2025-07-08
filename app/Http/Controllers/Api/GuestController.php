@@ -65,6 +65,7 @@ class GuestController extends Controller
 
     public function validate_subscription(Request $request)
     {
+        dd($request->all());
         $package = Package::whereId($request->package)->status('active')->first();
         if (is_null($package)) {
             return response()->json([
@@ -72,7 +73,6 @@ class GuestController extends Controller
                 "message" => "Package Not Found!"
             ], 404);
         }
-
         $rules = [
             "email" => "required|unique:users,email",
             "password" => "required|min:8",
@@ -97,7 +97,6 @@ class GuestController extends Controller
                 "message" => "Validation Errors Found!"
             ], 422);
         }
-
         if(!$package->free_plan && $request->discount_code != '') {
             $coupon = Coupon::where('code', $request->discount_code)->first();
             if(is_null($coupon)) {

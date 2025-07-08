@@ -151,6 +151,8 @@ Route::post('/stripe/webhook', [CustomerWebhookController::class, 'handleStripeW
 
 Route::get('/pricing', [HomeController::class, 'pricing'])->name('pricing');
 Route::get('/privacy-policy', [HomeController::class, 'privacy_policy'])->name('privacy_policy');
-Route::get('/checkout',[HomeController::class, 'checkout'])->name('checkout');
+Route::get('/terms-conditions', [HomeController::class, 'terms_conditions'])->name('terms_conditions');
+Route::get('/customer-reviews', [HomeController::class, 'customerReviews'])->name('customer.reviews');
+Route::get('/contact-us', [HomeController::class, 'contact'])->name('contact');
 
 Route::get('/', [HomeController::class, 'home'])->name('home');

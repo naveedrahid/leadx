@@ -1,92 +1,187 @@
 <template>
-<div id="home"></div>
-<header id="header" class="main-header">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-4">
-                <div class="d-flex align-items-center justify-content-between">
-                    <a :href="route('home')" class="logo">
-                        <img src="/_public_assets/img/logos/logo.png" :alt="$page.props.app.name" class="img-fluid">
-                    </a>
-                    <button class="menu-btn d-lg-none d-block"><i class="bi bi-list"></i></button>
+    <div id="home"></div>
+    <header id="header" class="main-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <a :href="route('home')" class="logo">
+                            <img src="/_public_assets/img/logos/logo.png" :alt="$page.props.app.name" class="img-fluid">
+                        </a>
+                        <button class="menu-btn d-lg-none d-block"><i class="bi bi-list"></i></button>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-8 d-lg-block d-none">
-                <div class="d-flex align-items-center justify-content-end gap-5">
-                    <nav class="main-menu">
-                        <template v-if="route().current('home')">
-                            <a href="#home" class="nav-link active">Home</a>
-                            <a href="#features" class="nav-link">Features</a>
-                            <a href="#pricing" class="nav-link">Pricing</a>
-                            <a href="#contact" class="nav-link">Contact</a>
-                        </template>
-                        <template v-else>
-                            <Link :href="route('home')">Home</Link>
-                            <Link :href="route('home') + '#features'">Features</Link>
-                            <Link :href="route('pricing')" :class="{
-                                'active': route().current('pricing')
-                            }">Pricing</Link>
-                            <Link :href="route('home') + '#contact'">Contact</Link>
-                        </template>
-                    </nav>
-                    <div class="other-nav-links">
-                        <template v-if="user">
-                            <a :href="route('app.customer.dashboard')" class="button button-primary">My Account</a>
-                            <button class="button button-secondary" @click="logout()">Logout</button>
-                        </template>
-                        <template v-else>
-                            <a :href="route('app.auth.login')" class="button button-primary">Login</a>
-                        </template>
+                <div class="col-md-8 d-lg-block d-none">
+                    <div class="d-flex align-items-center justify-content-between gap-5">
+                        <nav class="main-menu">
+                            <template v-if="route().current('home')">
+                                <a href="#home" class="nav-link active">Home</a>
+                                <a href="#features" class="nav-link">Features</a>
+                                <a href="#pricing" class="nav-link">Pricing</a>
+                                <Link :href="route('customer.reviews')">Reviews</Link>
+                                <Link :href="route('contact')">Contact</Link>
+                                <!-- <a href="#contact" class="nav-link">Contact</a> -->
+                            </template>
+                            <template v-else>
+                                <Link :href="route('home')">Home</Link>
+                                <Link :href="route('home') + '#features'">Features</Link>
+                                <Link :href="route('pricing')" :class="{
+                                    'active': route().current('pricing')
+                                }">Pricing</Link>
+                                <Link :href="route('customer.reviews')">Reviews</Link>
+                                <Link :href="route('home') + '#contact'">Contact</Link>
+                            </template>
+                        </nav>
+                        <div class="other-nav-links">
+                            <template v-if="user">
+                                <a :href="route('app.customer.dashboard')" class="button button-primary">My Account</a>
+                                <button class="button button-secondary" @click="logout()">Logout</button>
+                            </template>
+                            <template v-else>
+                                <a :href="route('app.auth.login')" class="button button-primary">Login</a>
+                            </template>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</header>
+    </header>
 
-<div class="aside-menu">
-    <div class="aside-menu-box">
-        <button type="button" class="aside-menu-close"><i class="bi bi-x-lg"></i></button>
-        <div class="aside-logo-wrap">
-            <a :href="route('home')" class="aside-logo">
-                <img src="/_public_assets/img/logos/logo.png" :alt="$page.props.app.name" class="img-fluid">
-            </a>
-        </div>
-        <div class="aside-main-menu">
-            <nav class="aside-nav-menu">
-                <template v-if="route().current('home')">
-                    <a href="#home" class="nav-link active">Home</a>
-                    <a href="#features" class="nav-link">Features</a>
-                    <a href="#pricing" class="nav-link">Pricing</a>
-                    <a href="#contact" class="nav-link">Contact</a>
-                </template>
-                <template v-else>
-                    <Link :href="route('home')">Home</Link>
-                    <Link :href="route('home') + '#features'">Features</Link>
-                    <Link :href="route('pricing')" :class="{
-                        'active': route().current('pricing')
-                    }">Pricing</Link>
-                    <Link :href="route('home') + '#contact'">Contact</Link>
-                </template>
-            </nav>
-            <div class="aside-nav-links d-flex flex-column gap-2">
-                <template v-if="user">
-                    <a :href="route('app.customer.dashboard')" class="button button-block button-primary">My Account</a>
-                    <button class="button button-block button-secondary" @click="logout()">Logout</button>
-                </template>
-                <template v-else>
-                    <a :href="route('app.auth.login')" class="button button-block button-primary">Login</a>
-                </template>
+    <div class="aside-menu">
+        <div class="aside-menu-box">
+            <button type="button" class="aside-menu-close"><i class="bi bi-x-lg"></i></button>
+            <div class="aside-logo-wrap">
+                <a :href="route('home')" class="aside-logo">
+                    <img src="/_public_assets/img/logos/logo.png" :alt="$page.props.app.name" class="img-fluid">
+                </a>
+            </div>
+            <div class="aside-main-menu">
+                <nav class="aside-nav-menu">
+                    <template v-if="route().current('home')">
+                        <a href="#home" class="nav-link active">Home</a>
+                        <a href="#features" class="nav-link">Features</a>
+                        <a href="#pricing" class="nav-link">Pricing</a>
+                        <a href="#contact" class="nav-link">Contact</a>
+                    </template>
+                    <template v-else>
+                        <Link :href="route('home')">Home</Link>
+                        <Link :href="route('home') + '#features'">Features</Link>
+                        <Link :href="route('pricing')" :class="{
+                            'active': route().current('pricing')
+                        }">Pricing</Link>
+                        <Link :href="route('home') + '#contact'">Contact</Link>
+                    </template>
+                </nav>
+                <div class="aside-nav-links d-flex flex-column gap-2">
+                    <template v-if="user">
+                        <a :href="route('app.customer.dashboard')" class="button button-block button-primary">My
+                            Account</a>
+                        <button class="button button-block button-secondary" @click="logout()">Logout</button>
+                    </template>
+                    <template v-else>
+                        <a :href="route('app.auth.login')" class="button button-block button-primary">Login</a>
+                    </template>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- BEGIN::MAIN CONTENT -->
-<slot></slot>
-<!-- END::MAIN CONTENT -->
+    <!-- BEGIN::MAIN CONTENT -->
+    <slot></slot>
+    <!-- END::MAIN CONTENT -->
 
-<footer class="main-footer overflow-hidden">
+    <footer class="mainFooter" style="background-color: #008744;">
+        <div class="footer-banner container mb-5">
+            <div class="row justify-content-center align-items-center">
+                <div class="footer-banner-col col-lg-12 col-md-12 col-sm-12 rounded-5 px-5 pt-3"
+                    style="background-color: #f5f9f9;">
+                    <div class="container px-4">
+                        <div class="row align-items-center">
+                            <div class="col-lg-8 col-md-7 col-sm-12 col-first">
+                                <span class="colFirstTxt">Now Available on Mobile!</span>
+                                <h2 class="my-4">Grab the LeadXForms Mobile App <br><span style="color: #008543;">Your
+                                        Leads, On-the-Go!</span></h2>
+                                <div class="py-2 d-flex gap-3">
+                                    <img src="/_public_assets/testImg/Button (1).png" width="150" class="img-fluid">
+                                    <img src="/_public_assets/testImg/Button.png" width="150" class="img-fluid">
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 d-flex justify-content-end">
+                                <img src="/_public_assets/testImg/Mobile.png" class="img-fluid footer-mobile"
+                                    alt="Shape Man img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container footerMenu">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-12 d-flex flex-column">
+                    <div class="footer-logo">
+                        <a :href="route('home')">
+                            <img src="/_public_assets/img/logos/logo.png" :alt="$page.props.app.name" class="img-fluid">
+                        </a>
+                    </div>
+                    <div class="footer-info">
+                        <p class="text-white">Design and publish forms faster, smoother, and better — with the most
+                            flexible
+                            WordPress form builder!</p>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 col-sm-12">
+                    <div class="footer-list">
+                        <h5 class="text-white mb-4">Quick Links</h5>
+                        <ul class="unstyled-list">
+                            <li><Link :href="route('home')" class="text-white">Home</Link></li>
+                            <li><a href="#pricing" class="nav-link text-white">Pricing</a></li>
+                            <li><Link :href="route('customer.reviews')" class="text-white">Reviews</Link></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 col-sm-12">
+                    <div class="footer-list">
+                        <h5 class="text-white mb-4">Helpful Links</h5>
+                        <ul class="unstyled-list">
+                            <li>
+                                <Link :href="route('privacy_policy')" class="text-white">Privacy Policy</Link>
+                            </li>
+                            <li>
+                                <Link :href="route('terms_conditions')" class="text-white">Terms &amp; Conditions</Link>
+                            </li>
+                            <li>
+                                <Link :href="route('contact')" class="text-white">Contact Us</Link>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="footer-list">
+                        <h5 class="text-white mb-4">Contact</h5>
+                        <ul class="unstyled-list infoIcon">
+                            <li><a class="text-white" :href="'mailto:' + $page.props.app.support_mail">{{ $page.props.app.support_mail}}</a>
+                            </li>
+                            <li><a href="#" class="text-white">
+                                    Level 4/260 Queen St, Brisbane City QLD
+                                    4000
+                                </a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row pt-3 pb-3 mt-4 border-top justify-content-between align-items-center ">
+                <div class="col-lg-12 col-md-12 col-sm-12 p-0">
+                    <div class="footer-rights d-flex align-items-center justify-content-center">
+                        <p class="m-0 text-white">© Copyright @ 2024-2025 LeadXForms</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- <footer class="main-footer overflow-hidden">
     <div class="container">
         <div class="footer-top">
             <div class="row">
@@ -132,13 +227,13 @@
             </div>
         </div>
     </div>
-</footer>
+</footer> -->
 
-<div id="scrollToTop" :class="[
-    'scrollToTopBtn', { 'fade-in': isVisible, 'fade-out': !isVisible }
-]" @click.prevent="scrollToTop"><i class="bi bi-arrow-up-short"></i></div>
+    <div id="scrollToTop" :class="[
+        'scrollToTopBtn', { 'fade-in': isVisible, 'fade-out': !isVisible }
+    ]" @click.prevent="scrollToTop"><i class="bi bi-arrow-up-short"></i></div>
 
-<Loader :toggle="loader"></Loader>
+    <Loader :toggle="loader"></Loader>
 </template>
 
 <script>
@@ -227,7 +322,7 @@ export default {
                 this.user = $response.data.user;
                 this.$cookies.set('lxf-user', this.user, moment(moment()).add(1, 'years').diff(moment(), 'seconds'));
             }).catch((error) => {
-                if(error.response) {
+                if (error.response) {
                     if (error.response.status == 401 || error.response.status == 403 || error.response.status == 404) {
                         this.$cookies.set('lxf-error-msg', error.response.data.message, 10);
                         this.$cookies.remove('lxf-token');
@@ -248,12 +343,12 @@ export default {
     },
 
     mounted() {
-        if(this.token != null) {
+        if (this.token != null) {
             this.isUserLogin();
         }
 
         let successMsg = this.$cookies.get('lxf-success-msg');
-        if(successMsg != null) {
+        if (successMsg != null) {
             toast.success(successMsg);
             this.$cookies.remove('lxf-success-msg');
         }
@@ -287,7 +382,7 @@ export default {
                         link.removeClass("active");
                     }
 
-                    if(position <= 200) {
+                    if (position <= 200) {
                         $('.nav-link[href="#home"]').addClass('active');
                     }
                 }
@@ -297,7 +392,7 @@ export default {
         $('.nav-link').on('click', function () {
             const targetId = $(this).attr('href').substring(1);
             const activeLink = $(`a[href="#${targetId}"]`);
-            
+
             $('.nav-link').removeClass('active');
             activeLink.addClass('active');
         });
@@ -316,4 +411,5 @@ export default {
 @import '/public/_public_assets/vendor/bootstrap-icons/bootstrap-icons.css';
 @import '/public/_app_assets/css/style.min.css';
 @import '/public/_public_assets/css/style.css';
+@import '/public/_app_assets/css/main.css';
 </style>
