@@ -82,7 +82,20 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>    
+                                    <div class="col-md-4">
+                                        <div class="form-group mb-3">
+                                            <label for="status" class="form-label">Status</label>
+                                          <select class="form-control" v-model="form.status">
+                                              <option value="">Select Status</option>
+                                              <option value="active">Active</option>
+                                              <option value="deactive">Deactive</option>
+                                          </select>
+                                            <div class="text-danger" v-if="errors.status">
+                                                <small>{{ errors.status }}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="row">
@@ -174,6 +187,7 @@ export default {
                 title: '',
                 features: [],
                 description: '',
+                status: '',
                 recommended: false,
                 sort: 0,
                 website_limit: '',
@@ -198,7 +212,7 @@ export default {
             }).then((response) => {
                 let $response = response.data;
                 this.item = $response.data;
-
+                this.form.status = this.item.status ? this.item.status : '';
                 this.form.title = this.item.title ? this.item.title : '';
                 this.form.features = this.item.features ? JSON.parse(this.item.features) : [];
                 this.form.description = this.item.description ? this.item.description : '';

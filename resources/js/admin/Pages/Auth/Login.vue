@@ -10,7 +10,9 @@
                         </Link>
                     </div>
                     <h2 class="mb-2 fs-7 fw-bolder">Sign In</h2>
-                    <p class=" mb-9">Don't have an account? <Link :href="route('home')">Get {{ $page.props.app.name }} Pro</Link>.</p>
+                    <p class=" mb-9">Don't have an account? <a :href="pricingUrl">
+                        Get {{ $page.props.app.name }} Pro
+                    </a></p>
                 </div>
                 <form @submit.prevent="login()">
                     <div class="mb-3">
@@ -68,6 +70,7 @@ export default {
 
     data() {
         return {
+            pricingUrl: this.$page.props.pricingUrl,
             form: {
                 email: '',
                 password: ''
@@ -121,7 +124,7 @@ export default {
         if(this.$cookies.get('lxf-token') && this.$cookies.get('lxf-user')) {
             let token = this.$cookies.get('lxf-token');
             let user = this.$cookies.get('lxf-user');
-            
+
             if(user.user_type == 'admin') {
                 this.$inertia.visit(route('app.admin.dashboard'));
             }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Traits\ApiPaginate;
+use Illuminate\Support\Facades\Log;
 use App\Models\{
     Package,
     User
@@ -26,6 +27,75 @@ class PackageController extends Controller
 
     public function __construct() {
         $this->stripe = new StripeClient(config('services.stripe.secret'));
+    }
+
+    public function updateStripeProductPrices()
+    {
+        $products = $this->stripe->products->all([
+            'active' => true,
+            'limit' => 100
+        ]);
+
+        foreach ($products->data as $product) {
+            $prices = $this->stripe->prices->all([
+                'product' => $product->id,
+                'limit' => 1,
+                'active' => true
+            ]);
+
+            if (count($prices->data)) {
+                $oldPrice = $prices->data[0];
+                $oldAmount = $oldPrice->unit_amount / 100;
+
+                $package = Package::whereHas('payment_methods', function ($query) use ($product) {
+                    $query->where('pm_product_id', $product->id);
+                })->first();
+
+                if ($package) {
+                    $newAmount = round($package->regular_price * 1.10, 2);
+
+                    $priceData = [
+                        'unit_amount' => $newAmount * 100,
+                        'currency' => 'aud',
+                        'product' => $product->id,
+                        'nickname' => "GST Included Price - {$newAmount} AUD",
+                        'recurring' => [
+                            'interval' => $package->duration_type,
+                            'interval_count' => $package->duration
+                        ]
+                    ];
+
+                    $newPrice = $this->stripe->prices->create($priceData);
+                    $subscriptions = $this->stripe->subscriptions->all([
+                        'limit' => 100,
+                        'status' => 'active'
+                    ]);
+
+                    foreach ($subscriptions->data as $subscription) {
+                        foreach ($subscription->items->data as $item) {
+                            if ($item->price->id === $oldPrice->id) {
+                                $this->stripe->subscriptionItems->update(
+                                    $item->id,
+                                    ['price' => $newPrice->id]
+                                );
+                                Log::info('Subscription {$subscription->id} price updated');
+                            }
+                        }
+                    }
+
+                    $this->stripe->prices->update($oldPrice->id, ['active' => false]);
+                    $package->update([
+                        'regular_price' => $newAmount
+                    ]);
+
+                    $package->payment_methods()->where('payment_method', 'stripe')->update([
+                        'pm_price_id' => $newPrice->id
+                    ]);
+                }
+            }
+        }
+
+        return true;
     }
 
     public function resolveUser(Request $request) {
@@ -167,7 +237,7 @@ class PackageController extends Controller
                     'name' => $package->title,
                     'active' => true
                 ]);
-                
+
                 $price = $this->stripe->prices->create([
                     'unit_amount' => $package->price * 100,
                     'currency' => currency_code(),
@@ -183,7 +253,7 @@ class PackageController extends Controller
                     'pm_product_id' => $product->id,
                     'pm_price_id' => $price->id
                 ]);
-    
+
                 $package->load('payment_methods');
             }
 
@@ -233,6 +303,7 @@ class PackageController extends Controller
                 'website_limit' => $request->website_limit,
                 'lead_limit' => $request->lead_limit,
                 'app_access' => $request->app_access,
+                'status' => $request->status
             ]);
 
             $pm = $package->payment_methods()->where('payment_method', 'stripe')->first();
@@ -389,7 +460,7 @@ class PackageController extends Controller
 
         $deletedCount = 0;
         $failedToDelete = [];
-        
+
         foreach($packages as $package) {
             try {
                 DB::beginTransaction();
@@ -408,7 +479,7 @@ class PackageController extends Controller
                 } else {
                     $failedToDelete[] = $package->id;
                 }
-                
+
                 DB::commit();
             } catch (\Exception $e) {
                 DB::rollBack();

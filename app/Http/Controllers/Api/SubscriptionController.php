@@ -217,7 +217,7 @@ class SubscriptionController extends Controller
             'order' => $request->filled('order') ? $request->order : 'DESC',
         ];
 
-        $paymentCardQuery = PaymentCard::filterPaymentCards($request)->orderBy($order->orderby, $order->order);
+        $paymentCardQuery = PaymentCard::filterPaymentCards($request)->where('user_id',auth()->id())->orderBy($order->orderby, $order->order);
 
         if ($request->filled('perpage')) {
             $paymentCards = $paymentCardQuery->paginate($request->perpage);

@@ -10,6 +10,9 @@
                 <div class="d-flex align-items-center justify-content-end gap-2">
                     <Link :href="route('app.admin.package.create')" class="btn btn-primary btn-sm"><i class="ti ti-plus"></i> Add New</Link>
                     <Link :href="route('app.admin.package.index')" class="btn btn-dark btn-sm"><i class="ti ti-refresh"></i> Reload</Link>
+                    <button @click="updateGst" class="btn btn-primary btn-sm btn-update-gst">
+                        <i class="ti ti-plus"></i> GST(10%)
+                    </button>
                 </div>
             </div>
             <div class="card">
@@ -262,7 +265,29 @@ export default {
     methods: {
         priceFormat(price, symbol = true) {
             price = parseInt(price).toFixed(2);
-            return symbol ? this.$page.props.currency_symbol + price : price; 
+            return symbol ? this.$page.props.currency_symbol + price : price;
+        },
+        async updateGst() {
+            let button = document.querySelector('.btn-update-gst');
+            let oldHtml = button.innerHTML;
+
+            button.disabled = true;
+            button.innerHTML = '<i class="ti ti-loader rotate"></i> Updating...';
+
+            try {
+                const response = await axios.post(route('api.package.gstUpdate'), {}, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: "Bearer " + this.token,
+                    },
+                });
+                this.getData();
+            } catch (error) {
+                console.error(error);
+            } finally {
+                button.disabled = false;
+                button.innerHTML = oldHtml;
+            }
         },
 
         dateFormat(date, format, cformat = null) {
@@ -272,7 +297,7 @@ export default {
 
             return moment(date).format(format);
         },
-        
+
         getItemNum(index) {
             index = index+1;
             if(this.page > 1) {
@@ -291,12 +316,12 @@ export default {
             if(this.perpage == '' || this.perpage == 0) {
                 this.perpage = 1;
             }
-            
+
             this.getData();
         },
 
         selectAll() {
-            this.checkAll = this.checkAll ? false : true; 
+            this.checkAll = this.checkAll ? false : true;
             let itemsIds = [];
             if(this.collection.length) {
                 this.collection.forEach((item) => {
@@ -322,16 +347,16 @@ export default {
                 } else {
                     dateStart = moment().format('YYYY-MM-DD');
                 }
-                
+
                 if(this.dates[1] != null) {
                     dateEnd = moment(this.dates[1]).format('YYYY-MM-DD');
                 } else {
                     dateEnd = moment().format('YYYY-MM-DD');
                 }
-    
+
                 this.dates = [dateStart, dateEnd];
             }
-            
+
             this.getData();
         },
 
@@ -411,7 +436,7 @@ export default {
             ele.prop('disabled', true);
             ele.html('<i class="ti ti-loader rotate"></i> Loading...');
             await axios.post(route('api.package.update.status', [item.id]), {
-                status: status 
+                status: status
             }, {
                 headers: {
                     "Content-Type": "application/json",
@@ -425,7 +450,7 @@ export default {
                         this.collection[index].status = status;
                     }
                 });
-                
+
                 ele.prop('disabled', false);
                 ele.html((status == 'active' ? 'Active' : 'Deactive'));
             }).catch((error) => {
@@ -479,7 +504,7 @@ export default {
                         this.collection.splice(index, 1);
                     }
                 });
-                
+
                 if(!this.collection.length) {
                     this.getData();
                 }

@@ -30,11 +30,13 @@ class WebhookController extends Controller
 {
     protected $stripe;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->stripe = new StripeClient(config('services.stripe.secret'));
     }
 
-    public function handleStripeWebhook(Request $request) {
+    public function handleStripeWebhook(Request $request)
+    {
         $payload = $request->getContent();
         $sigHeader = $request->header('Stripe-Signature');
         $event = null;
@@ -70,7 +72,7 @@ class WebhookController extends Controller
                 try {
                     DB::beginTransaction();
 
-                    $user = User::customer()->whereHas('customer_details', function($query) use($stripe_subscription) {
+                    $user = User::customer()->whereHas('customer_details', function ($query) use ($stripe_subscription) {
                         $query->where('pm_customer_id', $stripe_subscription->customer);
                     })->first();
                     $default_card = $user->payment_cards()->where('is_default', 1)->first();
@@ -78,7 +80,7 @@ class WebhookController extends Controller
                     $stripe_customer = $this->stripe->customers->retrieve($user->customer_details->pm_customer_id);
                     $stripe_card = $this->stripe->paymentMethods->retrieve($default_card->pm_id);
 
-                    $package = Package::whereHas('payment_methods', function($query) use($stripe_plan_id) {
+                    $package = Package::whereHas('payment_methods', function ($query) use ($stripe_plan_id) {
                         $query->where('pm_price_id', $stripe_plan_id);
                     })->first();
                     $package_pm = $package->payment_methods()->stripe()->first();
@@ -111,7 +113,7 @@ class WebhookController extends Controller
                     ]);
 
                     $user_card = $user->payment_cards()->where('brand', $stripe_card->card->brand)->where('last4', $stripe_card->card->last4)->first();
-                    if(is_null($user_card)) {
+                    if (is_null($user_card)) {
                         $user->payment_cards()->create([
                             'card_holder_name' => $stripe_card->billing_details->name ?? $stripe_customer->name,
                             'brand' => $stripe_card->card->brand,
@@ -136,7 +138,7 @@ class WebhookController extends Controller
                         'limit' => 1
                     ]);
 
-                    if(count($stripe_invoices->data)) {
+                    if (count($stripe_invoices->data)) {
                         $stripe_invoice = $stripe_invoices->data[0];
                         $invoiceData = [
                             'user_id' => $user->id,
@@ -144,7 +146,7 @@ class WebhookController extends Controller
                             'subscription_id' => $subscription->id,
                             'pm_invoice_id' => $stripe_invoice->id,
                             'title' => $subscription->name,
-                            'description' => $subscription->name. ' ('. Carbon::createFromTimestamp($stripe_subscription->current_period_start)->format('M d') .' - '. Carbon::createFromTimestamp($stripe_subscription->current_period_end)->format('M d Y') .')',
+                            'description' => $subscription->name . ' (' . Carbon::createFromTimestamp($stripe_subscription->current_period_start)->format('M d') . ' - ' . Carbon::createFromTimestamp($stripe_subscription->current_period_end)->format('M d Y') . ')',
                             'amount' => $stripe_invoice->amount_paid / 100,
                             'status' => $stripe_invoice->status,
                             'date' => Carbon::createFromTimestamp($stripe_invoice->created)->toDateTimeString()
@@ -153,7 +155,7 @@ class WebhookController extends Controller
                         $subscription->invoices()->create($invoiceData);
                     }
 
-                    if($stripe_subscription->status == 'active' || $stripe_subscription->status == 'trialing') {
+                    if ($stripe_subscription->status == 'active' || $stripe_subscription->status == 'trialing') {
                         $user->license()->update([
                             'status' => 'active'
                         ]);
@@ -168,13 +170,45 @@ class WebhookController extends Controller
                     DB::commit();
                 } catch (\Exception $e) {
                     DB::rollBack();
-                    Log::error("Error: ". $e->getMessage());
+                    Log::error("Error: " . $e->getMessage());
                     return response()->json([
                         "error" => 1,
-                        "message" => "Error: ". $e->getMessage()
+                        "message" => "Error: " . $e->getMessage()
                     ], 404);
                 }
-            break;
+                break;
+            case 'invoice.created':
+                $invoice = $event->data->object;
+
+                if ($invoice->subscription && $invoice->billing_reason === 'subscription_cycle') {
+                    try {
+                        DB::beginTransaction();
+                        $stripe_subscription = $this->stripe->subscriptions->retrieve($invoice->subscription);
+
+                        $user = User::customer()->whereHas('customer_details', function ($query) use ($invoice) {
+                            $query->where('pm_customer_id', $invoice->customer);
+                        })->first();
+
+                        if (!$user || !$invoice->subtotal) {
+                            break;
+                        }
+                        $gstAmount = intval($invoice->subtotal * 0.10);
+                        $this->stripe->invoiceItems->create([
+                            'customer' => $invoice->customer,
+                            'amount' => $gstAmount,
+                            'currency' => $invoice->currency,
+                            'description' => '10% GST',
+                            'invoice' => $invoice->id
+                        ]);
+
+                        DB::commit();
+                    } catch (\Exception $e) {
+                        DB::rollBack();
+                        Log::error("GST Add Error: " . $e->getMessage());
+                    }
+                }
+                break;
+
             case 'customer.subscription.trial_will_end':
                 $stripe_subscription = $event->data->object;
                 $stripe_plan_id = $stripe_subscription->items->data[0]->price->id;
@@ -182,7 +216,7 @@ class WebhookController extends Controller
                 try {
                     DB::beginTransaction();
 
-                    $user = User::customer()->whereHas('customer_details', function($query) use($stripe_subscription) {
+                    $user = User::customer()->whereHas('customer_details', function ($query) use ($stripe_subscription) {
                         $query->where('pm_customer_id', $stripe_subscription->customer);
                     })->first();
                     $default_card = $user->payment_cards()->where('is_default', 1)->first();
@@ -191,7 +225,7 @@ class WebhookController extends Controller
                     $stripe_customer = $this->stripe->customers->retrieve($user->customer_details->pm_customer_id);
                     $stripe_card = $this->stripe->paymentMethods->retrieve($default_card->pm_id);
 
-                    $package = Package::whereHas('payment_methods', function($query) use($stripe_plan_id) {
+                    $package = Package::whereHas('payment_methods', function ($query) use ($stripe_plan_id) {
                         $query->where('pm_price_id', $stripe_plan_id);
                     })->first();
                     $package_pm = $package->payment_methods()->stripe()->first();
@@ -207,7 +241,7 @@ class WebhookController extends Controller
                         'limit' => 1
                     ]);
 
-                    if(count($stripe_invoices->data)) {
+                    if (count($stripe_invoices->data)) {
                         $stripe_invoice = $stripe_invoices->data[0];
                         $subscription->invoices()->create([
                             'user_id' => $user->id,
@@ -215,14 +249,14 @@ class WebhookController extends Controller
                             'subscription_id' => $subscription->id,
                             'pm_invoice_id' => $stripe_invoice->id,
                             'title' => $subscription->name,
-                            'description' => $subscription->name. ' ('. Carbon::createFromTimestamp($stripe_subscription->current_period_start)->format('M d') .' - '. Carbon::createFromTimestamp($stripe_subscription->current_period_end)->format('M d Y') .')',
+                            'description' => $subscription->name . ' (' . Carbon::createFromTimestamp($stripe_subscription->current_period_start)->format('M d') . ' - ' . Carbon::createFromTimestamp($stripe_subscription->current_period_end)->format('M d Y') . ')',
                             'amount' => $stripe_invoice->amount_paid / 100,
                             'status' => $stripe_invoice->status,
                             'date' => Carbon::createFromTimestamp($stripe_invoice->created)->toDateTimeString()
                         ]);
                     }
 
-                    if($stripe_subscription->status == 'active' || $stripe_subscription->status == 'trialing') {
+                    if ($stripe_subscription->status == 'active' || $stripe_subscription->status == 'trialing') {
                         $user->license()->update([
                             'status' => 'active'
                         ]);
@@ -237,28 +271,28 @@ class WebhookController extends Controller
                     DB::commit();
                 } catch (\Exception $e) {
                     DB::rollBack();
-                    Log::error("Error: ". $e->getMessage());
+                    Log::error("Error: " . $e->getMessage());
                     return response()->json([
                         "error" => 1,
-                        "message" => "Error: ". $e->getMessage()
+                        "message" => "Error: " . $e->getMessage()
                     ], 404);
                 }
-            break;
+                break;
             case 'customer.subscription.updated':
                 $stripe_subscription = $event->data->object;
                 $stripe_plan_id = $stripe_subscription->items->data[0]->price->id;
-                Log::info('WebHook 1',$stripe_plan_id);
+                Log::info('WebHook 1', $stripe_plan_id);
                 Log::info('2');
                 try {
                     DB::beginTransaction();
 
-                    $user = User::customer()->whereHas('customer_details', function($query) use($stripe_subscription) {
+                    $user = User::customer()->whereHas('customer_details', function ($query) use ($stripe_subscription) {
                         $query->where('pm_customer_id', $stripe_subscription->customer);
                     })->first();
                     $subscription = $user->subscriptions()->where('pm_subscription_id', $stripe_subscription->id)->first();
                     $default_card = $user->payment_cards()->where('is_default', 1)->first();
 
-                    $package = Package::whereHas('payment_methods', function($query) use($stripe_plan_id) {
+                    $package = Package::whereHas('payment_methods', function ($query) use ($stripe_plan_id) {
                         $query->where('pm_price_id', $stripe_plan_id);
                     })->first();
                     $package_pm = $package->payment_methods()->stripe()->first();
@@ -290,7 +324,7 @@ class WebhookController extends Controller
                         'limit' => 1
                     ]);
 
-                    if(count($stripe_invoices->data)) {
+                    if (count($stripe_invoices->data)) {
                         $stripe_invoice = $stripe_invoices->data[0];
                         $subscription->invoices()->create([
                             'user_id' => $user->id,
@@ -298,14 +332,14 @@ class WebhookController extends Controller
                             'subscription_id' => $subscription->id,
                             'pm_invoice_id' => $stripe_invoice->id,
                             'title' => $subscription->name,
-                            'description' => $subscription->name. ' ('. Carbon::createFromTimestamp($stripe_subscription->current_period_start)->format('M d') .' - '. Carbon::createFromTimestamp($stripe_subscription->current_period_end)->format('M d Y') .')',
+                            'description' => $subscription->name . ' (' . Carbon::createFromTimestamp($stripe_subscription->current_period_start)->format('M d') . ' - ' . Carbon::createFromTimestamp($stripe_subscription->current_period_end)->format('M d Y') . ')',
                             'amount' => $stripe_invoice->amount_paid / 100,
                             'status' => $stripe_invoice->status,
                             'date' => Carbon::createFromTimestamp($stripe_invoice->created)->toDateTimeString()
                         ]);
                     }
                     Log::info('WebHook 4');
-                    if($stripe_subscription->status == 'active' || $stripe_subscription->status == 'trialing') {
+                    if ($stripe_subscription->status == 'active' || $stripe_subscription->status == 'trialing') {
                         $user->license()->update([
                             'status' => 'active'
                         ]);
@@ -321,20 +355,20 @@ class WebhookController extends Controller
                 } catch (\Exception $e) {
                     Log::info('WebHook 7');
                     DB::rollBack();
-                    Log::error("Error: ". $e->getMessage());
+                    Log::error("Error: " . $e->getMessage());
                     return response()->json([
                         "error" => 1,
-                        "message" => "Error: ". $e->getMessage()
+                        "message" => "Error: " . $e->getMessage()
                     ], 404);
                 }
-            break;
+                break;
             case 'customer.subscription.deleted':
                 $stripe_subscription = $event->data->object;
 
                 try {
                     DB::beginTransaction();
 
-                    $user = User::customer()->whereHas('customer_details', function($query) use($stripe_subscription) {
+                    $user = User::customer()->whereHas('customer_details', function ($query) use ($stripe_subscription) {
                         $query->where('pm_customer_id', $stripe_subscription->customer);
                     })->first();
                     $subscription = $user->subscriptions()->where('pm_subscription_id', $stripe_subscription->id)->first();
@@ -353,20 +387,20 @@ class WebhookController extends Controller
                     DB::commit();
                 } catch (\Exception $e) {
                     DB::rollBack();
-                    Log::error("Error: ". $e->getMessage());
+                    Log::error("Error: " . $e->getMessage());
                     return response()->json([
                         "error" => 1,
-                        "message" => "Error: ". $e->getMessage()
+                        "message" => "Error: " . $e->getMessage()
                     ], 404);
                 }
-            break;
+                break;
             case 'customer.subscription.paused':
                 $stripe_subscription = $event->data->object;
 
                 try {
                     DB::beginTransaction();
 
-                    $user = User::customer()->whereHas('customer_details', function($query) use($stripe_subscription) {
+                    $user = User::customer()->whereHas('customer_details', function ($query) use ($stripe_subscription) {
                         $query->where('pm_customer_id', $stripe_subscription->customer);
                     })->first();
                     $subscription = $user->subscriptions()->where('pm_subscription_id', $stripe_subscription->id)->first();
@@ -389,13 +423,13 @@ class WebhookController extends Controller
                     DB::commit();
                 } catch (\Exception $e) {
                     DB::rollBack();
-                    Log::error("Error: ". $e->getMessage());
+                    Log::error("Error: " . $e->getMessage());
                     return response()->json([
                         "error" => 1,
-                        "message" => "Error: ". $e->getMessage()
+                        "message" => "Error: " . $e->getMessage()
                     ], 404);
                 }
-            break;
+                break;
             case 'customer.subscription.resumed':
                 $stripe_subscription = $event->data->object;
                 $stripe_plan_id = $stripe_subscription->items->data[0]->price->id;
@@ -403,7 +437,7 @@ class WebhookController extends Controller
                 try {
                     DB::beginTransaction();
 
-                    $user = User::customer()->whereHas('customer_details', function($query) use($stripe_subscription) {
+                    $user = User::customer()->whereHas('customer_details', function ($query) use ($stripe_subscription) {
                         $query->where('pm_customer_id', $stripe_subscription->customer);
                     })->first();
                     $subscription = $user->subscriptions()->where('pm_subscription_id', $stripe_subscription->id)->first();
@@ -422,7 +456,7 @@ class WebhookController extends Controller
                         'limit' => 1
                     ]);
 
-                    if(count($stripe_invoices->data)) {
+                    if (count($stripe_invoices->data)) {
                         $stripe_invoice = $stripe_invoices->data[0];
                         $subscription->invoices()->create([
                             'user_id' => $user->id,
@@ -430,14 +464,14 @@ class WebhookController extends Controller
                             'subscription_id' => $subscription->id,
                             'pm_invoice_id' => $stripe_invoice->id,
                             'title' => $subscription->name,
-                            'description' => $subscription->name. ' ('. Carbon::createFromTimestamp($stripe_subscription->current_period_start)->format('M d') .' - '. Carbon::createFromTimestamp($stripe_subscription->current_period_end)->format('M d Y') .')',
+                            'description' => $subscription->name . ' (' . Carbon::createFromTimestamp($stripe_subscription->current_period_start)->format('M d') . ' - ' . Carbon::createFromTimestamp($stripe_subscription->current_period_end)->format('M d Y') . ')',
                             'amount' => $stripe_invoice->amount_paid / 100,
                             'status' => $stripe_invoice->status,
                             'date' => Carbon::createFromTimestamp($stripe_invoice->created)->toDateTimeString()
                         ]);
                     }
 
-                    if($stripe_subscription->status == 'active' || $stripe_subscription->status == 'trialing') {
+                    if ($stripe_subscription->status == 'active' || $stripe_subscription->status == 'trialing') {
                         $user->license()->update([
                             'status' => 'active'
                         ]);
@@ -452,29 +486,29 @@ class WebhookController extends Controller
                     DB::commit();
                 } catch (\Exception $e) {
                     DB::rollBack();
-                    Log::error("Error: ". $e->getMessage());
+                    Log::error("Error: " . $e->getMessage());
                     return response()->json([
                         "error" => 1,
-                        "message" => "Error: ". $e->getMessage()
+                        "message" => "Error: " . $e->getMessage()
                     ], 404);
                 }
-            break;
+                break;
             case 'invoice.paid':
                 $stripe_invoice = $event->data->object;
-                if($stripe_invoice->subscription) {
+                if ($stripe_invoice->subscription) {
                     try {
                         DB::beginTransaction();
 
                         $stripe_subscription = $this->stripe->subscriptions->retrieve($stripe_invoice->subscription);
                         $stripe_plan_id = $stripe_subscription->items->data[0]->price->id;
 
-                        $user = User::customer()->whereHas('customer_details', function($query) use($stripe_subscription) {
+                        $user = User::customer()->whereHas('customer_details', function ($query) use ($stripe_subscription) {
                             $query->where('pm_customer_id', $stripe_subscription->customer);
                         })->first();
                         $default_card = $user->payment_cards()->where('is_default', 1)->first();
                         $subscription = $user->subscriptions()->where('pm_subscription_id', $stripe_subscription->id)->first();
 
-                        $package = Package::whereHas('payment_methods', function($query) use($stripe_plan_id) {
+                        $package = Package::whereHas('payment_methods', function ($query) use ($stripe_plan_id) {
                             $query->where('pm_price_id', $stripe_plan_id);
                         })->first();
                         $package_pm = $package->payment_methods()->stripe()->first();
@@ -484,7 +518,7 @@ class WebhookController extends Controller
                             $amount += $item->plan->amount / 100;
                         }
 
-                        if(!is_null($subscription)) {
+                        if (!is_null($subscription)) {
                             $subscription->update([
                                 'package_id' => $package->id,
                                 'pm_subscription_id' => $stripe_subscription->id,
@@ -526,7 +560,7 @@ class WebhookController extends Controller
                             'limit' => 1
                         ]);
 
-                        if(count($stripe_invoices->data)) {
+                        if (count($stripe_invoices->data)) {
                             $stripe_invoice = $stripe_invoices->data[0];
                             $subscription->invoices()->create([
                                 'user_id' => $user->id,
@@ -534,14 +568,14 @@ class WebhookController extends Controller
                                 'subscription_id' => $subscription->id,
                                 'pm_invoice_id' => $stripe_invoice->id,
                                 'title' => $subscription->name,
-                                'description' => $subscription->name. ' ('. Carbon::createFromTimestamp($stripe_subscription->current_period_start)->format('M d') .' - '. Carbon::createFromTimestamp($stripe_subscription->current_period_end)->format('M d Y') .')',
+                                'description' => $subscription->name . ' (' . Carbon::createFromTimestamp($stripe_subscription->current_period_start)->format('M d') . ' - ' . Carbon::createFromTimestamp($stripe_subscription->current_period_end)->format('M d Y') . ')',
                                 'amount' => $stripe_invoice->amount_paid / 100,
                                 'status' => $stripe_invoice->status,
                                 'date' => Carbon::createFromTimestamp($stripe_invoice->created)->toDateTimeString()
                             ]);
                         }
 
-                        if($stripe_subscription->status == 'active' || $stripe_subscription->status == 'trialing') {
+                        if ($stripe_subscription->status == 'active' || $stripe_subscription->status == 'trialing') {
                             $user->license()->update([
                                 'status' => 'active'
                             ]);
@@ -556,22 +590,22 @@ class WebhookController extends Controller
                         DB::commit();
                     } catch (\Exception $e) {
                         DB::rollBack();
-                        Log::error("Error: ". $e->getMessage());
+                        Log::error("Error: " . $e->getMessage());
                         return response()->json([
                             "error" => 1,
-                            "message" => "Error: ". $e->getMessage()
+                            "message" => "Error: " . $e->getMessage()
                         ], 404);
                     }
                 }
-            break;
+                break;
             case 'invoice.payment_failed':
                 $stripe_invoice = $event->data->object;
-                if($stripe_invoice->subscription) {
+                if ($stripe_invoice->subscription) {
                     try {
                         DB::beginTransaction();
 
                         $stripe_subscription = $this->stripe->subscriptions->retrieve($stripe_invoice->subscription);
-                        $user = User::customer()->whereHas('customer_details', function($query) use($stripe_subscription) {
+                        $user = User::customer()->whereHas('customer_details', function ($query) use ($stripe_subscription) {
                             $query->where('pm_customer_id', $stripe_subscription->customer);
                         })->first();
                         $subscription = $user->subscriptions()->where('pm_subscription_id', $stripe_subscription->id)->first();
@@ -592,21 +626,21 @@ class WebhookController extends Controller
                         DB::commit();
                     } catch (\Exception $e) {
                         DB::rollBack();
-                        Log::error("Error: ". $e->getMessage());
+                        Log::error("Error: " . $e->getMessage());
                         return response()->json([
                             "error" => 1,
-                            "message" => "Error: ". $e->getMessage()
+                            "message" => "Error: " . $e->getMessage()
                         ], 404);
                     }
                 }
-            break;
+                break;
             case 'payment_method.automatically_updated':
                 $stripe_payment_method = $event->data->object;
-                if($stripe_payment_method) {
+                if ($stripe_payment_method) {
                     try {
                         DB::beginTransaction();
 
-                        $user = User::customer()->whereHas('customer_details', function($query) use($stripe_payment_method) {
+                        $user = User::customer()->whereHas('customer_details', function ($query) use ($stripe_payment_method) {
                             $query->where('pm_customer_id', $stripe_payment_method->customer);
                         })->first();
                         $user_card = $user->payment_cards()->where('brand', $stripe_payment_method->card->brand)->where('last4', $stripe_payment_method->card->last4)->first();
@@ -616,7 +650,7 @@ class WebhookController extends Controller
                             'is_default' => 0
                         ]);
 
-                        if(is_null($user_card)) {
+                        if (is_null($user_card)) {
                             $user->payment_cards()->create([
                                 'card_holder_name' => $stripe_payment_method->billing_details->name ?? $stripe_customer->name,
                                 'brand' => $stripe_payment_method->card->brand,
@@ -638,7 +672,7 @@ class WebhookController extends Controller
                             ]);
                         }
 
-                        if(!is_null($subscription)) {
+                        if (!is_null($subscription)) {
                             $subscription->update([
                                 'pm_id' => $stripe_payment_method->id
                             ]);
@@ -649,17 +683,17 @@ class WebhookController extends Controller
                         DB::commit();
                     } catch (\Exception $e) {
                         DB::rollBack();
-                        Log::error("Error: ". $e->getMessage());
+                        Log::error("Error: " . $e->getMessage());
                         return response()->json([
                             "error" => 1,
-                            "message" => "Error: ". $e->getMessage()
+                            "message" => "Error: " . $e->getMessage()
                         ], 404);
                     }
                 }
-            break;
+                break;
             default:
-            // Ignore unrecognized event types
-            break;
+                // Ignore unrecognized event types
+                break;
         }
 
         return response()->json(['success' => true]);

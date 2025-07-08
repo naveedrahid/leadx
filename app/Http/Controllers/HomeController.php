@@ -17,6 +17,10 @@ class HomeController extends Controller
         return Inertia::render('Privacy-policy');
     }
 
+    public function checkout(){
+        return Inertia::render('Checkout');
+    }
+
     public function pricing() : Response
     {
         return Inertia::render('Pricing');

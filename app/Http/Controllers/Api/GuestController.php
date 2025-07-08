@@ -161,6 +161,9 @@ class GuestController extends Controller
     {
         $package = Package::whereId($request->package)->status('active')->first();
         $user = User::where('email', $request->email)->first();
+        $price = $package->price;
+        $gst = $price * 0.10;
+        $priceWithGST = $price + $gst;
         if (!is_null($user)) {
             return response()->json([
                 "error" => 1,
@@ -277,6 +280,7 @@ class GuestController extends Controller
                     }
 
                     if(!$package->duration_lifetime) {
+
                         $package_pm = $package->payment_methods()->stripe()->first();
                         $ssData = [
                             'customer' => $stripe_customer->id,
@@ -296,18 +300,23 @@ class GuestController extends Controller
                         $stripe_subscription = $this->stripe->subscriptions->create($ssData);
                         $stripe_card = $this->stripe->paymentMethods->retrieve($payment_token);
                     } else {
-                        $price = ($package->price * 0.0175) + 0.30;
+
                         if($coupon != null) {
-                            $price = discount_price($package->price, $coupon->amount, $coupon->type);
+                            $priceWithGST  = discount_price($priceWithGST, $coupon->amount, $coupon->type);
                         }
 
                         $stripe_subscription = $this->stripe->paymentIntents->create([
                             'customer' => $stripe_customer->id,
-                            'amount' => $price * 100,
+                            'amount' => $priceWithGST * 100,
                             'currency' => 'aud',
                             'payment_method_types' => ['card'],
                             'payment_method' => $payment_token,
-                            'confirm' => true
+                            'confirm' => true,
+                            'metadata' => [
+                                'base_price' => number_format($price, 2),
+                                'gst_10_percent' => number_format($gst, 2),
+                                'total_with_gst' => number_format($priceWithGST, 2),
+                            ],
                         ]);
                     }
                 }
@@ -332,7 +341,7 @@ class GuestController extends Controller
                             'pm_id' => $payment_token,
                             'payment_method' => $request->payment_method,
                             'name' => $package->title,
-                            'amount' => $amount,
+                            'amount' => $priceWithGST,
                             'start_at' => Carbon::createFromTimestamp($stripe_subscription->current_period_start)->toDateTimeString(),
                             'next_billing_date' => Carbon::createFromTimestamp($stripe_subscription->current_period_end)->toDateTimeString(),
                             'ended_at' => $stripe_subscription->ended_at ? Carbon::createFromTimestamp($stripe_subscription->ended_at)->toDateTimeString() : null,
@@ -395,7 +404,7 @@ class GuestController extends Controller
                                 'pm_invoice_id' => $stripe_invoice->id,
                                 'title' => $subscription->name,
                                 'description' => $subscription->name. ' ('. Carbon::createFromTimestamp($stripe_subscription->current_period_start)->format('M d') .' - '. Carbon::createFromTimestamp($stripe_subscription->current_period_end)->format('M d Y') .')',
-                                'amount' => $stripe_invoice->amount_paid / 100,
+                                'amount' => $priceWithGST,
                                 'status' => $stripe_invoice->status,
                                 'date' => Carbon::createFromTimestamp($stripe_invoice->created)->toDateTimeString()
                             ];
@@ -424,7 +433,7 @@ class GuestController extends Controller
                             'pm_id' => $payment_token,
                             'payment_method' => $request->payment_method,
                             'name' => $package->title,
-                            'amount' => $stripe_subscription->amount / 100,
+                            'amount' => $priceWithGST,
                             'payment_method' => $payment_token,
                             'start_at' => Carbon::createFromTimestamp($stripe_subscription->created)->toDateTimeString(),
                             'ended_at' => null,
@@ -465,7 +474,7 @@ class GuestController extends Controller
                             'pm_invoice_id' => null,
                             'title' => $subscription->name,
                             'description' => $subscription->name. ' ('. Carbon::createFromTimestamp($stripe_subscription->created)->format('M d Y') .' - Lifetime )',
-                            'amount' => $stripe_subscription->amount / 100,
+                            'amount' => $priceWithGST,
                             'status' => 'paid',
                             'date' => Carbon::createFromTimestamp($stripe_subscription->created)->toDateTimeString()
                         ];

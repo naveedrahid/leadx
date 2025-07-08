@@ -11,6 +11,11 @@ class LoginController extends Controller
 {
     public function show() : Response
     {
-        return Inertia::render('Auth/Login');
+        return Inertia::render('Auth/Login', [
+            'pricingUrl' => url('/#pricing'),
+            'app' => [
+                'name' => config('app.name'),
+            ],
+        ]);
     }
 }

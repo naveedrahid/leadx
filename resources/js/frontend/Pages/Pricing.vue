@@ -319,8 +319,7 @@ export default {
 
         handlingFee() {
             let price = Number(this.pack.price) || 0;
-            let fee = price * 0.0175 + 0.30;
-            return fee.toFixed(2);
+            return price > 0 ? (price * 0.10).toFixed(2) : '0.00';
         },
         totalAmount() {
             let total = Number(this.pack.price) + Number(this.handlingFee());

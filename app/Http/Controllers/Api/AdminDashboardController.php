@@ -3,12 +3,21 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Package;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Subscription;
+use Illuminate\Support\Facades\Log;
+use Stripe\StripeClient;
 
 class AdminDashboardController extends Controller
 {
+    public function __construct()
+    {
+        $this->stripe = new StripeClient(config('services.stripe.secret'));
+    }
+
+
     public function resolveUser(Request $request) {
         if($request->filled('user_id')) {
             return User::whereId($request->user_id)->first();
@@ -25,7 +34,7 @@ class AdminDashboardController extends Controller
                 "message" => "Access Denied!"
             ], 404);
         }
-        
+
         $customers = User::customer()->filterUsers($request)->get();
         $total_customers = $customers->count();
         $total_active_customers = $customers->where('status', 'active')->count();

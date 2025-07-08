@@ -58,6 +58,7 @@ Route::prefix('v1')->middleware(['cors', 'json.response'])->as('api.')->group(fu
             Route::post('/update/{package_id}', 'update')->name('update');
             Route::post('/create', 'store')->name('create');
             Route::get('/count', 'get_count')->name('get.count');
+            Route::post('/gst-update', 'updateStripeProductPrices')->name('gstUpdate');
             Route::get('/{package_id}', 'get_by')->name('get.single');
             Route::get('/', 'get_all')->name('get.all');
         });
