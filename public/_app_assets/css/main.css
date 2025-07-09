@@ -156,7 +156,6 @@ nav ul li {
 /* slider */
 .leadxhome .img-gray {
     filter: grayscale(100%);
-    opacity: 0.5;
     object-fit: none;
 }
 @-webkit-keyframes scroll {
@@ -392,10 +391,6 @@ footer .footer-list ul li {
 .footer-banner-col {
     margin-top: -160px;
 }
-.latest-blog >.container {
-    padding-bottom: 16rem !important;
-}
-
 .footerMenu ul.unstyled-list li {
     margin-bottom: 8px !important;
 }

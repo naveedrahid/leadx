@@ -1,22 +1,30 @@
 <template>
 
-    <Head title="Home" />
+    <Head>
+        <title>Best WordPress Form Builder Plugin for Lead Generation</title>
+        <meta name="description"
+            content="Create high-converting WordPress forms with LeadX Forms. Drag-and-drop builder, spam protection, SMTP, custom redirects & more. Try it free today!" />
+    </Head>
     <MasterLayout :loader="loader">
         <section class="hero-section overflow-hidden" id="hero">
             <div class="container">
                 <div class="row align-items-center justify-content-center">
-                    <div class="col-lg-12 col-md-8">
+                    <div class="col-lg-10 col-md-8">
                         <div class="hero-content text-center">
-                            <h1>Welcome To {{ $page.props.app.name }}</h1>
+                            <h1>Build High-Converting WordPress Forms <span class="text-primary">in-Minutes</span> with
+                                <span class="text-primary">{{ $page.props.app.name }}</span>
+                            </h1>
                             <div class="row justify-content-center">
-                                <div class="col-lg-8">
-                                    <p>The Unlimited solution for creating custom forms and flows to connect users and
-                                        enhance engagement and broaden your online presence.</p>
+                                <div class="col-lg-10">
+                                    <p>Create high-converting forms in minutes - no coding needed. LeadX Forms makes it
+                                        easy to capture leads, grow your business, and automate communication.</p>
+                                    <!-- <p>The Unlimited solution for creating custom forms and flows to connect users and
+                                        enhance engagement and broaden your online presence.</p> -->
                                     <div class="my-5 ">
-                                        <a href="#pricing" class="button me-2 button-s2 button-primary">Get Started
-                                            →</a>
-                                        <a href="#pricing" class="button ms-2 button-s2 button-secondary">Free Trail
-                                            -<small>1 Month</small></a>
+                                        <a href="#pricing" class="button me-2 button-s2 w-auto button-primary">
+                                            Get {{ $page.props.app.name }} Now →</a>
+                                        <Link :href="route('featured')" class="ms-2 leadX-Ulink">
+                                        See All Features →</Link>
                                     </div>
                                 </div>
                             </div>
@@ -66,7 +74,42 @@
         <BrandLogos></BrandLogos>
         <!-- END::BRAND LOGOs COMPONENT -->
 
-        <section class="main-section pb-0 overflow-hidden">
+        <section class="main-section features-section overflow-hidden" id="features">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 col-md-8">
+                        <div class="main-head text-center mb-2">
+                            <h4 class="subheading">{{ $page.props.app.name }} Features</h4>
+                            <h2 class="heading">Why <span class="text-primary">{{ $page.props.app.name }}</span> Is Your
+                                New Favorite WordPress Form Plugin</h2>
+                        </div>
+                        <p class="text-center mb-5">LeadXForms is a powerful WordPress form plugin that lets you build
+                            high-converting forms - no coding needed. With SMTP, spam protection, 2000+ templates, and
+                            responsive design, it’s built for speed, security, and simplicity.</p>
+                    </div>
+                </div>
+                <div class="features-area" v-if="features.length > 0">
+                    <div class="row g-4">
+                        <div v-for="(feature, index) in features" :key="index" class="col-lg-4 col-md-6 equal-height">
+                            <div class="feature-box">
+                                <div class="feature-icon-box">
+                                    <img :src="feature.image" :alt="feature.title" class="feature-icon">
+                                    <h3 class="feature-title">{{ feature.title }}</h3>
+                                    <p>{{ feature.description }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-5 text-center">
+                    <a href="#pricing" class="button me-2 button-s2 w-auto button-primary">
+                        Get {{ $page.props.app.name }} Now →</a>
+                    <Link :href="route('featured')" class="ms-2 leadX-Ulink">
+                    See All Features →</Link>
+                </div>
+            </div>
+        </section>
+        <section class="main-section overflow-hidden">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-5 col-md-6 col-sm-12">
@@ -196,7 +239,7 @@
                                 </div>
                             </div>
                             <div class="section-link">
-                                <a href="#">Explore Integrations →</a>
+                                <a href="#" class="leadX-Ulink">Explore Integrations →</a>
                             </div>
                         </div>
                     </div>
@@ -204,45 +247,175 @@
                 </div>
             </div>
         </section>
-
-        <section class="main-section features-section overflow-hidden" id="features">
+        <section class="main-section whychooseus-section bg-light-green overflow-hidden">
             <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-6 col-md-8">
-                        <div class="main-head text-center">
-                            <h4 class="subheading">{{ $page.props.app.name }} Features</h4>
-                            <h2 class="heading">WordPress <span class="text-primary">{{ $page.props.app.name }}</span>
-                                Plugin that's Easy to Create</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="features-area" v-if="features.length > 0">
-                    <div class="row g-4">
-                        <div v-for="(feature, index) in features" :key="index" class="col-lg-4 col-md-6 equal-height">
-                            <div class="feature-box">
-                                <div class="feature-icon-box">
-                                    <img :src="feature.image" :alt="feature.title" class="feature-icon">
-                                    <h3 class="feature-title">{{ feature.title }}</h3>
-                                    <p>{{ feature.description }}</p>
+                <div class="row justify-content-between align-items-center pb-5">
+                    <div class="col-lg-5 col-md-6 col-sm-12">
+                        <h2 class="heading">Transform AI ideas to SaasS Platform</h2>
+                        <p class="border-bottom border-dark pb-3 mb-4">Enjoy premium AI at budget-friendly prices
+                            :sparkles:</p>
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="pb-3 d-flex gap-3">
+                                <div class="icon">
+                                    <span>
+                                        <i class="rounded-pill d-inline-flex bg-white p-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+                                                viewBox="0 0 32 32" fill="none">
+                                                <g opacity="0.12">
+                                                    <path
+                                                        d="M1.33594 25.0667C1.33594 24.6953 1.33594 24.5096 1.34416 24.3527C1.50488 21.286 3.95522 18.8356 7.02192 18.6749C7.17882 18.6667 7.36453 18.6667 7.73594 18.6667H13.6026C13.974 18.6667 14.1597 18.6667 14.3166 18.6749C17.3833 18.8356 19.8337 21.286 19.9944 24.3527C20.0026 24.5096 20.0026 24.6953 20.0026 25.0667C20.0026 25.3143 20.0026 25.4381 19.9971 25.5427C19.89 27.5872 18.2564 29.2207 16.2119 29.3279C16.1073 29.3333 15.9835 29.3333 15.7359 29.3333H5.6026C5.355 29.3333 5.23119 29.3333 5.12659 29.3279C3.08212 29.2207 1.44857 27.5872 1.34142 25.5427C1.33594 25.4381 1.33594 25.3143 1.33594 25.0667Z"
+                                                        fill="#005E54"></path>
+                                                    <path
+                                                        d="M16.0026 8.00001C16.0026 10.9455 13.6148 13.3333 10.6693 13.3333C7.72375 13.3333 5.33594 10.9455 5.33594 8.00001C5.33594 5.05449 7.72375 2.66667 10.6693 2.66667C13.6148 2.66667 16.0026 5.05449 16.0026 8.00001Z"
+                                                        fill="#005E54"></path>
+                                                </g>
+                                                <path
+                                                    d="M20.0026 13.3333C22.9481 13.3333 25.3359 10.9455 25.3359 8.00001C25.3359 5.05449 22.9481 2.66667 20.0026 2.66667M22.6693 29.3333H26.4026C26.6502 29.3333 26.774 29.3333 26.8786 29.3279C28.9231 29.2207 30.5566 27.5872 30.6638 25.5427C30.6693 25.4381 30.6693 25.3143 30.6693 25.0667V25.0667C30.6693 24.6953 30.6693 24.5096 30.661 24.3527C30.5003 21.286 28.05 18.8356 24.9833 18.6749C24.8264 18.6667 24.6407 18.6667 24.2693 18.6667H22.6693M16.0026 8.00001C16.0026 10.9455 13.6148 13.3333 10.6693 13.3333C7.72375 13.3333 5.33594 10.9455 5.33594 8.00001C5.33594 5.05449 7.72375 2.66667 10.6693 2.66667C13.6148 2.66667 16.0026 5.05449 16.0026 8.00001ZM5.6026 29.3333H15.7359C15.9835 29.3333 16.1073 29.3333 16.2119 29.3279C18.2564 29.2207 19.89 27.5872 19.9971 25.5427C20.0026 25.4381 20.0026 25.3143 20.0026 25.0667V25.0667C20.0026 24.6953 20.0026 24.5096 19.9944 24.3527C19.8337 21.286 17.3833 18.8356 14.3166 18.6749C14.1597 18.6667 13.974 18.6667 13.6026 18.6667H7.73594C7.36453 18.6667 7.17882 18.6667 7.02192 18.6749C3.95522 18.8356 1.50488 21.286 1.34416 24.3527C1.33594 24.5096 1.33594 24.6953 1.33594 25.0667V25.0667C1.33594 25.3143 1.33594 25.4381 1.34142 25.5427C1.44857 27.5872 3.08212 29.2207 5.12659 29.3279C5.23119 29.3333 5.355 29.3333 5.6026 29.3333Z"
+                                                    stroke="#005E54" stroke-width="1.5" stroke-linecap="round"
+                                                    stroke-linejoin="round"></path>
+                                            </svg>
+                                        </i>
+                                    </span>
+                                </div>
+                                <div class="icon-content">
+                                    <h5 class="icon-title text-dark">Easily collaborate with team members</h5>
+                                    <p class="pt-2 inter-text ">Lorem ipsum is placeholder text commonly used in the
+                                        graphics and publishing industries.</p>
                                 </div>
                             </div>
                         </div>
+                        <div class="section-link">
+                            <a class="" href="#">Explore Integrations →</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 ps-4">
+                        <img src="/_public_assets/testImg/user-management.png" class="img-fluid rounded-top" alt="">
+                    </div>
+                </div>
+                <div class="features-area">
+                    <div class="row g-4">
+                        <div class="col-lg-3 col-md-6 equal-height">
+                            <div class="feature-box">
+                                <div class="feature-icon-box">
+                                    <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="35px"
+                                        height="35px" viewBox="0 0 24 24" fill="none">
+                                        <rect x="18" y="9" width="4" height="4" rx="2" transform="rotate(90 18 9)"
+                                            fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2">
+                                        </rect>
+                                        <rect x="18" y="17" width="4" height="4" rx="2" transform="rotate(90 18 17)"
+                                            fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2">
+                                        </rect>
+                                        <rect x="3" y="7" width="4" height="4" rx="2" transform="rotate(-90 3 7)"
+                                            fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2">
+                                        </rect>
+                                        <path
+                                            d="M5 8V15C5 16.8856 5 17.8284 5.58579 18.4142C6.17157 19 7.11438 19 9 19H14"
+                                            stroke="#222222" stroke-width="1.2"></path>
+                                        <path
+                                            d="M5 7V7C5 8.88562 5 9.82843 5.58579 10.4142C6.17157 11 7.11438 11 9 11H14"
+                                            stroke="#222222" stroke-width="1.2"></path>
+                                    </svg>
+
+                                    <h3 class="feature-title">User-Friendly</h3>
+                                    <p>LeadXForms is fully mobile, tablet, and desktop responsive.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 equal-height">
+                            <div class="feature-box">
+                                <div class="feature-icon-box">
+                                    <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="35px"
+                                        height="35px" viewBox="0 0 24 24" fill="none">
+                                        <rect x="18" y="9" width="4" height="4" rx="2" transform="rotate(90 18 9)"
+                                            fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2">
+                                        </rect>
+                                        <rect x="18" y="17" width="4" height="4" rx="2" transform="rotate(90 18 17)"
+                                            fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2">
+                                        </rect>
+                                        <rect x="3" y="7" width="4" height="4" rx="2" transform="rotate(-90 3 7)"
+                                            fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2">
+                                        </rect>
+                                        <path
+                                            d="M5 8V15C5 16.8856 5 17.8284 5.58579 18.4142C6.17157 19 7.11438 19 9 19H14"
+                                            stroke="#222222" stroke-width="1.2"></path>
+                                        <path
+                                            d="M5 7V7C5 8.88562 5 9.82843 5.58579 10.4142C6.17157 11 7.11438 11 9 11H14"
+                                            stroke="#222222" stroke-width="1.2"></path>
+                                    </svg>
+
+                                    <h3 class="feature-title">User-Friendly</h3>
+                                    <p>LeadXForms is fully mobile, tablet, and desktop responsive.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 equal-height">
+                            <div class="feature-box">
+                                <div class="feature-icon-box">
+                                    <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="35px"
+                                        height="35px" viewBox="0 0 24 24" fill="none">
+                                        <rect x="18" y="9" width="4" height="4" rx="2" transform="rotate(90 18 9)"
+                                            fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2">
+                                        </rect>
+                                        <rect x="18" y="17" width="4" height="4" rx="2" transform="rotate(90 18 17)"
+                                            fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2">
+                                        </rect>
+                                        <rect x="3" y="7" width="4" height="4" rx="2" transform="rotate(-90 3 7)"
+                                            fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2">
+                                        </rect>
+                                        <path
+                                            d="M5 8V15C5 16.8856 5 17.8284 5.58579 18.4142C6.17157 19 7.11438 19 9 19H14"
+                                            stroke="#222222" stroke-width="1.2"></path>
+                                        <path
+                                            d="M5 7V7C5 8.88562 5 9.82843 5.58579 10.4142C6.17157 11 7.11438 11 9 11H14"
+                                            stroke="#222222" stroke-width="1.2"></path>
+                                    </svg>
+
+                                    <h3 class="feature-title">User-Friendly</h3>
+                                    <p>LeadXForms is fully mobile, tablet, and desktop responsive.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 equal-height">
+                            <div class="feature-box">
+                                <div class="feature-icon-box">
+                                    <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="35px"
+                                        height="35px" viewBox="0 0 24 24" fill="none">
+                                        <rect x="18" y="9" width="4" height="4" rx="2" transform="rotate(90 18 9)"
+                                            fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2">
+                                        </rect>
+                                        <rect x="18" y="17" width="4" height="4" rx="2" transform="rotate(90 18 17)"
+                                            fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2">
+                                        </rect>
+                                        <rect x="3" y="7" width="4" height="4" rx="2" transform="rotate(-90 3 7)"
+                                            fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2">
+                                        </rect>
+                                        <path
+                                            d="M5 8V15C5 16.8856 5 17.8284 5.58579 18.4142C6.17157 19 7.11438 19 9 19H14"
+                                            stroke="#222222" stroke-width="1.2"></path>
+                                        <path
+                                            d="M5 7V7C5 8.88562 5 9.82843 5.58579 10.4142C6.17157 11 7.11438 11 9 11H14"
+                                            stroke="#222222" stroke-width="1.2"></path>
+                                    </svg>
+
+                                    <h3 class="feature-title">User-Friendly</h3>
+                                    <p>LeadXForms is fully mobile, tablet, and desktop responsive.</p>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </section>
         <section class="main-section testimonials-section bg-light overflow-hidden" id="testimonials">
             <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-6 col-md-8">
-                        <div class="main-head text-center">
-                            <h4 class="subheading">Testimonials</h4>
-                            <h2 class="heading">Our <span class="text-primary">Customer</span> says</h2>
-                        </div>
-                    </div>
+                <div class="main-head text-center">
+                    <h4 class="subheading">Testimonials</h4>
+                    <h2 class="heading">What Our Users Are Saying <br> About <span
+                            class="text-primary">LeadXForms</span></h2>
                 </div>
                 <div class="row justify-content-center">
-                    <div class="col-lg-12 col-md-8">
+                    <div class="col-lg-12 col-md-8 col-12">
                         <div class="testimonials-area" v-if="tesimonials.length > 0">
                             <carousel v-bind="tesimonials_slider_settings"
                                 :breakpoints="tesimonials_slider_breakpoints">
@@ -286,182 +459,11 @@
                                 </template>
                             </carousel>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="main-section whychooseus-section overflow-hidden d-none" id="whychooseus">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-10">
-                        <div class="main-head text-center">
-                            <h4 class="subheading">Why Choose Us</h4>
-                            <h2 class="heading mb-4">Top 7 Reasons Why Users Love <span class="text-primary">{{
-                                $page.props.app.name }}</span></h2>
-                            <p>LeadXForms is the ultimate WordPress form solution for YOU. Discover why over 6,000,000
-                                savvy
-                                business owners, designers, and developers trust and love WPForms, and why you will too!
-                            </p>
+                        <div class="text-center mt-5">
+                            <Link href="#pricing" class="button button-s2 me-2 button-primary">Get
+                            LeadX Froms Now →</Link>
+                            <a :href="route('customer.reviews')" class="leadX-Ulink ms-2">See All Reviews →</a>
                         </div>
-                    </div>
-                </div>
-                <div class="whychooseus-area">
-                    <div class="row align-items-center justify-content-between">
-                        <div class="col-lg-5 col-md-5">
-                            <div class="whychooseus-image">
-                                <img src="/_public_assets/img/why-choose-us.png" alt="Why Choose Us"
-                                    class="img-fluid rounded">
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-6">
-                            <div class="whychooseus-content">
-                                <ul class="whychooseus-list">
-                                    <li>Create Custom Online Forms in Minutes, Not Hours</li>
-                                    <li>Seamlessly Connect with your favorite apps</li>
-                                    <li>Advance WordPress form features at a great value</li>
-                                </ul>
-                                <a href="#pricing" class="button button-s2 button-primary">Get Started →</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="main-section whychooseus-section bg-light-green overflow-hidden">
-            <div class="container">
-                <div class="row justify-content-between align-items-center pb-5">
-                    <div class="col-lg-5 col-md-6 col-sm-12">
-                        <h2 class="heading">Transform AI ideas to SaasS Platform</h2>
-                        <p class="border-bottom border-dark pb-3 mb-4">Enjoy premium AI at budget-friendly prices
-                            :sparkles:</p>
-                        <div class="col-lg-12 col-md-12 col-sm-12">
-                            <div class="pb-3 d-flex gap-3">
-                                <div class="icon">
-                                    <span>
-                                        <i class="rounded-pill d-inline-flex bg-white p-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
-                                                viewBox="0 0 32 32" fill="none">
-                                                <g opacity="0.12">
-                                                    <path
-                                                        d="M1.33594 25.0667C1.33594 24.6953 1.33594 24.5096 1.34416 24.3527C1.50488 21.286 3.95522 18.8356 7.02192 18.6749C7.17882 18.6667 7.36453 18.6667 7.73594 18.6667H13.6026C13.974 18.6667 14.1597 18.6667 14.3166 18.6749C17.3833 18.8356 19.8337 21.286 19.9944 24.3527C20.0026 24.5096 20.0026 24.6953 20.0026 25.0667C20.0026 25.3143 20.0026 25.4381 19.9971 25.5427C19.89 27.5872 18.2564 29.2207 16.2119 29.3279C16.1073 29.3333 15.9835 29.3333 15.7359 29.3333H5.6026C5.355 29.3333 5.23119 29.3333 5.12659 29.3279C3.08212 29.2207 1.44857 27.5872 1.34142 25.5427C1.33594 25.4381 1.33594 25.3143 1.33594 25.0667Z"
-                                                        fill="#005E54"></path>
-                                                    <path
-                                                        d="M16.0026 8.00001C16.0026 10.9455 13.6148 13.3333 10.6693 13.3333C7.72375 13.3333 5.33594 10.9455 5.33594 8.00001C5.33594 5.05449 7.72375 2.66667 10.6693 2.66667C13.6148 2.66667 16.0026 5.05449 16.0026 8.00001Z"
-                                                        fill="#005E54"></path>
-                                                </g>
-                                                <path
-                                                    d="M20.0026 13.3333C22.9481 13.3333 25.3359 10.9455 25.3359 8.00001C25.3359 5.05449 22.9481 2.66667 20.0026 2.66667M22.6693 29.3333H26.4026C26.6502 29.3333 26.774 29.3333 26.8786 29.3279C28.9231 29.2207 30.5566 27.5872 30.6638 25.5427C30.6693 25.4381 30.6693 25.3143 30.6693 25.0667V25.0667C30.6693 24.6953 30.6693 24.5096 30.661 24.3527C30.5003 21.286 28.05 18.8356 24.9833 18.6749C24.8264 18.6667 24.6407 18.6667 24.2693 18.6667H22.6693M16.0026 8.00001C16.0026 10.9455 13.6148 13.3333 10.6693 13.3333C7.72375 13.3333 5.33594 10.9455 5.33594 8.00001C5.33594 5.05449 7.72375 2.66667 10.6693 2.66667C13.6148 2.66667 16.0026 5.05449 16.0026 8.00001ZM5.6026 29.3333H15.7359C15.9835 29.3333 16.1073 29.3333 16.2119 29.3279C18.2564 29.2207 19.89 27.5872 19.9971 25.5427C20.0026 25.4381 20.0026 25.3143 20.0026 25.0667V25.0667C20.0026 24.6953 20.0026 24.5096 19.9944 24.3527C19.8337 21.286 17.3833 18.8356 14.3166 18.6749C14.1597 18.6667 13.974 18.6667 13.6026 18.6667H7.73594C7.36453 18.6667 7.17882 18.6667 7.02192 18.6749C3.95522 18.8356 1.50488 21.286 1.34416 24.3527C1.33594 24.5096 1.33594 24.6953 1.33594 25.0667V25.0667C1.33594 25.3143 1.33594 25.4381 1.34142 25.5427C1.44857 27.5872 3.08212 29.2207 5.12659 29.3279C5.23119 29.3333 5.355 29.3333 5.6026 29.3333Z"
-                                                    stroke="#005E54" stroke-width="1.5" stroke-linecap="round"
-                                                    stroke-linejoin="round"></path>
-                                            </svg>
-                                        </i>
-                                    </span>
-                                </div>
-                                <div class="icon-content">
-                                    <h5 class="icon-title text-dark">Easily collaborate with team members</h5>
-                                    <p class="pt-2 inter-text ">Lorem ipsum is placeholder text commonly used in the graphics and publishing industries.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="section-link">
-                            <a class="" href="#">Explore Integrations →</a>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-12 ps-4">
-                        <img src="/_public_assets/testImg/user-management.png" class="img-fluid rounded-top" alt="">
-                    </div>
-                </div>
-                <div class="features-area">
-                    <div class="row g-4">
-                        <div class="col-lg-3 col-md-6 equal-height">
-                            <div class="feature-box">
-                                <div class="feature-icon-box">
-                                    <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="0 0 24 24"
-                                    fill="none">
-                                    <rect x="18" y="9" width="4" height="4" rx="2" transform="rotate(90 18 9)"
-                                        fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2"></rect>
-                                    <rect x="18" y="17" width="4" height="4" rx="2" transform="rotate(90 18 17)"
-                                        fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2"></rect>
-                                    <rect x="3" y="7" width="4" height="4" rx="2" transform="rotate(-90 3 7)"
-                                        fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2"></rect>
-                                    <path d="M5 8V15C5 16.8856 5 17.8284 5.58579 18.4142C6.17157 19 7.11438 19 9 19H14"
-                                        stroke="#222222" stroke-width="1.2"></path>
-                                    <path d="M5 7V7C5 8.88562 5 9.82843 5.58579 10.4142C6.17157 11 7.11438 11 9 11H14"
-                                        stroke="#222222" stroke-width="1.2"></path>
-                                </svg>
-
-                                    <h3 class="feature-title">User-Friendly</h3>
-                                    <p>LeadXForms is fully mobile, tablet, and desktop responsive.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 equal-height">
-                            <div class="feature-box">
-                                <div class="feature-icon-box">
-                                    <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="0 0 24 24"
-                                    fill="none">
-                                    <rect x="18" y="9" width="4" height="4" rx="2" transform="rotate(90 18 9)"
-                                        fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2"></rect>
-                                    <rect x="18" y="17" width="4" height="4" rx="2" transform="rotate(90 18 17)"
-                                        fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2"></rect>
-                                    <rect x="3" y="7" width="4" height="4" rx="2" transform="rotate(-90 3 7)"
-                                        fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2"></rect>
-                                    <path d="M5 8V15C5 16.8856 5 17.8284 5.58579 18.4142C6.17157 19 7.11438 19 9 19H14"
-                                        stroke="#222222" stroke-width="1.2"></path>
-                                    <path d="M5 7V7C5 8.88562 5 9.82843 5.58579 10.4142C6.17157 11 7.11438 11 9 11H14"
-                                        stroke="#222222" stroke-width="1.2"></path>
-                                </svg>
-
-                                    <h3 class="feature-title">User-Friendly</h3>
-                                    <p>LeadXForms is fully mobile, tablet, and desktop responsive.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 equal-height">
-                            <div class="feature-box">
-                                <div class="feature-icon-box">
-                                    <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="0 0 24 24"
-                                    fill="none">
-                                    <rect x="18" y="9" width="4" height="4" rx="2" transform="rotate(90 18 9)"
-                                        fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2"></rect>
-                                    <rect x="18" y="17" width="4" height="4" rx="2" transform="rotate(90 18 17)"
-                                        fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2"></rect>
-                                    <rect x="3" y="7" width="4" height="4" rx="2" transform="rotate(-90 3 7)"
-                                        fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2"></rect>
-                                    <path d="M5 8V15C5 16.8856 5 17.8284 5.58579 18.4142C6.17157 19 7.11438 19 9 19H14"
-                                        stroke="#222222" stroke-width="1.2"></path>
-                                    <path d="M5 7V7C5 8.88562 5 9.82843 5.58579 10.4142C6.17157 11 7.11438 11 9 11H14"
-                                        stroke="#222222" stroke-width="1.2"></path>
-                                </svg>
-
-                                    <h3 class="feature-title">User-Friendly</h3>
-                                    <p>LeadXForms is fully mobile, tablet, and desktop responsive.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 equal-height">
-                            <div class="feature-box">
-                                <div class="feature-icon-box">
-                                    <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="0 0 24 24"
-                                    fill="none">
-                                    <rect x="18" y="9" width="4" height="4" rx="2" transform="rotate(90 18 9)"
-                                        fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2"></rect>
-                                    <rect x="18" y="17" width="4" height="4" rx="2" transform="rotate(90 18 17)"
-                                        fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2"></rect>
-                                    <rect x="3" y="7" width="4" height="4" rx="2" transform="rotate(-90 3 7)"
-                                        fill="#2A4157" fill-opacity="0.24" stroke="#222222" stroke-width="1.2"></rect>
-                                    <path d="M5 8V15C5 16.8856 5 17.8284 5.58579 18.4142C6.17157 19 7.11438 19 9 19H14"
-                                        stroke="#222222" stroke-width="1.2"></path>
-                                    <path d="M5 7V7C5 8.88562 5 9.82843 5.58579 10.4142C6.17157 11 7.11438 11 9 11H14"
-                                        stroke="#222222" stroke-width="1.2"></path>
-                                </svg>
-
-                                    <h3 class="feature-title">User-Friendly</h3>
-                                    <p>LeadXForms is fully mobile, tablet, and desktop responsive.</p>
-                                </div>
-                            </div>
-                        </div>
-                        
                     </div>
                 </div>
             </div>
@@ -526,12 +528,12 @@
                 </div>
                 <div class="row align-items-center border-cst p-4 bg-light-green">
                     <div class="col-lg-3 col-md-5 col-sm-12">
-                        <img src="/_public_assets/testImg/Money-Back-Guarantee-1.svg" width="270" height="270"
+                        <img src="/_public_assets/testImg/Money-Back-Guarantee-1.svg" width="250" height="250"
                             alt="Back-Guarantee img-fluid" />
                     </div>
                     <div class="col-lg-9 col-md-7 col-sm-12">
-                        <h4 class="fw-bold">Our 100% No-Risk money back guarantee!</h4>
-                        <p class="inter-text text-dark text-muted">
+                        <h3 class="fw-bolder text-dark">Our 100% No-Risk money back guarantee!</h3>
+                        <p class="inter-text">
                             We’re excited to have you experience UltimateAI
                             Pro. Over the next 30 days, if UltimateAI isn’t
                             the best fit, simply reach out! We’ll happily
@@ -605,13 +607,13 @@
                 </div>
             </div>
         </section>
-        <section class="main-section faqs-section bg-light-green overflow-hidden pb-250" id="faqs">
+        <section class="main-section faqs-section bg-light-green overflow-hidden" id="faqs">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-6 col-md-8">
                         <div class="main-head text-center">
                             <h4 class="subheading">Question & Answers</h4>
-                            <h2 class="heading">Frequently Asked Questions</h2>
+                            <h2 class="heading">Frequently <span class="text-primary">Asked</span> Questions</h2>
                         </div>
                     </div>
                 </div>
@@ -641,6 +643,82 @@
                 </div>
             </div>
         </section>
+        <section class="latest-blog main-section pb-250">
+            <div class="container">
+                <div class="main-head text-center">
+                    <h4 class="subheading">Resources</h4>
+                    <h2 class="heading">Our <span class="text-primary">latest</span> blogs</h2>
+                </div>
+                <div class="row align-items-center">
+                    <div class="col-lg-12 col-md-12 col-sm-12 px-4">
+                        <div class="pt-4">
+                            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 pb-4">
+                                <!-- START BOX -->
+                                <div class="col-lg-4 col-md-4 col-sm-12">
+                                    <div class="border bg-white rounded-3">
+                                        <div class="d-inline-flex rounded-3 mb-4" style="background: #F6F6F7;">
+                                            <img src="/_public_assets/testImg/blog-1.jpg"
+                                                style="width: 100%; border-top-left-radius: 8px; border-top-right-radius: 8px;"
+                                                alt="">
+                                        </div>
+                                        <a href="#">
+                                            <h4 class="text-black pb-2 ps-3">How to Find Your Competitors' Keywords: 9
+                                                Practical
+                                                Strategies</h4>
+                                        </a>
+                                        <p class="text-muted ps-3 pe-3">Lorem ipsum is placeholder text commonly used in
+                                            the
+                                            graphic, print, and publishing...</p>
+                                        <p class="ps-3 pe-3 fw-semibold">May 30, 2024</p>
+                                    </div>
+                                </div>
+                                <!-- END BOX -->
+                                <!-- START BOX -->
+                                <div class="col-lg-4 col-md-4 col-sm-12">
+                                    <div class="border bg-white rounded-3">
+                                        <div class="d-inline-flex rounded-3 mb-4" style="background: #F6F6F7;">
+                                            <img src="/_public_assets/testImg/blog-2.jpg"
+                                                style="width: 100%; border-top-left-radius: 8px; border-top-right-radius: 8px;"
+                                                alt="">
+                                        </div>
+                                        <a href="#">
+                                            <h4 class="text-black pb-2 ps-3">How to Find Your Competitors' Keywords: 9
+                                                Practical
+                                                Strategies</h4>
+                                        </a>
+                                        <p class="text-muted ps-3 pe-3">Lorem ipsum is placeholder text commonly used in
+                                            the
+                                            graphic, print, and publishing...</p>
+                                        <p class="ps-3 pe-3 fw-semibold">May 30, 2024</p>
+                                    </div>
+                                </div>
+                                <!-- END BOX -->
+                                <!-- START BOX -->
+                                <div class="col-lg-4 col-md-4 col-sm-12">
+                                    <div class="border bg-white rounded-3">
+                                        <div class="d-inline-flex rounded-3 mb-4" style="background: #F6F6F7;">
+                                            <img src="/_public_assets/testImg/gpt.jpg"
+                                                style="width: 100%; border-top-left-radius: 8px; border-top-right-radius: 8px;"
+                                                alt="">
+                                        </div>
+                                        <a href="#">
+                                            <h4 class="text-black pb-2 ps-3">How to Find Your Competitors' Keywords: 9
+                                                Practical
+                                                Strategies</h4>
+                                        </a>
+                                        <p class="text-muted ps-3 pe-3">Lorem ipsum is placeholder text commonly used in
+                                            the
+                                            graphic, print, and publishing...</p>
+                                        <p class="ps-3 pe-3 fw-semibold">May 30, 2024</p>
+                                    </div>
+                                </div>
+                                <!-- END BOX -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </MasterLayout>
 </template>
 
@@ -664,7 +742,10 @@ export default {
         MasterLayout,
         BrandLogos
     },
-
+    props: {
+        title: String,
+        description: String
+    },
     data() {
         return {
             user: this.$cookies.get("lxf-user"),
@@ -673,33 +754,65 @@ export default {
                 {
                     title: 'User-Friendly Interface',
                     image: '/_public_assets/img/features-icons/user-friendly-interface.png',
-                    description: this.$page.props.app.name + ' is fully mobile, tablet, and desktop responsive.'
+                    description: this.$page.props.app.name + '  is fully responsive and works seamlessly across mobile, tablet, and desktop devices.'
                 },
                 {
                     title: 'Entry Management',
                     image: '/_public_assets/img/features-icons/entry-management.png',
-                    description: 'For a more efficient workflow, view all of your leads in one location.'
-                },
-                {
-                    title: 'Spam Protection',
-                    image: '/_public_assets/img/features-icons/spam-protection.png',
-                    description: 'Spam submissions are immediately stopped by our clever captcha and anti-spam technology.'
+                    description: 'Easily view, track, manage, and export all form submissions from one centralized dashboard.'
                 },
                 {
                     title: 'Easy to Embed',
                     image: '/_public_assets/img/features-icons/easy-to-embed.png',
-                    description: 'You may quickly insert your forms into blog posts, web pages, sidebar widgets, the footer, etc.'
-                },
-                {
-                    title: 'Instant Notifications',
-                    image: '/_public_assets/img/features-icons/instant-notifications.png',
-                    description: 'With our fast form notification function for your team, respond to leads promptly.'
+                    description: 'Instantly add your forms to pages, blog posts, sidebars, footers, and more with just a few clicks.'
                 },
                 {
                     title: 'Customizable Forms',
                     image: '/_public_assets/img/features-icons/customizable-forms.png',
-                    description: 'By adding and organizing fields as needed, you can construct forms that are highly customized. Text, email, checkboxes, and other common field kinds include.'
+                    description: 'Create fully customizable forms that match your brand and needs - no coding required.'
                 },
+                {
+                    title: '2000+ Form Tamplates',
+                    image: '/_public_assets/img/features-icons/customizable-forms.png',
+                    description: 'Save time and streamline your workflow with our ready-to-use form templates.'
+                },
+                {
+                    title: 'Styled Email Templates',
+                    image: '/_public_assets/img/features-icons/instant-notifications.png',
+                    description: 'Send beautifully formatted emails for each form response.'
+                },
+                {
+                    title: 'Smart Spam Filters',
+                    image: '/_public_assets/img/features-icons/instant-notifications.png',
+                    description: 'LeadXForms uses smart spam filters to block bots and junk effortlessly, ensuring only genuine submissions reach your inbox.'
+                },
+
+                {
+                    title: 'Email Notifications',
+                    image: '/_public_assets/img/features-icons/instant-notifications.png',
+                    description: 'With our fast form notification function for your team, respond to leads promptly.'
+                },
+                {
+                    title: 'Custom Redirection',
+                    image: '/_public_assets/img/features-icons/customizable-forms.png',
+                    description: 'Send users to a thank-you page or a custom URL after submission.'
+                },
+                // {
+                //     title: 'SMTP Integration',
+                //     image: '/_public_assets/img/features-icons/easy-to-embed.png',
+                //     description: 'Ensure reliable email delivery by connecting your SMTP provider.'
+                // },
+
+                // {
+                //     title: 'Form Security',
+                //     image: '/_public_assets/img/features-icons/easy-to-embed.png',
+                //     description: 'Your data is protected with built-in spam filters, IP blocking, and CAPTCHA—so you get real leads, not bots.'
+                // },
+                // {
+                //     title: 'Spam Protection',
+                //     image: '/_public_assets/img/features-icons/spam-protection.png',
+                //     description: 'Use Google reCAPTCHA, block specific keywords, and even block IPs.'
+                // },
             ],
             tesimonials: [
                 {

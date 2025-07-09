@@ -1,6 +1,6 @@
 <template>
 
-    <Head title="Terms and Conditions" />
+    <Head title="Contact Us" />
     <MasterLayout :loader="loader">
         <section class="hero-section main-section overflow-hidden bg-light-green" id="hero">
             <div class="container">

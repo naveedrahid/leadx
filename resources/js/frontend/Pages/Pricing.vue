@@ -6,7 +6,7 @@
             <div class="row align-items-center justify-content-center">
                 <div class="col-lg-6 col-md-8">
                     <div class="hero-content text-center">
-                        <h1>Terms and Conditions</h1>
+                        <h1>Check Out Pricing</h1>
                         <!-- <div class="row">
                             <div class="col-lg-9">
                                 <p>The Unlimited solution for creating custom forms and flows to connect users and enhance engagement and broaden your online presence.</p>

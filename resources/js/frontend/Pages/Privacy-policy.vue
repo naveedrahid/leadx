@@ -1,5 +1,5 @@
 <template>
-    <Head title="Terms and Conditions" />
+    <Head title="Privacy Policy" />
     <MasterLayout :loader="false">
         <section class="hero-section main-section overflow-hidden bg-light-green" id="hero">
             <div class="container">

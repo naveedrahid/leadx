@@ -11,7 +11,7 @@
 
     <section class="leadxhome">
         <div class="container">
-            <div class="row py-5">
+            <div class="row py-4">
                 <div class="slider" v-if="brands.length > 0">
                     <div class="slide-track">
                         <div class="slide" v-for="(brand, index) in brands" :key="index">
@@ -33,27 +33,27 @@ export default {
         return {
             brands: [
                 {
-                    name: "Hostinger",
+                    name: "Hostinger Logo",
                     image: "/_public_assets/img/brands/hostinger.png",
                 },
                 {
-                    name: "GoDaddy",
+                    name: "GoDaddy Logo",
                     image: "/_public_assets/img/brands/godaddy.png",
                 },
                 {
-                    name: "DreamHost",
+                    name: "DreamHost Logo",
                     image: "/_public_assets/img/brands/dreamhost.png",
                 },
                 {
-                    name: "BlueHost",
+                    name: "BlueHost Logo",
                     image: "/_public_assets/img/brands/bluehost.png",
                 },
                 {
-                    name: "HubSpot",
+                    name: "HubSpot Logo",
                     image: "/_public_assets/img/brands/hubspot.png",
                 },
                 {
-                    name: "Zapier",
+                    name: "Zapier Logo",
                     image: "/_public_assets/img/brands/zapier.png",
                 },
                 // {

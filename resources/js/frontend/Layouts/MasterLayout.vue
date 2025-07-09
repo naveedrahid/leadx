@@ -15,21 +15,23 @@
                     <div class="d-flex align-items-center justify-content-between gap-5">
                         <nav class="main-menu">
                             <template v-if="route().current('home')">
-                                <a href="#home" class="nav-link active">Home</a>
-                                <a href="#features" class="nav-link">Features</a>
+                                <Link :href="route('home')" class="active">Home</Link>
+                                <Link :href="route('featured')">Features</Link>
                                 <a href="#pricing" class="nav-link">Pricing</a>
-                                <Link :href="route('customer.reviews')">Reviews</Link>
+                                <Link :href="route('customer.reviews')">Testimonials</Link>
                                 <Link :href="route('contact')">Contact</Link>
+                                <!-- <a href="#home" class="nav-link active">Home</a> -->
+                                <!-- <a href="#features" class="nav-link">Features</a> -->
                                 <!-- <a href="#contact" class="nav-link">Contact</a> -->
                             </template>
                             <template v-else>
                                 <Link :href="route('home')">Home</Link>
-                                <Link :href="route('home') + '#features'">Features</Link>
-                                <Link :href="route('pricing')" :class="{
+                                <Link :href="route('featured')">Features</Link>
+                                <Link :href="route('home') +'#pricing'" :class="{
                                     'active': route().current('pricing')
                                 }">Pricing</Link>
-                                <Link :href="route('customer.reviews')">Reviews</Link>
-                                <Link :href="route('home') + '#contact'">Contact</Link>
+                                <Link :href="route('customer.reviews')">Testimonials</Link>
+                                <Link :href="route('contact')">Contact</Link>
                             </template>
                         </nav>
                         <div class="other-nav-links">
@@ -38,7 +40,8 @@
                                 <button class="button button-secondary" @click="logout()">Logout</button>
                             </template>
                             <template v-else>
-                                <a :href="route('app.auth.login')" class="button button-primary">Login</a>
+                                <a :href="route('app.auth.login')" class="button button-primary text-primary bg-white">Login</a>
+                                <a href="javascript:;" class="button button-primary">Get LeadX</a>
                             </template>
                         </div>
                     </div>
@@ -58,18 +61,18 @@
             <div class="aside-main-menu">
                 <nav class="aside-nav-menu">
                     <template v-if="route().current('home')">
-                        <a href="#home" class="nav-link active">Home</a>
-                        <a href="#features" class="nav-link">Features</a>
+                        <Link :href="route('home')">Home</Link>
+                        <Link :href="route('featured')">Features</Link>
                         <a href="#pricing" class="nav-link">Pricing</a>
-                        <a href="#contact" class="nav-link">Contact</a>
+                        <Link :href="route('contact')">Contact</Link>
                     </template>
                     <template v-else>
                         <Link :href="route('home')">Home</Link>
-                        <Link :href="route('home') + '#features'">Features</Link>
+                        <Link :href="route('featured')">Features</Link>
                         <Link :href="route('pricing')" :class="{
                             'active': route().current('pricing')
                         }">Pricing</Link>
-                        <Link :href="route('home') + '#contact'">Contact</Link>
+                        <Link :href="route('contact')">Contact</Link>
                     </template>
                 </nav>
                 <div class="aside-nav-links d-flex flex-column gap-2">
@@ -133,9 +136,19 @@
                     <div class="footer-list">
                         <h5 class="text-white mb-4">Quick Links</h5>
                         <ul class="unstyled-list">
-                            <li><Link :href="route('home')" class="text-white">Home</Link></li>
-                            <li><a href="#pricing" class="nav-link text-white">Pricing</a></li>
-                            <li><Link :href="route('customer.reviews')" class="text-white">Reviews</Link></li>
+                            <li>
+                                <Link :href="route('home')" class="text-white">Home</Link>
+                            </li>
+                            <li>
+                                <Link :href="route('featured')" class="text-white">Features</Link>
+                            </li>
+                            <li><a :href="route('home') +'#pricing'" class="nav-link text-white">Pricing</a></li>
+                            <li>
+                                <Link :href="route('customer.reviews')" class="text-white">Testimonials</Link>
+                            </li>
+                            <li>
+                                <Link :href="route('contact')" class="text-white">Contact</Link>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -159,7 +172,8 @@
                     <div class="footer-list">
                         <h5 class="text-white mb-4">Contact</h5>
                         <ul class="unstyled-list infoIcon">
-                            <li><a class="text-white" :href="'mailto:' + $page.props.app.support_mail">{{ $page.props.app.support_mail}}</a>
+                            <li><a class="text-white" :href="'mailto:' + $page.props.app.support_mail">{{
+                                    $page.props.app.support_mail}}</a>
                             </li>
                             <li><a href="#" class="text-white">
                                     Level 4/260 Queen St, Brisbane City QLD

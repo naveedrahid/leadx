@@ -38,4 +38,9 @@ class HomeController extends Controller
     {
         return Inertia::render('Pricing');
     }
+
+    public function featured() : Response
+    {
+        return Inertia::render('Featured');
+    }
 }

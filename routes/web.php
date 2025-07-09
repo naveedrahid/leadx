@@ -154,5 +154,6 @@ Route::get('/privacy-policy', [HomeController::class, 'privacy_policy'])->name('
 Route::get('/terms-conditions', [HomeController::class, 'terms_conditions'])->name('terms_conditions');
 Route::get('/customer-reviews', [HomeController::class, 'customerReviews'])->name('customer.reviews');
 Route::get('/contact-us', [HomeController::class, 'contact'])->name('contact');
+Route::get('/features', [HomeController::class, 'featured'])->name('featured');
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
