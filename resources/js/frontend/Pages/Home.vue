@@ -109,7 +109,7 @@
                 </div>
             </div>
         </section>
-        <section class="main-section overflow-hidden">
+        <section class="main-section overflow-hidden d-none">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-5 col-md-6 col-sm-12">
@@ -247,7 +247,7 @@
                 </div>
             </div>
         </section>
-        <section class="main-section whychooseus-section bg-light-green overflow-hidden">
+        <section class="main-section whychooseus-section bg-light-green overflow-hidden d-none">
             <div class="container">
                 <div class="row justify-content-between align-items-center pb-5">
                     <div class="col-lg-5 col-md-6 col-sm-12">
@@ -544,7 +544,7 @@
                 </div>
             </div>
         </section>
-        <section class="main-section blog-section bg-light overflow-hidden" id="blog" style="display:none">
+        <section class="main-section blog-section bg-light overflow-hidden d-none" id="blog" style="display:none">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-6 col-md-8">
