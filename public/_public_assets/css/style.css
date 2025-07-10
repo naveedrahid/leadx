@@ -201,14 +201,14 @@ button {
 .leadX-Ulink {
     text-decoration: underline;
     font-weight: 600;
-    color:#000;
+    color: #000;
     font-size: 15px;
     transition: all 0.3s;
     letter-spacing: 0.5px;
 }
 .leadX-Ulink:hover {
     text-decoration: underline;
-    letter-spacing:0.8px;
+    letter-spacing: 0.8px;
     transition: all 0.3s;
 }
 
@@ -623,13 +623,13 @@ button.aside-menu-close {
     border: 1px solid #ccc;
     padding: 25px;
     min-height: 200px;
-    transition: all .3s;
+    transition: all 0.3s;
 }
 
-.feature-box:hover{
+.feature-box:hover {
     border-color: var(--lxf-primary);
     box-shadow: 0px 4px 7.7px 0px rgb(0 0 0 / 8%);
-    transition: all .3s;
+    transition: all 0.3s;
 }
 
 .feature-icon-box {
@@ -682,7 +682,7 @@ button.aside-menu-close {
 .carousel__slide--active .testimonial-item {
     min-height: 350px;
     box-shadow: 0px 0px 22px 0px #efefef;
-    border:1px solid var(--lxf-primary);
+    border: 1px solid var(--lxf-primary);
 }
 
 .testimonial-rate {
@@ -1907,5 +1907,67 @@ textarea.input-control {
     .payment-info {
         padding: 30px 50px;
         border-radius: 5px;
+    }
+}
+
+@media (max-width: 768px) {
+    .banner_btn__mobile {
+        display: flex;
+        flex-direction: column;
+    }
+    .banner_btn__mobile a {
+        margin-bottom: 15px;
+    }
+    .footer-banner-col {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    .footer-banner-col h2 {
+        font-size: 27px !important;
+    }
+    .footer-banner-col {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    .footer-banner-col h2 {
+        font-size: 27px !important;
+    }
+
+    .footer_btn__mobile {
+        justify-content: space-between;
+        margin-bottom: 30px;
+    }
+
+    .footer_img__mobile {
+        width: 100% !important;
+    }
+
+    .footerMenu .footer-logo {
+        text-align: left !important;
+        margin: 0;
+        margin-bottom: 20px;
+    }
+
+    .footerMenu .footer-list h5 {
+        border-bottom: solid 1.5px #fff;
+        display: inline-block;
+        font-weight: 600;
+    }
+    .whychooseus-section .section-link {
+        margin-bottom: 30px !important;
+    }
+    .companion_mobile {
+        margin-top: 30px;
+    }
+}
+@media (max-width: 991px) {
+    .footer-banner-col {
+        padding: 20px !important;
+    }
+
+    .footer-banner-col .col-first h2 {
+        font-size: 30px !important;
     }
 }

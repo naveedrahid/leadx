@@ -20,10 +20,10 @@
                                         easy to capture leads, grow your business, and automate communication.</p>
                                     <!-- <p>The Unlimited solution for creating custom forms and flows to connect users and
                                         enhance engagement and broaden your online presence.</p> -->
-                                    <div class="my-5 ">
-                                        <a href="#pricing" class="button me-2 button-s2 w-auto button-primary">
+                                    <div class="my-5 banner_btn__mobile">
+                                        <a href="#pricing" class="button me-xl-2 me-lg-2 me-md-2 me-0 button-s2 w-auto button-primary">
                                             Get {{ $page.props.app.name }} Now →</a>
-                                        <Link :href="route('featured')" class="ms-2 leadX-Ulink">
+                                        <Link :href="route('featured')" class="ms-xl-2 ms-lg-2 ms-md-2 ms-0 leadX-Ulink">
                                         See All Features →</Link>
                                     </div>
                                 </div>
@@ -101,10 +101,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="mt-5 text-center">
-                    <a href="#pricing" class="button me-2 button-s2 w-auto button-primary">
+                <div class="mt-5 text-center banner_btn__mobile">
+                    <a href="#pricing" class="button me-xl-2 me-lg-2 me-md-2 me-0 button-s2 w-auto button-primary">
                         Get {{ $page.props.app.name }} Now →</a>
-                    <Link :href="route('featured')" class="ms-2 leadX-Ulink">
+                    <Link :href="route('featured')" class="ms-xl-2 ms-lg-2 ms-md-2 ms-0 leadX-Ulink">
                     See All Features →</Link>
                 </div>
             </div>
@@ -116,11 +116,11 @@
                         <img src="/_public_assets/testImg/Assistants.png" class="img-fluid rounded-top" alt="">
                     </div>
                     <div class="col-lg-7 col-md-6 col-sm-12 ps-4">
-                        <h2 class="heading">Fully customizable AI companion - Anytime you need</h2>
+                        <h2 class="heading companion_mobile">Fully customizable AI companion - Anytime you need</h2>
                         <p>Conversational experiences that 3x Efficiency with even better quality.</p>
-                        <div class="icon-content pt-4">
+                        <div class="icon-content pt-4 companion_box__mobile">
                             <div class="row">
-                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="pb-3 d-flex gap-3">
                                         <div class="icon">
                                             <span>
@@ -150,7 +150,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="pb-3 d-flex gap-3">
                                         <div class="icon">
                                             <span>
@@ -177,7 +177,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="pb-3 d-flex gap-3">
                                         <div class="icon">
                                             <span>
@@ -207,7 +207,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="pb-3 d-flex gap-3">
                                         <div class="icon">
                                             <span>
@@ -459,10 +459,10 @@
                                 </template>
                             </carousel>
                         </div>
-                        <div class="text-center mt-5">
-                            <Link href="#pricing" class="button button-s2 me-2 button-primary">Get
+                        <div class="text-center mt-5 banner_btn__mobile">
+                            <Link href="#pricing" class="button button-s2 me-xl-2 me-lg-2 me-md-2 me-0 button-primary">Get
                             LeadX Froms Now →</Link>
-                            <a :href="route('customer.reviews')" class="leadX-Ulink ms-2">See All Reviews →</a>
+                            <a :href="route('customer.reviews')" class="leadX-Ulink ms-xl-2 ms-lg-2 ms-md-2 ms-0">See All Reviews →</a>
                         </div>
                     </div>
                 </div>
@@ -478,12 +478,12 @@
                     </div>
                 </div>
                 <div class="row justify-content-center">
-                    <div class="col-lg-12 col-md-8 col-sm-10">
+                    <div class="col-12">
                         <div class="pricing-area">
                             <template v-if="packages.length > 0">
                                 <div class="row">
                                     <template v-for="(item, index) in packages" :key="index">
-                                        <div class="col-lg-4 pricing-box-wrap" :class="{
+                                        <div class="col-lg-4 col-md-4 col-12 pricing-box-wrap" :class="{
                                             'pricing-featured': item.recommended
                                         }">
                                             <div class="pricing-box" :class="{

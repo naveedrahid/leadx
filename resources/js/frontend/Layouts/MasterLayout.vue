@@ -17,7 +17,7 @@
                             <template v-if="route().current('home')">
                                 <Link :href="route('home')" class="active">Home</Link>
                                 <Link :href="route('featured')">Features</Link>
-                                <a href="#pricing" class="nav-link">Pricing</a>
+                                <Link :href="route('home') + '#pricing'" >Pricing</Link>
                                 <Link :href="route('customer.reviews')">Testimonials</Link>
                                 <Link :href="route('contact')">Contact</Link>
                                 <!-- <a href="#home" class="nav-link active">Home</a> -->
@@ -27,7 +27,7 @@
                             <template v-else>
                                 <Link :href="route('home')">Home</Link>
                                 <Link :href="route('featured')">Features</Link>
-                                <Link :href="route('home') +'#pricing'" :class="{
+                                <Link :href="route('home') + '#pricing'" :class="{
                                     'active': route().current('pricing')
                                 }">Pricing</Link>
                                 <Link :href="route('customer.reviews')">Testimonials</Link>
@@ -63,13 +63,14 @@
                     <template v-if="route().current('home')">
                         <Link :href="route('home')">Home</Link>
                         <Link :href="route('featured')">Features</Link>
+                        <Link :href="route('customer.reviews')">Testimonials</Link>
                         <a href="#pricing" class="nav-link">Pricing</a>
                         <Link :href="route('contact')">Contact</Link>
                     </template>
                     <template v-else>
                         <Link :href="route('home')">Home</Link>
                         <Link :href="route('featured')">Features</Link>
-                        <Link :href="route('pricing')" :class="{
+                        <Link :href="route('home') + '#pricing'" :class="{
                             'active': route().current('pricing')
                         }">Pricing</Link>
                         <Link :href="route('contact')">Contact</Link>
@@ -104,13 +105,13 @@
                                 <span class="colFirstTxt">Now Available on Mobile!</span>
                                 <h2 class="my-4">Grab the LeadXForms Mobile App <br><span style="color: #008543;">Your
                                         Leads, On-the-Go!</span></h2>
-                                <div class="py-2 d-flex gap-3">
+                                <div class="py-2 d-flex gap-3 footer_btn__mobile">
                                     <img src="/_public_assets/testImg/Button (1).png" width="150" class="img-fluid">
                                     <img src="/_public_assets/testImg/Button.png" width="150" class="img-fluid">
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-md-4 col-sm-12 d-flex justify-content-end">
-                                <img src="/_public_assets/testImg/Mobile.png" class="img-fluid footer-mobile"
+                            <div class="col-lg-4 col-md-5 col-sm-12 d-flex justify-content-end">
+                                <img src="/_public_assets/testImg/Mobile.png" class="img-fluid footer-mobile footer_img__mobile"
                                     alt="Shape Man img-fluid">
                             </div>
                         </div>
@@ -142,7 +143,7 @@
                             <li>
                                 <Link :href="route('featured')" class="text-white">Features</Link>
                             </li>
-                            <li><a :href="route('home') +'#pricing'" class="nav-link text-white">Pricing</a></li>
+                            <li><Link :href="route('home') + '#pricing'" class="text-white">Pricing</Link></li>
                             <li>
                                 <Link :href="route('customer.reviews')" class="text-white">Testimonials</Link>
                             </li>
