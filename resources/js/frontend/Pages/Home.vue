@@ -643,7 +643,7 @@
                 </div>
             </div>
         </section>
-        <section class="latest-blog main-section pb-250">
+        <section class="latest-blog main-section pb-250 d-none">
             <div class="container">
                 <div class="main-head text-center">
                     <h4 class="subheading">Resources</h4>
