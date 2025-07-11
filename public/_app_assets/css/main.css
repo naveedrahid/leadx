@@ -374,9 +374,6 @@ footer .footer-list ul li {
     font-weight: 600;
 }
 
-
-
-
 .footer-banner span.colFirstTxt {
     background: #000;
     padding: 5px 15px;
@@ -413,4 +410,85 @@ footer.mainFooter {
 }
 .footer-banner-col .footer-mobile {
     width: 88%;
+}
+
+.payment-info span {
+    font-weight: 500;
+}
+
+.btn-checkout {
+    margin-top: 30px;
+    width: 100%;
+}
+
+
+.payment-info h4 {
+    font-weight: 700;
+}
+
+.payment-info .order-summary-box {
+    border:solid 1px #ccc;
+}
+.handlingFee {
+    font-size: 12px;
+}
+.ldx-total {
+    background: #f8f8f8;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-radius: 0px 0px 10px 10px;
+}
+
+.testimonial-checkout .card {
+    font-size: 14px;
+    line-height: 1.5;
+}
+.testimonial-checkout .bi-star-fill {
+    color: #ffc107; /* gold */
+}
+.testimonial-checkout img {
+    object-fit: cover;
+}
+.testimonial-checkout .textTestimonial{
+    font-size: 14px !important;
+}
+.testimonial-checkout i.bi.bi-star-fill {
+    background: #008744;
+    margin-right: 4px;
+    color: #fff;
+    width: 25px;
+    height: 25px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    font-size: 13px;
+}
+.checkout-achievements li{
+    position: relative;
+}
+
+.checkout-achievements li::before{
+    content: "";
+    background:url('_public_assets/testImg/check-green.svg') no-repeat center center;
+    position: absolute;
+    left: 0;
+    width: 15px;
+    height: 15px;
+    top: 3px;
+}
+.checkout-achievements li {
+    padding-left: 27px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    line-height:18px;
+}
+.verifiedLdx {
+    font-size: 12px;
+}
+.footerMenu ul.unstyled-list li a, .footer-rights p {
+    font-size: 14px;
+}
+.payment-info .order-summary-box span {
+    color: #000;
 }

@@ -5,9 +5,10 @@
             <div class="row align-items-center">
                 <div class="col-lg-4">
                     <div class="d-flex align-items-center justify-content-between">
-                        <a :href="route('home')" class="logo">
+                        <Link :href="route('home')" class="logo">
                             <img src="/_public_assets/img/logos/logo.png" :alt="$page.props.app.name" class="img-fluid">
-                        </a>
+                        </Link>
+                      
                         <button class="menu-btn d-lg-none d-block"><i class="bi bi-list"></i></button>
                     </div>
                 </div>
@@ -17,7 +18,7 @@
                             <template v-if="route().current('home')">
                                 <Link :href="route('home')" class="active">Home</Link>
                                 <Link :href="route('featured')">Features</Link>
-                                <Link :href="route('home') + '#pricing'" >Pricing</Link>
+                                <Link :href="route('pricing')">Pricing</Link>
                                 <Link :href="route('customer.reviews')">Testimonials</Link>
                                 <Link :href="route('contact')">Contact</Link>
                                 <!-- <a href="#home" class="nav-link active">Home</a> -->
@@ -27,9 +28,7 @@
                             <template v-else>
                                 <Link :href="route('home')">Home</Link>
                                 <Link :href="route('featured')">Features</Link>
-                                <Link :href="route('home') + '#pricing'" :class="{
-                                    'active': route().current('pricing')
-                                }">Pricing</Link>
+                                <Link :href="route('pricing')">Pricing</Link>
                                 <Link :href="route('customer.reviews')">Testimonials</Link>
                                 <Link :href="route('contact')">Contact</Link>
                             </template>
@@ -41,7 +40,7 @@
                             </template>
                             <template v-else>
                                 <a :href="route('app.auth.login')" class="button button-primary text-primary bg-white">Login</a>
-                                <a href="javascript:;" class="button button-primary">Get LeadX</a>
+                                <Link :href="route('pricing')" class="button nav-link button-primary">Get LeadX</Link>
                             </template>
                         </div>
                     </div>
@@ -64,15 +63,13 @@
                         <Link :href="route('home')">Home</Link>
                         <Link :href="route('featured')">Features</Link>
                         <Link :href="route('customer.reviews')">Testimonials</Link>
-                        <a href="#pricing" class="nav-link">Pricing</a>
+                        <Link :href="route('pricing')">Pricing</Link>
                         <Link :href="route('contact')">Contact</Link>
                     </template>
                     <template v-else>
                         <Link :href="route('home')">Home</Link>
                         <Link :href="route('featured')">Features</Link>
-                        <Link :href="route('home') + '#pricing'" :class="{
-                            'active': route().current('pricing')
-                        }">Pricing</Link>
+                        <Link :href="route('pricing')">Pricing</Link>
                         <Link :href="route('contact')">Contact</Link>
                     </template>
                 </nav>
@@ -103,16 +100,12 @@
                         <div class="row align-items-center">
                             <div class="col-lg-8 col-md-7 col-sm-12 col-first">
                                 <span class="colFirstTxt">Now Available on Mobile!</span>
-                                <h2 class="my-4">Grab the LeadXForms Mobile App <br><span style="color: #008543;">Your
-                                        Leads, On-the-Go!</span></h2>
-                                <div class="py-2 d-flex gap-3 footer_btn__mobile">
-                                    <img src="/_public_assets/testImg/Button (1).png" width="150" class="img-fluid">
-                                    <img src="/_public_assets/testImg/Button.png" width="150" class="img-fluid">
-                                </div>
+                                <h2 class="my-4 text-black">Grab the LeadXForms Mobile App <br><span style="color: #008543;">Your Leads, On-the-Go!</span></h2>
+                                <Link :href="route('pricing')" class="button button-s2 me-xl-2 me-lg-2 me-md-2 me-0 button-primary">Get {{ $page.props.app.name }} App →</Link>
                             </div>
                             <div class="col-lg-4 col-md-5 col-sm-12 d-flex justify-content-end">
-                                <img src="/_public_assets/testImg/Mobile.png" class="img-fluid footer-mobile footer_img__mobile"
-                                    alt="Shape Man img-fluid">
+                                <img src="/_public_assets/testImg/Mobile.png"
+                                    class="img-fluid footer-mobile footer_img__mobile" alt="Shape Man img-fluid">
                             </div>
                         </div>
                     </div>
@@ -143,7 +136,9 @@
                             <li>
                                 <Link :href="route('featured')" class="text-white">Features</Link>
                             </li>
-                            <li><Link :href="route('home') + '#pricing'" class="text-white">Pricing</Link></li>
+                            <li>
+                                <Link :href="route('pricing')" class="text-white">Pricing</Link>
+                            </li>
                             <li>
                                 <Link :href="route('customer.reviews')" class="text-white">Testimonials</Link>
                             </li>
@@ -174,7 +169,7 @@
                         <h5 class="text-white mb-4">Contact</h5>
                         <ul class="unstyled-list infoIcon">
                             <li><a class="text-white" :href="'mailto:' + $page.props.app.support_mail">{{
-                                    $page.props.app.support_mail}}</a>
+                                $page.props.app.support_mail }}</a>
                             </li>
                             <li><a href="#" class="text-white">
                                     Level 4/260 Queen St, Brisbane City QLD
@@ -386,7 +381,18 @@ export default {
             $('.nav-link').each(function () {
                 let link = $(this);
                 if (!link.attr('href')) return;
-                let section = $(link.attr('href'));
+                // let section = $(link.attr('href')); old code Ahmed
+
+                //  replace with naveed
+                let href = link.attr("href");
+                if (href.startsWith("#")) {
+                    var section = $(href);
+                } else if (href.includes("#")) {
+                    var section = $(href.substring(href.indexOf("#")));
+                } else {
+                    var section = $();
+                }
+
                 if (section.length) {
                     if (
                         position >= section.offset().top &&

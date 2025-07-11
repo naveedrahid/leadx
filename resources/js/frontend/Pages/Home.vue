@@ -1,5 +1,4 @@
 <template>
-
     <Head>
         <title>Best WordPress Form Builder Plugin for Lead Generation</title>
         <meta name="description"
@@ -11,7 +10,7 @@
                 <div class="row align-items-center justify-content-center">
                     <div class="col-lg-10 col-md-8">
                         <div class="hero-content text-center">
-                            <h1>Build High-Converting WordPress Forms <span class="text-primary">in-Minutes</span> with
+                            <h1>Build High-Converting WordPress Forms <span class="text-primary d-inline-block">in-Minutes</span> with
                                 <span class="text-primary">{{ $page.props.app.name }}</span>
                             </h1>
                             <div class="row justify-content-center">
@@ -21,8 +20,8 @@
                                     <!-- <p>The Unlimited solution for creating custom forms and flows to connect users and
                                         enhance engagement and broaden your online presence.</p> -->
                                     <div class="my-5 banner_btn__mobile">
-                                        <a href="#pricing" class="button me-xl-2 me-lg-2 me-md-2 me-0 button-s2 w-auto button-primary">
-                                            Get {{ $page.props.app.name }} Now →</a>
+                                        <Link :href="route('pricing')" class="button me-xl-2 me-lg-2 me-md-2 me-0 button-s2 w-auto button-primary">
+                                            Get {{ $page.props.app.name }} Now →</Link>
                                         <Link :href="route('featured')" class="ms-xl-2 ms-lg-2 ms-md-2 ms-0 leadX-Ulink">
                                         See All Features →</Link>
                                     </div>
@@ -102,14 +101,14 @@
                     </div>
                 </div>
                 <div class="mt-5 text-center banner_btn__mobile">
-                    <a href="#pricing" class="button me-xl-2 me-lg-2 me-md-2 me-0 button-s2 w-auto button-primary">
-                        Get {{ $page.props.app.name }} Now →</a>
+                    <Link :href="route('pricing')" class="button me-xl-2 me-lg-2 me-md-2 me-0 button-s2 w-auto button-primary">
+                        Get {{ $page.props.app.name }} Now →</Link>
                     <Link :href="route('featured')" class="ms-xl-2 ms-lg-2 ms-md-2 ms-0 leadX-Ulink">
                     See All Features →</Link>
                 </div>
             </div>
         </section>
-        <section class="main-section overflow-hidden">
+        <section class="main-section overflow-hidden d-none">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-5 col-md-6 col-sm-12">
@@ -247,7 +246,7 @@
                 </div>
             </div>
         </section>
-        <section class="main-section whychooseus-section bg-light-green overflow-hidden">
+        <section class="main-section whychooseus-section bg-light-green overflow- d-none">
             <div class="container">
                 <div class="row justify-content-between align-items-center pb-5">
                     <div class="col-lg-5 col-md-6 col-sm-12">
@@ -460,7 +459,7 @@
                             </carousel>
                         </div>
                         <div class="text-center mt-5 banner_btn__mobile">
-                            <Link href="#pricing" class="button button-s2 me-xl-2 me-lg-2 me-md-2 me-0 button-primary">Get
+                            <Link :href="route('pricing')" class="button button-s2 me-xl-2 me-lg-2 me-md-2 me-0 button-primary">Get
                             LeadX Froms Now →</Link>
                             <a :href="route('customer.reviews')" class="leadX-Ulink ms-xl-2 ms-lg-2 ms-md-2 ms-0">See All Reviews →</a>
                         </div>
@@ -532,7 +531,7 @@
                             alt="Back-Guarantee img-fluid" />
                     </div>
                     <div class="col-lg-9 col-md-7 col-sm-12">
-                        <h3 class="fw-bolder text-dark">Our 100% No-Risk money back guarantee!</h3>
+                        <h3 class="fw-bolder text-dark text-capitalize">Our 100% No-Risk money back guarantee!</h3>
                         <p class="inter-text">
                             We’re excited to have you experience UltimateAI
                             Pro. Over the next 30 days, if UltimateAI isn’t
@@ -544,7 +543,7 @@
                 </div>
             </div>
         </section>
-        <section class="main-section blog-section bg-light overflow-hidden" id="blog" style="display:none">
+        <section class="main-section blog-section bg-light overflow-hidden  d-none" id="blog">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-6 col-md-8">
@@ -607,7 +606,7 @@
                 </div>
             </div>
         </section>
-        <section class="main-section faqs-section bg-light-green overflow-hidden" id="faqs">
+        <section class="main-section faqs-section bg-light-green overflow-hidden pb-250" id="faqs">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-6 col-md-8">
@@ -643,7 +642,7 @@
                 </div>
             </div>
         </section>
-        <section class="latest-blog main-section pb-250">
+        <section class="latest-blog main-section   d-none" >
             <div class="container">
                 <div class="main-head text-center">
                     <h4 class="subheading">Resources</h4>

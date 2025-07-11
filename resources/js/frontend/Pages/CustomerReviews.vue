@@ -8,7 +8,8 @@
                     <div class="col-lg-10 col-md-8">
                         <div class="hero-content text-center">
                             <h4 class="subheading">{{ $page.props.app.name }} Success Stories</h4>
-                            <h1>Why Millions <span class="text-primary">Rely on {{ $page.props.app.name }}</span> to Build Powerful WordPress Forms</h1>
+                            <h1 class="mb-4">Why Millions <span class="text-primary">Rely on {{ $page.props.app.name }}</span> to Build Powerful WordPress Forms</h1>
+                            <a :href="route('home') + '#pricing'" class="button button-s2 button-primary button-primary">Get {{ $page.props.app.name }} Now →</a>
                         </div>
                     </div>
                 </div>

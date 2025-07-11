@@ -7,10 +7,9 @@
                     <div class="col-lg-8 col-md-8">
                         <div class="hero-content text-center">
                             <!-- <div class="subheading h4">{{ $page.props.app.name }} Features</div> -->
-                            <h1>WordPress <span class="text-primary">{{ $page.props.app.name }}</span>
-                                Plugin that's Easy to Create</h1>
-                                <p class="py-4">Discover how {{ $page.props.app.name }} combines simplicity with powerful functionality. Our versatile features and addons streamline all your form-building needs. Get {{ $page.props.app.name }} Now</p>
-                            <a :href="route('home') + '#pricing'" class="button py-3 button-primary button-primary">Get {{ $page.props.app.name }} Now →</a>
+                            <h1><span class="text-primary">{{ $page.props.app.name }}</span> Features</h1>
+                                <p class="py-4">Explore how LeadXForms delivers powerful, user-friendly tools to build smarter WordPress forms. From essential features to advanced integrations, everything you need is built in to streamline your workflow and boost conversions.</p>
+                            <a :href="route('home') + '#pricing'" class="button button-s2 button-primary button-primary">Get {{ $page.props.app.name }} Now →</a>
                         </div>
                     </div>
                 </div>

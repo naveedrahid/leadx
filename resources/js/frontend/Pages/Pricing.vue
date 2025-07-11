@@ -1,352 +1,584 @@
 <template>
-<Head title="Pricing" />
-<MasterLayout :loader="loader">
-    <section class="hero-section main-section overflow-hidden bg-light-green" id="hero">
-        <div class="container">
-            <div class="row align-items-center justify-content-center">
-                <div class="col-lg-6 col-md-8">
-                    <div class="hero-content text-center">
-                        <h1>Check Out Pricing</h1>
-                        <!-- <div class="row">
-                            <div class="col-lg-9">
-                                <p>The Unlimited solution for creating custom forms and flows to connect users and enhance engagement and broaden your online presence.</p>
-                                <div class="mt-5">
-                                    <a href="#pricing" class="button button-s2 button-primary">Buy Now</a>
-                                </div>
-                            </div>
-                        </div> -->
+
+    <Head title="Pricing" />
+    <MasterLayout :loader="loader">
+        <section class="hero-section main-section overflow-hidden bg-light-green" id="hero">
+            <div class="container">
+                <div class="row align-items-center justify-content-center">
+                    <div class="col-lg-10 col-md-8">
+                        <div class="hero-content text-center">
+                            <h1 v-if="pack === ''">Get started with <span class="text-primary">LeadXForms</span> today.
+                            </h1>
+                            <p v-if="pack === ''">The Unlimited solution for creating custom forms and flows to connect
+                                users and enhance
+                                engagement and broaden your online presence.</p>
+                            <h1 v-if="pack !== ''">Checkout</h1>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-    <section class="main-section pricing-section overflow-hidden pb-250">
-        <div class="container">
-            <div class="pp-step">Step <span class="stepnum">1</span></div>
-            <div class="row justify-content-center">
-                <div class="col-lg-7 col-md-10">
-                    <div class="pp-head text-center">
-                        <h3 class="pp-heading">Pick A Plan</h3>
-                        <p>Choose A Subscription. You Can Upgrade At Any Time.</p>
+        </section>
+        <section class="main-section pricing-section overflow-hidden pb-0 mt-4">
+            <div class="container">
+                <!-- <div class="pp-step">Step <span class="stepnum">1</span></div> -->
+                <!-- <div class="row justify-content-center">
+                    <div class="col-lg-7 col-md-10">
+                        <div class="pp-head text-center">
+                            <h3 class="pp-heading">Pick A Plan</h3>
+                            <p>
+                                Choose A Subscription. You Can Upgrade At Any
+                                Time.
+                            </p>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-lg-12 col-md-8 col-sm-10">
-                    <div class="pricing-area">
-                        <template v-if="packages.length > 0">
-                            <div class="row">
-                                <template v-for="(item, index) in packages" :key="index">
-                                    <div class="col-lg-4 pricing-box-wrap" :class="{
-                                            'pricing-featured': item.recommended,
-                                            'pricing-box-seleted': pack !== '' && pack.id == item.id
+                </div> -->
+                <div class="row justify-content-center">
+                    <div class="col-lg-12 col-md-8 col-sm-10">
+                        <div class="pricing-area">
+                            <template v-if="packages.length > 0">
+                                <div class="row">
+                                    <template v-for="(item, index) in packages" :key="index">
+                                        <div class="col-lg-4 pricing-box-wrap" :class="{
+                                            'pricing-featured':
+                                                item.recommended,
+                                            'pricing-box-seleted':
+                                                pack !== '' &&
+                                                pack.id == item.id,
                                         }">
-                                        <div class="pricing-box" :class="{
-                                            'pricing-box-featured': item.recommended
-                                        }">
-                                            <span v-if="item.recommended"
-                                                class="pricing-box-featured_label">Featured Plan</span>
-                                            <div class="pricing-box-head">
-                                                <h3 class="pricing-box-title">{{ item.title }}</h3>
-                                                <div class="pricing-box-price">
-                                                    <div class="pricing-box-amount">{{ priceFormat(item.price) }}
+                                            <div class="pricing-box" :class="{
+                                                'pricing-box-featured':
+                                                    item.recommended,
+                                            }">
+                                                <span v-if="item.recommended"
+                                                    class="pricing-box-featured_label">Featured Plan</span>
+                                                <div class="pricing-box-head">
+                                                    <h3 class="pricing-box-title">
+                                                        {{ item.title }}
+                                                    </h3>
+                                                    <div class="pricing-box-price">
+                                                        <div class="pricing-box-amount">
+                                                            {{
+                                                                priceFormat(
+                                                                    item.price
+                                                                )
+                                                            }}
+                                                        </div>
+                                                        <span class="pricing-box-duration">/
+                                                            {{
+                                                                item.duration_lifetime
+                                                                    ? "Lifetime"
+                                                                    : item.format_duration
+                                                            }}</span>
                                                     </div>
-                                                    <span class="pricing-box-duration">/ {{ item.duration_lifetime ?
-                                                        'Lifetime' : item.format_duration }}</span>
-                                                </div>
-                                                <template v-if="!user">
-                                                    <button :href="`${route('pricing')}?plan=${item.id}`" class="button button-s2 button-primary button-block" :class="{
-                                                        'button-primary': item.recommended
-                                                    }" @click="initPayment(item)">
-                                                        {{ (pack !== '' && pack.id == item.id) ? "Selected" : "Get Started →" }}
-                                                    </button>
-                                                </template>
-                                                <template v-else-if="user.user_type === 'customer'">
-                                                    <Link :href="route('app.customer.subscription.billing')" class="button button-s2 button-primary button-block" :class="{
-                                                        'button-primary': item.recommended
-                                                    }">Upgrade →</Link>
-                                                </template>
+                                                    <template v-if="!user">
+                                                        <button :href="`${route(
+                                                            'pricing'
+                                                        )}?plan=${item.id}`"
+                                                            class="button button-s2 button-primary button-block" :class="{
+                                                                'button-primary':
+                                                                    item.recommended,
+                                                            }" @click="
+                                                                initPayment(
+                                                                    item
+                                                                )
+                                                                ">
+                                                            {{
+                                                                pack !== "" &&
+                                                                    pack.id ==
+                                                                    item.id
+                                                                    ? "Selected"
+                                                                    : "Get Started →"
+                                                            }}
+                                                        </button>
+                                                    </template>
+                                                    <template v-else-if="
+                                                        user.user_type ===
+                                                        'customer'
+                                                    ">
+                                                        <Link :href="route(
+                                                            'app.customer.subscription.billing'
+                                                        )
+                                                            " class="button button-s2 button-primary button-block"
+                                                            :class="{
+                                                                'button-primary':
+                                                                    item.recommended,
+                                                            }">Upgrade →</Link>
+                                                    </template>
 
-
-                                                <!-- <Link v-if="!user" :href="`${route('pricing')}?plan=${item.id}`"
+                                                    <!-- <Link v-if="!user" :href="`${route('pricing')}?plan=${item.id}`"
                                                     class="button button-s2 button-primary button-block">Get Started →
                                                 </Link>
                                                 <Link v-else-if="user.user_type === 'customer'"
                                                     :href="route('app.customer.subscription.billing')"
                                                     class="button button-s2 button-primary button-block">Upgrade →
                                                 </Link> -->
-                                            </div>
-                                            <div class="pricing-box-body" v-if="item.features">
-                                                <h4 class="pricing-box-title">Features</h4>
-                                                <ul class="pricing-box-features">
-                                                    <li v-for="(feature, index) in JSON.parse(item.features)"
-                                                        :key="index">{{ feature }}</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </template>
-                            </div>
-                        </template>
-                        <!-- <template v-if="packages.length>0">
-                            <div class="row">
-                                <template v-for="(item, index) in packages" :key="index">
-                                    <div class="col-lg-4">
-                                        <div class="pricing-box pricing-box2" :class="{
-                                            'pricing-box-featured': item.recommended,
-                                            'pricing-box-seleted': pack !== '' && pack.id == item.id
-                                        }">
-                                            <span v-if="item.recommended" class="pricing-box-featured_label">Featured Plan</span>
-                                            <div class="pricing-box-head">
-                                                <h3 class="pricing-box-title">{{ item.title }}</h3>
-                                                <div class="pricing-box-price">
-                                                    <div class="pricing-box-amount">{{ priceFormat(item.price) }}</div>
-                                                    <span class="pricing-box-duration">/ {{ item.duration_lifetime ? 'Lifetime' : item.format_duration }}</span>
                                                 </div>
-                                                <template v-if="!user">
-                                                    <button :href="`${route('pricing')}?plan=${item.id}`" class="button button-s2 button-block" :class="{
-                                                        'button-primary': item.recommended
-                                                    }" @click="initPayment(item)">
-                                                        {{ (pack !== '' && pack.id == item.id) ? "Selected" : "Buy Now" }}
-                                                    </button>
-                                                </template>
-                                                <template v-else-if="user.user_type === 'customer'">
-                                                    <Link :href="route('app.customer.subscription.billing')" class="button button-s2 button-block" :class="{
-                                                        'button-primary': item.recommended
-                                                    }">Upgrade</Link>
-                                                </template>
-                                            </div>
-                                            <div class="pricing-box-body" v-if="item.features">
-                                                <h3 class="pricing-box-title text-uppercase">Features</h3>
-                                                <ul class="pricing-box-features">
-                                                    <li v-for="(feature, index) in JSON.parse(item.features)" :key="index">{{ feature }}</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </template>
-                            </div>
-                        </template> -->
-                        <template v-else>
-                            <div class="notfound">No Packages Found</div>
-                        </template>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <template v-if="pack !== ''">
-        <section class="pp-section bg-light-green choose-websites-section" id="choose-websites">
-            <div class="container">
-                <div class="pp-step">Step <span class="stepnum">2</span></div>
-                <div class="row justify-content-center">
-                    <div class="col-lg-7 col-md-10">
-                        <div class="pp-head text-center">
-                            <h3 class="pp-heading">Add Your Website</h3>
-                            <p>You can select {{ pack.is_website_unlimited ? 'unlimited' : pack.website_limit }} website. Selected website you can change at any time:</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="ppws-panel">
-                    <div class="ppws-repeater">
-                        <div class="ws-item">
-                            <div class="row align-items-center">
-                                <div class="col-lg-4 col-md-12 order-lg-last">
-                                    <div class="ws-add-item">
-                                        <label class="input-label d-lg-block d-none">&nbsp;</label>
-                                        <button
-                                            class="button button-s2 button-primary button-block"
-                                            :disabled="pack.website_limit != null && websites.length >= pack.website_limit"
-                                            @click="addWebsite()">
-                                            Add Website
-                                        </button>
-                                        <div class="text-danger my-1 d-lg-block d-none" v-if="errors['websites.0.website_name'] || errors['websites.0.website_url']"><small>&nbsp;</small></div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-md-6 order-lg-first">
-                                    <div class="form-group2">
-                                        <label class="input-label" for="websites-0-website_name">Website Name<span class="text-danger">*</span></label>
-                                        <input type="text" v-model="websites[0].website_name" id="websites-0-website_name" class="input-control2" placeholder="Enter Website Name">
-                                        <div class="text-danger my-1" v-if="errors['websites.0.website_name']">
-                                            <small>{{ (errors['websites.0.website_name']).replace('websites.0.website_name', 'website name') }}</small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-md-6 order-lg-first">
-                                    <div class="form-group2">
-                                        <label class="input-label" for="websites-0-website_url">Website URL<span class="text-danger">*</span></label>
-                                        <input type="text" v-model="websites[0].website_url" id="websites-0-website_url" class="input-control2" placeholder="Enter Website URL">
-                                        <div class="text-danger my-1" v-if="errors['websites.0.website_url']">
-                                            <small>{{ (errors['websites.0.website_url']).replace('websites.0.website_url', 'website url') }}</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <template v-if="websites.length>1">
-                            <template v-for="(website, index) in websites" :key="index">
-                                <div class="ws-item" v-if="index>0">
-                                    <div class="row align-items-center">
-                                        <div class="col-lg-4 col-md-5">
-                                            <div class="form-group2">
-                                                <label class="input-label" :for="'websites-'+index+'-website_name'">Website Name<span class="text-danger">*</span></label>
-                                                <input type="text" v-model="websites[index].website_name" :id="'websites-'+index+'-website_name'" class="input-control2" placeholder="Enter Website Name">
-                                                <div class="text-danger my-1" v-if="errors['websites.'+index+'.website_name']">
-                                                    <small>{{ (errors['websites.'+index+'.website_name']).replace('websites.'+index+'.website_name', 'website name') }}</small>
+                                                <div class="pricing-box-body" v-if="item.features">
+                                                    <h4 class="pricing-box-title">
+                                                        Features
+                                                    </h4>
+                                                    <ul class="pricing-box-features">
+                                                        <li v-for="(feature, index) in JSON.parse(item.features)"
+                                                            :key="index">
+                                                            {{ feature }}
+                                                        </li>
+                                                    </ul>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-4 col-md-5">
-                                            <div class="form-group2">
-                                                <label class="input-label" :for="'websites-'+index+'-website_url'">Website URL<span class="text-danger">*</span></label>
-                                                <input type="text" v-model="websites[index].website_url" :id="'websites-'+index+'-website_url'" class="input-control2" placeholder="Enter Website URL">
-                                                <div class="text-danger my-1" v-if="errors['websites.'+index+'.website_url']">
-                                                    <small>{{ (errors['websites.'+index+'.website_url']).replace('websites.'+index+'.website_url', 'website url') }}</small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group2">
-                                                <label class="input-label d-md-block d-none">&nbsp;</label>
-                                                <button class="button button-s2 button-light--danger button-block" @click="websites.splice(index, 1)">Remove</button>
-                                                <div class="text-danger my-1 d-lg-block d-none" v-if="errors['websites.'+index+'.website_name'] || errors['websites.'+index+'.website_url']"><small>&nbsp;</small></div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    </template>
                                 </div>
                             </template>
-                        </template>
+                            <template v-else>
+                                <div class="notfound">No Packages Found</div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center border-cst p-4 bg-light-green">
+                    <div class="col-lg-3 col-md-5 col-sm-12">
+                        <img src="/_public_assets/testImg/Money-Back-Guarantee-1.svg" width="250" height="250"
+                            alt="Back-Guarantee img-fluid" />
+                    </div>
+                    <div class="col-lg-9 col-md-7 col-sm-12">
+                        <h3 class="fw-bolder text-dark text-capitalize">Our 100% No-Risk money back guarantee!</h3>
+                        <p class="inter-text">
+                            We’re excited to have you experience UltimateAI
+                            Pro. Over the next 30 days, if UltimateAI isn’t
+                            the best fit, simply reach out! We’ll happily
+                            refund 100% of your money. No questions asked.
+                        </p>
+                        <img src="/_public_assets/testImg/payment2-1.webp" width="350" alt="payment cards" />
                     </div>
                 </div>
             </div>
         </section>
-        <section class="pp-section payment-section">
-            <div class="container">
-                <div class="pp-step">Step <span class="stepnum">3</span></div>
-                <div class="row justify-content-center">
-                    <div class="col-lg-7 col-md-10">
-                        <div class="pp-head text-center">
-                            <h3 class="pp-heading">Payment Information</h3>
-                            <p>Please provide your payment information, including your name, credit card number, expiration date, and CVC code to complete the transaction.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row align-items-center justify-content-center">
-                    <div class="col-lg-6 col-md-10">
-                        <div class="payment-form-wrap">
-                            <div class="row">
-                                <template v-if="pack.free_plan">
-                                    <div class="col-md-12">
-                                        <div class="form-group3">
-                                            <label class="input-label" for="fullname">Fullname <span class="text-danger">*</span></label>
-                                            <div class="input-group2">
-                                                <div class="input-group2-append"><i class="bi bi-person"></i></div>
-                                                <input type="text" v-model="fullname" id="fullname" class="input-control2 border-0" placeholder="Enter Your Fullname">
-                                            </div>
-                                            <div class="text-danger my-1" v-if="errors.fullname">
-                                                <small>{{ errors.fullname }}</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </template>
-                                <div class="col-md-12">
-                                    <div class="form-group3">
-                                        <label class="input-label" for="email-address">Email Address<span class="text-danger">*</span></label>
-                                        <div class="input-group2">
-                                            <div class="input-group2-append"><img src="/_public_assets/img/email-address.png" alt="Email Address"></div>
-                                            <input type="email" v-model="email" id="email-address" class="input-control2 border-0" placeholder="Enter Email Address">
-                                        </div>
-                                        <div class="text-danger my-1" v-if="errors.email">
-                                            <small>{{ errors.email }}</small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group3">
-                                        <label class="input-label" for="password">Password<span class="text-danger">*</span></label>
-                                        <div class="input-group2">
-                                            <div class="input-group2-append"><img src="/_public_assets/img/email-address.png" alt="Password"></div>
-                                            <input :type="this.isRevealPassword ? 'text' : 'password'" v-model="password" id="password" class="input-control2 border-0" placeholder="Enter Password">
-                                            <span class="input-group-text fs-5" @click="revealPassword()">
-                                                <i class="ti" :class="this.isRevealPassword ? 'ti-eye' : 'ti-eye-off'"></i>
-                                            </span>
-                                        </div>
-                                        <div class="text-danger my-1" v-if="errors.email">
-                                            <small>{{ errors.password }}</small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <template v-if="!pack.free_plan">
-                                    <div class="col-md-12">
-                                        <div class="form-group3">
-                                            <label class="input-label" for="card-holder-name">Name on the Card<span class="text-danger">*</span></label>
-                                            <div class="input-group2">
-                                                <div class="input-group2-append"><img src="/_public_assets/img/name-on-the-card.png" alt="Name on the Card"></div>
-                                                <input type="text" v-model="card_holder_name" id="card-holder-name" class="input-control2 border-0" placeholder="Enter Name On Credit/Debit Card">
-                                            </div>
-                                            <div class="text-danger my-1" v-if="errors.card_holder_name">
-                                                <small>{{ errors.card_holder_name }}</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group3">
-                                            <label class="input-label" for="card-information">Card Information<span class="text-danger">*</span></label>
-                                            <div class="input-group2">
-                                                <div class="input-group2-append"><img src="/_public_assets/img/card-information.png" alt="Card Information"></div>
-                                                <div id="card-element"></div>
-                                            </div>
-                                            <div id="card-errors" class="text-danger my-1"></div>
-                                        </div>
-                                    </div>
-                                </template>
-                                <div class="col-md-12">
-                                    <div class="form-group3">
-                                        <label class="input-label" for="discount-code">Discount Code</label>
-                                        <div class="input-group2">
-                                            <div class="input-group2-append"><img src="/_public_assets/img/discount-code.png" alt="Discount Code"></div>
-                                            <input type="text" v-model="discount_code" id="discount-code" class="input-control2 border-0" placeholder="e.g. EX123-321">
-                                        </div>
-                                        <div class="text-danger my-1" v-if="errors.discount_code">
-                                            <small>{{ errors.discount_code }}</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-10">
-                        <div class="payment-info">
-                            <div class="mb-1">
-                                <h3 class="payment-info-title">Order Total</h3>
+        <template v-if="pack !== ''">
+            <section class="pp-section choose-websites-section" id="choose-websites">
+                <div class="container">
+                    <!-- <div class="pp-step">
+                        Step <span class="stepnum">2</span>
+                    </div> -->
+                    <!-- <div class="row justify-content-center">
+                        <div class="col-lg-7 col-md-10">
+                            <div class="pp-head text-center">
+                                <h3 class="pp-heading">Payment Information</h3>
                                 <p>
-                                    {{ pack.title }} <strong>{{ priceFormat(pack.price) }}</strong> / {{ pack.duration_lifetime ? 'Lifetime' : pack.format_duration }}
-                                    <br/>
-                                    Handling Fee <strong>${{handlingFee()}}</strong>
-                                    {{ pack.trial_period_days ? ' with '+ pack.trial_period_days +' '+ (pack.trial_period_days > 1 ? 'Days' : 'Day') + ' Free Trial' : '' }}
+                                    Please provide your payment information,
+                                    including your name, credit card number,
+                                    expiration date, and CVC code to complete
+                                    the transaction.
                                 </p>
                             </div>
-                            <button class="button button-s2 button-white button-block" @click="payNow()">Pay Now <strong>{{ totalAmount()  }}</strong></button>
+                        </div>
+                    </div> -->
+
+                    <div class="row justify-content-center">
+                        <div class="col-lg-7 col-md-10">
+                            <div class="payment-form-wrap">
+                                <div class="">
+                                    <h3 class="text-black mb-4 fw-bolder">New Account Information</h3>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 order-lg-first">
+                                        <div class="form-group3">
+                                            <label class="input-label" for="websites-0-website_name">Website Name<span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group2">
+                                                <input type="text" v-model="websites[0].website_name"
+                                                    id="websites-0-website_name" class="input-control2"
+                                                    placeholder="Website Name" />
+                                            </div>
+                                            <div class="text-danger my-1" v-if="errors['websites.0.website_name']">
+                                                <small>{{
+                                                    errors[
+                                                        "websites.0.website_name"
+                                                    ].replace(
+                                                        "websites.0.website_name",
+                                                        "website name"
+                                                    )
+                                                }}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 order-lg-first">
+                                        <div class="form-group3">
+                                            <label class="input-label" for="websites-0-website_url">Website URL<span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group2">
+                                                <input type="text" v-model="websites[0].website_url"
+                                                    id="websites-0-website_url" class="input-control2"
+                                                    placeholder="Website URL" />
+                                            </div>
+                                            <div class="text-danger my-1" v-if="errors['websites.0.website_url']">
+                                                <small>{{
+                                                    errors[
+                                                        "websites.0.website_url"
+                                                    ].replace(
+                                                        "websites.0.website_url",
+                                                        "website url"
+                                                    )
+                                                }}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group3">
+                                            <label class="input-label" for="first_name">First Name
+                                                <span class="text-danger">*</span></label>
+                                            <div class="input-group2">
+                                                <!-- <div class="input-group2-append">
+                                                    <i class="bi bi-person"></i>
+                                                </div> -->
+                                                <input type="text" v-model="first_name" id="first_name"
+                                                    class="input-control2 border-0" placeholder="First Name" />
+                                            </div>
+                                            <div class="text-danger my-1" v-if="errors.first_name">
+                                                <small>{{
+                                                    errors.first_name
+                                                    }}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group3">
+                                            <label class="input-label" for="last_name">Last Name</label>
+                                            <div class="input-group2">
+                                                <!-- <div class="input-group2-append">
+                                                    <i class="bi bi-person"></i>
+                                                </div> -->
+                                                <input type="text" v-model="last_name" id="last_name"
+                                                    class="input-control2 border-0" placeholder="Last Name" />
+                                            </div>
+                                            <div class="text-danger my-1" v-if="errors.last_name">
+                                                <small>{{
+                                                    errors.last_name
+                                                    }}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group3">
+                                            <label class="input-label" for="email-address">Email Address<span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group2">
+                                                <!-- <div class="input-group2-append">
+                                                    <img src="/_public_assets/img/email-address.png"
+                                                        alt="Email Address" />
+                                                </div> -->
+                                                <input type="email" v-model="email" id="email-address"
+                                                    class="input-control2 border-0" placeholder="Email Address*" />
+                                            </div>
+                                            <div class="text-danger my-1" v-if="errors.email">
+                                                <small>{{
+                                                    errors.email
+                                                    }}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group3">
+                                            <label class="input-label" for="phone-number">Phone Number<span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group2">
+                                                <!-- <div class="input-group2-append">
+                                                    <img src="/_public_assets/img/email-address.png"
+                                                        alt="Email Address" />
+                                                </div> -->
+                                                <input type="tel" v-model="phone_number" id="phone-number"
+                                                    class="input-control2 border-0" placeholder="Enter Phone Number" />
+                                            </div>
+                                            <div class="text-danger my-1" v-if="errors.phone_number">
+                                                <small>{{
+                                                    errors.phone_number
+                                                    }}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 password">
+                                        <div class="form-group3">
+                                            <label class="input-label" for="password">Password<span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group2">
+                                                <!-- <div class="input-group2-append">
+                                                    <img src="/_public_assets/img/email-address.png" alt="Password" />
+                                                </div> -->
+                                                <input :type="this.isRevealPassword
+                                                    ? 'text'
+                                                    : 'password'
+                                                    " v-model="password" id="password" class="input-control2 border-0"
+                                                    placeholder="Enter Password" />
+                                                <span class="input-group-text fs-5" @click="revealPassword()">
+                                                    <i class="ti" :class="this
+                                                        .isRevealPassword
+                                                        ? 'ti-eye'
+                                                        : 'ti-eye-off'
+                                                        "></i>
+                                                </span>
+                                            </div>
+                                            <div class="text-danger my-1" v-if="errors.password">
+                                                <small>{{
+                                                    errors.password
+                                                    }}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4"  v-if="!pack.free_plan"></div>
+                                </div>
+                                <template v-if="!pack.free_plan">
+                                    <div class="">
+                                        <h3 class="text-black mb-4 fw-bolder">Payment Information</h3>
+                                    </div>
+                                    <div class="paymentCard shadow-sm">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group3">
+                                                    <label class="input-label" for="card-holder-name">Name on the
+                                                        Card<span class="text-danger">*</span></label>
+                                                    <div class="input-group2">
+                                                        <input type="text" v-model="card_holder_name
+                                                            " id="card-holder-name" class="input-control2 border-0"
+                                                            placeholder="Enter Name On Credit/Debit Card" />
+                                                    </div>
+                                                    <div class="text-danger my-1" v-if="
+                                                        errors.card_holder_name
+                                                    ">
+                                                        <small>{{
+                                                            errors.card_holder_name
+                                                            }}</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group3 mb-0">
+                                                    <label class="input-label" for="card-information">Card
+                                                        Information<span class="text-danger">*</span></label>
+                                                    <div class="input-group2">
+                                                        <div id="card-element"></div>
+                                                    </div>
+                                                    <div id="card-errors" class="text-danger my-1"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+                                <button :disabled="loader"
+                                    class="button button-s2 button-primary button-block button-primary btn-checkout"
+                                    @click="payNow">Complete Checkout</button>
+                            </div>
+                        </div>
+                        <div class="col-lg-5 col-md-10">
+                            <div class="payment-info-sticky px-4">
+                                <div class="payment-info">
+                                    <!-- <div class="mb-1">
+                                        <h3 class="payment-info-title">
+                                            Order Total
+                                        </h3>
+                                        <p>
+                                            {{ pack.title }}
+                                            <strong>{{
+                                                priceFormat(pack.price)
+                                                }}</strong>
+                                            /
+                                            {{
+                                                pack.duration_lifetime
+                                                    ? "Lifetime"
+                                                    : pack.format_duration
+                                            }}
+                                            <br />
+                                            Handling Fee
+                                            <strong>${{ handlingFee() }}</strong>
+                                            {{
+                                                pack.trial_period_days
+                                                    ? " with " +
+                                                    pack.trial_period_days +
+                                                    " " +
+                                                    (pack.trial_period_days > 1
+                                                        ? "Days"
+                                                        : "Day") +
+                                                    " Free Trial"
+                                                    : ""
+                                            }}
+                                        </p>
+                                    </div>
+                                    <button class="button button-s2 button-white button-block" @click="payNow()">
+                                        Pay Now <strong>{{ totalAmount() }}</strong>
+                                    </button> -->
+
+                                    <!-- Naveed changes -->
+                                    <div class="order-summary-box bg-white rounded shadow-sm">
+                                        <h4 class="mb-3 font-weight-bold px-4 pt-4 text-capitalize text-black">your order</h4>
+                                        <hr />
+
+                                        <div class="px-4 pt-2 pb-3">
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <span class="planeName">{{ pack.title }} Plan</span>
+                                                <span>${{ Number(pack.price).toFixed(2) }}</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between mb-2"
+                                                v-if="discount_code && discountAmount() > 0">
+                                                <span>
+                                                    Discount Applied
+                                                    <span class="badge bg-primary text-white ms-2">{{ discountLabel()
+                                                    }}</span>
+                                                </span>
+                                                <span class="text-danger">- ${{ discountAmount().toFixed(2) }}</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between mb-2 handlingFee">
+                                                <span>Handling Fee</span>
+                                                <span>${{ handlingFee() }}</span>
+                                            </div>
+                                            <div class="input-group2 my-3">
+                                                <input type="text" v-model="discount_code" id="discount-code"
+                                                    class="input-control2 border-0" placeholder="Coupon" />
+                                            </div>
+                                            <div class="text-danger my-1" v-if="errors.discount_code">
+                                                <small>{{
+                                                    errors.discount_code
+                                                }}</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex justify-content-between font-weight-bold px-4 ldx-total">
+                                            <span class="fw-bolder">Total:</span>
+                                            <span class="fw-bolder">${{ finalAmount() }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="testimonial-checkout px-2">
+                                    <div class="" v-if="tesimonials.length">
+                                        <div class="my-4 fst-italic textTestimonial">
+                                            "{{ tesimonials[0].text }}"
+                                        </div>
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div>
+                                                <strong>{{ tesimonials[0].author }}</strong>
+                                            </div>
+                                            <div
+                                                class="text-black text-uppercase verifiedLdx d-flex align-items-center">
+                                                <img src="/_public_assets/testImg/circle-check-green.svg" width="15"
+                                                    class="img-fluid me-1" alt=""> Verified Customer
+                                            </div>
+                                        </div>
+                                        <div class="mt-3 text-warning">
+                                            <i v-for="i in tesimonials[0].rating" :key="i" class="bi bi-star-fill"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr class="my-4" />
+
+                                <div class="checkout-achievements px-2">
+                                    <ul>
+                                        <li>Most Popular WordPress Form Builder </li>
+                                        <li>6,000,000+ Active Installations</li>
+                                        <li>World Class Support</li>
+                                    </ul>
+                                </div>
+                                <hr class="my-4" />
+                                <div class="moneyBackGarantee d-flex align-items-center px-2">
+                                    <img src="/_public_assets/testImg/Money-Back-Guarantee-1.svg" width="100" class="img-fluid"
+                                        alt="">
+                                    <p class="ms-4 mb-0 text-black"><strong>100% Risk-Free Unconditional <br> Money Back
+                                            Guarantee!</strong></p>
+                                </div>
+                            </div>
+
+                            <!-- Naveed changes end -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- <section class="pt-0 pp-section">
+                
+                <BrandLogos></BrandLogos>
+                
+            </section> -->
+        </template>
+        <section class="main-section testimonials-section overflow-hidden" id="testimonials">
+            <div class="container">
+                <div class="row g-4" v-if="tesimonials.length > 0">
+                    <!-- START BOX -->
+                    <div class="col-lg-4 col-md-4 col-sm-12" v-for="(tesimonial, index) in tesimonials" :key="index">
+                        <div class="testimonials-area">
+                            <div class="testimonial-item">
+                                <div class="testimonial-rate">
+                                    <i :class="{
+                                        'bi bi-star-fill': tesimonial.rating >= 1,
+                                        'bi bi-star': tesimonial.rating < 1,
+                                    }"></i>
+                                    <i :class="{
+                                        'bi bi-star-fill': tesimonial.rating >= 2,
+                                        'bi bi-star': tesimonial.rating < 2,
+                                    }"></i>
+                                    <i :class="{
+                                        'bi bi-star-fill': tesimonial.rating >= 3,
+                                        'bi bi-star': tesimonial.rating < 3,
+                                    }"></i>
+                                    <i :class="{
+                                        'bi bi-star-fill': tesimonial.rating >= 4,
+                                        'bi bi-star': tesimonial.rating < 4,
+                                    }"></i>
+                                    <i :class="{
+                                        'bi bi-star-fill': tesimonial.rating == 5,
+                                        'bi bi-star': tesimonial.rating < 5,
+                                    }"></i>
+                                </div>
+                                <p>{{ tesimonial.text }}</p>
+                                <div class="testimonial-author">
+                                    <h4 class="testimonial-author-name">{{ tesimonial.author }}</h4>
+                                    <span class="testimonial-author-verified">Verified Customer</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END BOX -->
+                </div>
+            </div>
+        </section>
+        <section class="main-section faqs-section bg-light-green overflow-hidden pb-250" id="faqs">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6 col-md-8">
+                        <div class="main-head text-center">
+                            <h4 class="subheading">Question & Answers</h4>
+                            <h2 class="heading">Frequently <span class="text-primary">Asked</span> Questions</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="faqs-area">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div v-for="(faq, index) in faqs" :key="index" class="faq-item" :class="{
+                                'show': faq.show,
+                                'border-0': index + 1 == (faqs.length)
+                            }">
+                                <div class="faq-header">
+                                    <button class="faq-button" @click.prevent="faqsToggle(index)">
+                                        <h3>{{ faq.question }}</h3>
+                                        <span class="faq-toggle-icon">
+                                            <i :class="faq.show ? 'bi bi-chevron-down' : 'bi bi-chevron-right'"></i>
+                                        </span>
+                                    </button>
+                                </div>
+                                <div class="faq-body">
+                                    <div class="faq-content">
+                                        <p>{{ faq.answer }}</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        <section class="pt-0 pp-section">
-            <!-- BEGIN::BRAND LOGOs COMPONENT -->
-            <BrandLogos></BrandLogos>
-            <!-- END::BRAND LOGOs COMPONENT -->
-        </section>
-    </template>
-</MasterLayout>
+    </MasterLayout>
 </template>
 
 <script>
-import { Head, Link } from '@inertiajs/vue3';
-import MasterLayout from '@/frontend/Layouts/MasterLayout.vue';
-import BrandLogos from '@/frontend/Components/BrandLogos.vue';
-import { loadStripe } from '@stripe/stripe-js/pure';
+import { Head, Link } from "@inertiajs/vue3";
+import MasterLayout from "@/frontend/Layouts/MasterLayout.vue";
+import BrandLogos from "@/frontend/Components/BrandLogos.vue";
+import { loadStripe } from "@stripe/stripe-js/pure";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 
@@ -355,7 +587,7 @@ export default {
         Head,
         Link,
         MasterLayout,
-        BrandLogos
+        BrandLogos,
     },
 
     data() {
@@ -364,35 +596,123 @@ export default {
             user: this.$cookies.get("lxf-user"),
             token: this.$cookies.get("lxf-token"),
             packages: [],
-            pack: '',
+            pack: "",
             stripe: false,
             cardElement: false,
-            paymentMethodId: '',
-            email: '',
-            password: '',
-            fullname: '',
+            paymentMethodId: "",
+            email: "",
+            password: "",
+            // fullname: "",
+            first_name: "",
+            last_name: "",
+            phone_number: "",
             websites: [
                 {
-                    website_name: '',
-                    website_url: ''
+                    website_name: "",
+                    website_url: "",
+                },
+            ],
+            card_holder_name: "",
+            discount_code: "",
+
+            faqs: [
+                {
+                    question: 'Who is ' + this.$page.props.app.name + ' for?',
+                    answer:
+                        '' + this.$page.props.app.name + ' is ideal for business owners, bloggers, designers, developers, photographers, and anyone looking to create custom WordPress forms.',
+                    show: false,
+                },
+                {
+                    question: 'Do I need coding skills to use ' + this.$page.props.app.name + '?',
+                    answer:
+                        'No, ' + this.$page.props.app.name + ' is designed to be user-friendly for anyone, regardless of coding skills.',
+                    show: false,
+                },
+                {
+                    question: 'What are the requirements to use ' + this.$page.props.app.name + '?',
+                    answer:
+                        'You need a WordPress site and basic knowledge of form creation.',
+                    show: false,
+                },
+                {
+                    question: 'Is ' + this.$page.props.app.name + ' translation-ready?',
+                    answer:
+                        'Yes, ' + this.$page.props.app.name + ' supports multiple languages and is fully translation-ready.',
+                    show: false,
+                },
+                {
+                    question: 'Will ' + this.$page.props.app.name + ' affect my website’s speed?',
+                    answer:
+                        '' + this.$page.props.app.name + ' is optimized for performance and will not affect your website’s speed.',
+                    show: false,
                 }
             ],
-            card_holder_name: '',
-            discount_code: '',
+            tesimonials: [
+                {
+                    rating: 5,
+                    text: "LeadX has completely transformed how we manage our customer interactions. The intuitive form builder made it easy to create custom forms that fit our needs perfectly. Our lead generation has increased by 40% since we started using LeadX!",
+                    author: "Sarah J.",
+                    image: "/_public_assets/testImg/Crystal Raminez.webp",
+                    verified: true,
+                },
+                {
+                    rating: 5,
+                    text: "Thanks to LeadX, our workflow has become much more efficient. The pre-built form templates saved us a ton of time, and the mobile-friendly forms ensure our clients can reach us from any device. Truly a fantastic tool!",
+                    author: "Emily R.",
+                    image: "/_public_assets/testImg/Crystal Raminez.webp",
+                    verified: true,
+                },
+                {
+                    rating: 5,
+                    text: "We've been using LeadX for a few months now, and it's been a game-changer for our business. The smart conditional logic feature allows us to personalize our forms, leading to higher engagement and better data collection. Highly recommend!",
+                    author: "John D.",
+                    image: "/_public_assets/testImg/Crystal Raminez.webp",
+                    verified: true,
+                },
+            ],
+            computed: {
+                selectedTestimonial() {
+                    return this.testimonials[0];
+                }
+            },
             errors: {},
             isRevealPassword: false,
-            loader: false
+            loader: false,
+
+
         };
     },
 
     methods: {
+        // naveed changes
+
+        faqsToggle(index) {
+            this.faqs[index].show = !this.faqs[index].show;
+        },
+        discountAmount() {
+            if (!this.pack || !this.discount_code) return 0;
+            let price = Number(this.pack.price);
+            let discountPercent = this.pack.coupon_discount || 0;
+            return (price * discountPercent) / 100;
+        },
+        discountLabel() {
+            return "50% Off";
+        },
+        finalAmount() {
+            let base = Number(this.pack.price);
+            let discount = this.discountAmount();
+            let handling = Number(this.handlingFee());
+            return (base - discount + handling).toFixed(2);
+        },
+        // naveed changes end
+
         revealPassword() {
             this.isRevealPassword = this.isRevealPassword ? false : true;
         },
 
         handlingFee() {
             let price = Number(this.pack.price) || 0;
-            return price > 0 ? (price * 0.10).toFixed(2) : '0.00';
+            return price > 0 ? (price * 0.1).toFixed(2) : "0.00";
         },
         totalAmount() {
             let total = Number(this.pack.price) + Number(this.handlingFee());
@@ -404,7 +724,7 @@ export default {
         },
 
         dateFormat(date, format, cformat = null) {
-            if(cformat) {
+            if (cformat) {
                 return moment(date, cformat).format(format);
             }
 
@@ -412,47 +732,50 @@ export default {
         },
 
         async getPackages() {
-            await axios.get(route('api.guest.get.packages'), {
-                params: {
-                    orderby: 'sort',
-                    order: 'ASC',
-                    status: 'active',
-                    limit: 3
-                },
-                headers: {
-                    "Content-Type": "application/json"
-                },
-            }).then((response) => {
-                let $response = response.data;
-                this.packages = $response.data;
-                if(!this.user) {
-                    if(this.urlParams.get('plan')) {
-                        if(this.packages.length) {
-                            this.packages.forEach((item) => {
-                                if(item.id == this.urlParams.get('plan')) {
-                                    this.initPayment(item);
-                                }
-                            });
+            await axios
+                .get(route("api.guest.get.packages"), {
+                    params: {
+                        orderby: "sort",
+                        order: "ASC",
+                        status: "active",
+                        limit: 3,
+                    },
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+                .then((response) => {
+                    let $response = response.data;
+                    this.packages = $response.data;
+                    if (!this.user) {
+                        if (this.urlParams.get("plan")) {
+                            if (this.packages.length) {
+                                this.packages.forEach((item) => {
+                                    if (item.id == this.urlParams.get("plan")) {
+                                        this.initPayment(item);
+                                    }
+                                });
+                            }
                         }
                     }
-                }
-            }).catch((error) => {
-                console.log(error.response.data.message);
-            });
+                })
+                .catch((error) => {
+                    console.log(error.response.data.message);
+                });
         },
 
         addWebsite() {
-            if(this.pack != '') {
-                if(this.pack.website_limit == null) {
+            if (this.pack != "") {
+                if (this.pack.website_limit == null) {
                     this.websites.push({
-                        website_name: '',
-                        website_url: ''
+                        website_name: "",
+                        website_url: "",
                     });
                 } else {
-                    if(this.websites.length < this.pack.website_limit) {
+                    if (this.websites.length < this.pack.website_limit) {
                         this.websites.push({
-                            website_name: '',
-                            website_url: ''
+                            website_name: "",
+                            website_url: "",
                         });
                     }
                 }
@@ -460,41 +783,44 @@ export default {
         },
 
         async initPayment(pack) {
-            if(this.pack == pack) {
-                this.pack = '';
+            if (this.pack == pack) {
+                this.pack = "";
                 return;
             }
 
             this.errors = {};
             this.pack = pack;
             console.log(this.pack);
-            setTimeout(function() {
-                if($("#choose-websites").length) {
-                    $('html, body').animate({ scrollTop: $("#choose-websites").offset().top - 120}, 0);
+            setTimeout(function () {
+                if ($("#choose-websites").length) {
+                    $("html, body").animate(
+                        { scrollTop: $("#choose-websites").offset().top - 120 },
+                        0
+                    );
                 }
             }, 100);
 
-            if(!this.pack.free_plan) {
+            if (!this.pack.free_plan) {
                 this.stripe = await loadStripe(this.$page.props.stripe_key);
                 this.elements = this.stripe.elements();
-                this.cardElement = this.elements.create('card', {
+                this.cardElement = this.elements.create("card", {
                     style: {
                         base: {
-                            color: '#000000',
-                            fontSize: '16px',
-                            '::placeholder': {
-                                color: '#000000',
+                            color: "#000000",
+                            fontSize: "16px",
+                            "::placeholder": {
+                                color: "#000000",
                             },
-                        }
-                    }
+                        },
+                    },
                 });
-                this.cardElement.mount('#card-element');
-                this.cardElement.addEventListener('change', function(event) {
-                    const displayError = document.getElementById('card-errors');
-                    if(event.error) {
+                this.cardElement.mount("#card-element");
+                this.cardElement.addEventListener("change", function (event) {
+                    const displayError = document.getElementById("card-errors");
+                    if (event.error) {
                         displayError.textContent = event.error.message;
                     } else {
-                        displayError.textContent = '';
+                        displayError.textContent = "";
                     }
                 });
             }
@@ -506,58 +832,67 @@ export default {
             let form = {
                 email: this.email,
                 password: this.password,
-                fullname: this.fullname,
+                // fullname: this.fullname,
+                first_name: this.first_name,
+                last_name: this.last_name,
+                phone_number: this.phone_number,
                 package: this.pack.id,
                 websites: this.websites,
                 card_holder_name: this.card_holder_name,
-                payment_method: 'stripe'
+                payment_method: "stripe",
             };
 
-            await axios.post(route('api.guest.validate.subscription'), form, {
-                headers: {
-                    "Content-Type": "application/json"
-                },
-            }).then((response) => {
-                let $response = response.data;
-                if($response.error == 0) {
-                    if(!this.pack.free_plan) {
-                        this.create_payment_method();
+            await axios
+                .post(route("api.guest.validate.subscription"), form, {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+                .then((response) => {
+                    let $response = response.data;
+                    if ($response.error == 0) {
+                        if (!this.pack.free_plan) {
+                            this.create_payment_method();
+                        } else {
+                            this.createSubscription();
+                        }
                     } else {
-                        this.createSubscription();
+                        toast.error($response.message);
                     }
-                } else {
-                    toast.error($response.message);
-                }
-            }).catch((error) => {
-                this.loader = false;
-                if (error.response.status == 422) {
-                    for (const key in error.response.data.data) {
-                        this.errors[key] = error.response.data.data[key][0];
+                })
+                .catch((error) => {
+                    this.loader = false;
+                    if (error.response.status == 422) {
+                        for (const key in error.response.data.data) {
+                            this.errors[key] = error.response.data.data[key][0];
+                        }
                     }
-                }
 
-                toast.error(error.response.data.message);
-            });
+                    toast.error(error.response.data.message);
+                });
         },
 
         create_payment_method() {
             this.errors = {};
-            this.stripe.createPaymentMethod({
-                type: 'card',
-                card: this.cardElement,
-                billing_details: {
-                    name: this.card_holder_name
-                }
-            }).then((result) => {
-                if(result.error) {
-                    var errorElement = document.getElementById('card-errors');
-                    errorElement.textContent = result.error.message;
-                    this.loader = false;
-                } else {
-                    this.paymentMethodId = result.paymentMethod.id;
-                    this.createSubscription();
-                }
-            });
+            this.stripe
+                .createPaymentMethod({
+                    type: "card",
+                    card: this.cardElement,
+                    billing_details: {
+                        name: this.card_holder_name,
+                    },
+                })
+                .then((result) => {
+                    if (result.error) {
+                        var errorElement =
+                            document.getElementById("card-errors");
+                        errorElement.textContent = result.error.message;
+                        this.loader = false;
+                    } else {
+                        this.paymentMethodId = result.paymentMethod.id;
+                        this.createSubscription();
+                    }
+                });
         },
 
         async createSubscription() {
@@ -565,46 +900,60 @@ export default {
             let form = {
                 email: this.email,
                 password: this.password,
-                fullname: this.fullname,
+                fullname: this.first_name + ' ' + this.last_name,
+                first_name: this.first_name,
+                last_name: this.last_name,
+                phone_number: this.phone_number,
                 package: this.pack.id,
                 websites: this.websites,
                 card_holder_name: this.card_holder_name,
-                payment_method: 'stripe',
+                payment_method: "stripe",
                 paymentMethodId: this.paymentMethodId,
-                discount_code: this.discount_code
+                discount_code: this.discount_code,
             };
 
-            await axios.post(route('api.guest.create.subscription'), form, {
-                headers: {
-                    "Content-Type": "application/json"
-                },
-            }).then((response) => {
-                let $response = response.data;
-                this.$cookies.set('lxf-success-msg', $response.message, 60);
-                this.$cookies.set('lxf-token', $response.data.authorisation.token, $response.data.authorisation.expiration);
-                this.$cookies.set('lxf-user', $response.data.user, $response.data.authorisation.expiration);
+            await axios
+                .post(route("api.guest.create.subscription"), form, {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+                .then((response) => {
+                    let $response = response.data;
+                    this.$cookies.set("lxf-success-msg", $response.message, 60);
+                    this.$cookies.set(
+                        "lxf-token",
+                        $response.data.authorisation.token,
+                        $response.data.authorisation.expiration
+                    );
+                    this.$cookies.set(
+                        "lxf-user",
+                        $response.data.user,
+                        $response.data.authorisation.expiration
+                    );
 
-                window.location.href = route('app.customer.subscription.index');
-                this.loader = false;
-            }).catch((error) => {
-                this.loader = false;
-                if (error.response.status == 422) {
-                    for (const key in error.response.data.data) {
-                        this.errors[key] = error.response.data.data[key][0];
+                    window.location.href = route(
+                        "app.customer.subscription.index"
+                    );
+                    this.loader = false;
+                })
+                .catch((error) => {
+                    this.loader = false;
+                    if (error.response.status == 422) {
+                        for (const key in error.response.data.data) {
+                            this.errors[key] = error.response.data.data[key][0];
+                        }
                     }
-                }
 
-                toast.error(error.response.data.message);
-            });
-        }
+                    toast.error(error.response.data.message);
+                });
+        },
     },
 
-    mounted() {
-
-    },
+    mounted() { },
 
     created() {
         this.getPackages();
-    }
-}
+    },
+};
 </script>

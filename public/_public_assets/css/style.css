@@ -133,6 +133,11 @@ button {
     border-color: var(--lxf-primary);
 }
 
+.btn-checkout {
+    margin-top: 30px;
+    width: 100%;
+}
+
 .button-primary:is(:hover) {
     background-color: var(--lxf-dark-primary);
     border-color: var(--lxf-dark-primary);
@@ -1652,7 +1657,7 @@ textarea.input-control {
     background: #ffffff;
     border: 1px solid var(--lxf-primary);
     border-radius: 5px;
-    padding: 15px;
+    padding: 12px 15px;
     display: block;
     width: 100%;
     color: #000000;
@@ -1661,13 +1666,15 @@ textarea.input-control {
 }
 
 .input-control2::placeholder {
-    color: #000000;
+    color: #404040;
 }
 
 .input-label {
-    font-size: 14px;
-    color: #000000;
+    font-size: 13px;
+    color: #404040;
     margin-bottom: 5px;
+    font-weight: 500;
+    display: none;
 }
 
 .button-remove {
@@ -1684,7 +1691,7 @@ textarea.input-control {
 }
 
 .form-group3 {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 #card-element {
@@ -1692,16 +1699,58 @@ textarea.input-control {
     width: 100%;
 }
 
-.input-group2 {
+/* .input-group2 {
     display: flex;
     align-items: center;
     background: #ffffff;
     border: 1px solid var(--lxf-primary);
     border-radius: 5px;
+} */
+.input-group2 .StripeElement {
+    padding-left:10px !important;
 }
 
-.input-group2 .input-control2 {
-    padding-left: 0;
+.input-group2 .input-control2, .input-group2 .StripeElement  {
+    font-size: 13px;
+    /* opacity: 0.7; */
+    font-weight: 500;
+    background: #ffffff;
+    border: 1px solid #ccc !important;
+    border-radius: 5px;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 18%);
+    transition: all 0.4s;
+}
+.input-group2 .input-control2:focus, .input-group2 .StripeElement.StripeElement--focus {
+    border: 1px solid #008744 !important;
+    box-shadow: unset;
+    transition: all 0.4s;
+}
+.password .input-group2 {
+    position: relative;
+}
+.paymentCard {
+    background: #f8f8f8;
+    padding: 15px 10px;
+    border-radius: 6px;
+}
+.input-group2 .StripeElement .__PrivateStripeElement {
+    margin-left: 10px !important;
+}
+.password .input-group2 .input-group-text {
+    position: absolute;
+    z-index: 1;
+    right: 5px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    padding: 0;
+    min-width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
 }
 
 .input-group2-append {
@@ -1716,7 +1765,7 @@ textarea.input-control {
     width: 30px;
 }
 
-.payment-info {
+/* .payment-info {
     background-color: var(--lxf-primary);
     border-radius: 10px;
     padding: 100px;
@@ -1729,9 +1778,14 @@ textarea.input-control {
     gap: 20px;
     position: relative;
     z-index: 0;
+} */
+
+.payment-info-sticky {
+    position: sticky;
+    top: 100px;
+    z-index: 10;
 }
 
-.payment-info:before,
 .payment-info:after {
     content: "";
     position: absolute;
@@ -1837,7 +1891,7 @@ textarea.input-control {
     }
 
     .payment-info {
-        padding: 30px 50px;
+        padding: 30px 0px;
         border-radius: 5px;
     }
 }
@@ -1964,7 +2018,7 @@ textarea.input-control {
 }
 @media (max-width: 991px) {
     .footer-banner-col {
-        padding: 20px !important;
+        padding: 20px !important;   
     }
 
     .footer-banner-col .col-first h2 {
