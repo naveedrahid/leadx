@@ -412,10 +412,6 @@ footer.mainFooter {
     width: 88%;
 }
 
-.payment-info span {
-    font-weight: 500;
-}
-
 .btn-checkout {
     margin-top: 30px;
     width: 100%;
@@ -491,4 +487,49 @@ footer.mainFooter {
 }
 .payment-info .order-summary-box span {
     color: #000;
+}
+.secure_box__wrapper .bg-light-pink {
+    background: var(--lxf-light-pink);
+}
+.ldx-total span {
+    font-size: 18px;
+}
+
+.handlingFee span {
+    font-size: 14px;
+}
+.contact-form-wrap input.input-control, .contact-form-wrap textarea {
+    background: transparent;
+    border: solid 1px #DDE1EC;
+    transition: all 0.4s;
+}
+
+.contact-form-wrap input.input-control:focus,
+.contact-form-wrap textarea:focus{
+    border: 1px solid #008744 !important;
+    box-shadow: unset;
+    transition: all 0.4s;
+}
+.contactInfo_boxes .contactInfo_item {
+    border: solid 1px #DDE1EC;
+    border-radius: 10px;
+    padding: 10px 20px;
+}
+.contactInfo_content  p {
+    font-size: 14px;
+}
+.contactInfo_item  i.bi.bi-geo-alt {
+    background: #008744;
+}
+.contactInfo_item  i.bi.bi-envelope {
+    background: #675bff;
+}
+.contactInfo_item  i.bi{
+    min-width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
 }

@@ -15,14 +15,11 @@
         </section>
         <section class="main-section contact-section overflow-hidden pb-250" id="contact">
             <div class="container">
-                <div class="row justify-content-center align-items-center">
+                <div class="row justify-content-center">
                     <div class="col-lg-12 col-md-9">
-                        <div class="row justify-content-between align-items-center">
+                        <div class="row justify-content-between">
                             <div class="col-lg-6 order-lg-last">
                                 <div class="contact-content">
-                                    <div class="main-head main-head2">
-                                        <p>Our professional support team is here to help you:</p>
-                                    </div>
                                     <div class="contact-form-wrap">
                                         <form @submit.prevent="sendFeedBack()" class="contact-form">
                                             <div class="row gx-3">
@@ -81,8 +78,28 @@
                                 </div>
                             </div>
                             <div class="col-lg-4 order-lg-first">
-                                <div class="contact-img">
-                                    <img src="/_public_assets/img/contact-us.png" alt="Contact Us" class="img-fluid">
+                                <div class="contact_left_info">
+                                    <div class="main-head mb-2">
+                                        <h4 class="subheading">let's talk</h4>
+                                        <h2 class="heading">Need Help? <span class="text-primary">Contact Us Now</span></h2>
+                                    </div>
+                                    <p>Our professional support team is here to help you:</p>
+                                    <div class="contactInfo_boxes">
+                                        <div class="contactInfo_item mb-3 bg-light-blue d-flex align-items-center">
+                                            <i class="bi bi-envelope"></i>
+                                            <div class="contactInfo_content ms-3">
+                                                <h5 class="mb-0">Email</h5>
+                                                <p class="mb-0"><a href="mailto:support@leadxforms.com">support@leadxforms.com</a></p>
+                                            </div>
+                                        </div>
+                                        <div class="contactInfo_item bg-light-green d-flex align-items-center">
+                                            <i class="bi bi-geo-alt"></i>
+                                            <div class="contactInfo_content ms-3">
+                                                <h5 class="mb-0">Address</h5>
+                                                <p class="mb-0">Level 4/260 Queen St, Brisbane City QLD 4000</p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -155,6 +172,6 @@ export default {
     mounted() {
     },
 
-   
+
 }
 </script>
