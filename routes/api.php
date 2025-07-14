@@ -19,7 +19,8 @@ use App\Http\Controllers\Api\{
     FormCategoryController,
     FormTemplateController,
     BlockedIPController,
-    SpamKeywordController
+    SpamKeywordController,
+    CustomerLeadDetailController
 };
 
 /*
@@ -118,6 +119,10 @@ Route::prefix('v1')->middleware(['cors', 'json.response'])->as('api.')->group(fu
             Route::post('/view/{lead_id}', 'view')->name('update.view');
             Route::get('/count', 'get_count')->name('get.count');
             Route::get('/{lead_id}', 'get_by')->name('get.single');
+            Route::get('/', 'get_all')->name('get.all');
+        });
+
+        Route::controller(CustomerLeadDetailController::class)->prefix('lead-customers')->as('lead-customers.')->group(function () {
             Route::get('/', 'get_all')->name('get.all');
         });
 

@@ -33,6 +33,14 @@
                         </Link>
                     </li>
                     <li class="sidebar-item">
+                        <Link :href="route('app.customer.lead-customers.index')" class="sidebar-link gap-2" :class="{
+                            'active': route().current('app.customer.lead-customers.index')
+                        }">
+                            <span><i class="ti ti-users"></i></span>
+                            <span class="hide-menu">Customers</span>
+                        </Link>
+                    </li>
+                    <li class="sidebar-item">
                         <Link :href="route('app.customer.spam-leads.index')" class="sidebar-link gap-2" :class="{
                             'active': route().current('app.customer.spam-leads.index')
                         }">
