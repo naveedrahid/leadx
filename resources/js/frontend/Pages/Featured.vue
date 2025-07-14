@@ -9,7 +9,7 @@
                             <!-- <div class="subheading h4">{{ $page.props.app.name }} Features</div> -->
                             <h1><span class="text-primary">{{ $page.props.app.name }}</span> Features</h1>
                                 <p class="py-4">Explore how LeadXForms delivers powerful, user-friendly tools to build smarter WordPress forms. From essential features to advanced integrations, everything you need is built in to streamline your workflow and boost conversions.</p>
-                            <a :href="route('home') + '#pricing'" class="button button-s2 button-primary button-primary">Get {{ $page.props.app.name }} Now →</a>
+                            <Link :href="route('pricing')" class="button button-s2 button-primary button-primary">Get {{ $page.props.app.name }} Now →</Link>
                         </div>
                     </div>
                 </div>
@@ -45,12 +45,13 @@
 </template>
 
 <script>
-import { Head } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import MasterLayout from '@/frontend/Layouts/MasterLayout.vue';
 
 export default {
     components: {
         Head,
+        Link,
         MasterLayout
     },
 

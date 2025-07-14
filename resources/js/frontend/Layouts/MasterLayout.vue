@@ -3,46 +3,49 @@
     <header id="header" class="main-header">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-4">
+                <div class="col-lg-3">
                     <div class="d-flex align-items-center justify-content-between">
                         <Link :href="route('home')" class="logo">
-                            <img src="/_public_assets/img/logos/logo.png" :alt="$page.props.app.name" class="img-fluid">
+                        <img src="/_public_assets/img/logos/logo.png" :alt="$page.props.app.name" class="img-fluid">
                         </Link>
-                      
+
                         <button class="menu-btn d-lg-none d-block"><i class="bi bi-list"></i></button>
                     </div>
                 </div>
-                <div class="col-md-8 d-lg-block d-none">
-                    <div class="d-flex align-items-center justify-content-between gap-5">
+                <div class="col-md-6 d-lg-block d-none">
+                    <div class="d-flex align-items-center justify-content-center gap-5">
                         <nav class="main-menu">
                             <template v-if="route().current('home')">
                                 <Link :href="route('home')" class="active">Home</Link>
-                                <Link :href="route('featured')">Features</Link>
-                                <Link :href="route('pricing')">Pricing</Link>
-                                <Link :href="route('customer.reviews')">Testimonials</Link>
-                                <Link :href="route('contact')">Contact</Link>
+                                <Link :href="route('featured')" :class="['nav-link', route().current('featured') ? 'active' : '']">Features</Link>
+                                <Link :href="route('pricing')" :class="['nav-link', route().current('pricing') ? 'active' : '']">Pricing</Link>
+                                <Link :href="route('customer.reviews')" :class="['nav-link', route().current('customer.reviews') ? 'active' : '']">Testimonials</Link>
+                                <Link :href="route('contact')" :class="['nav-link', route().current('contact') ? 'active' : '']">Contact</Link>
                                 <!-- <a href="#home" class="nav-link active">Home</a> -->
                                 <!-- <a href="#features" class="nav-link">Features</a> -->
                                 <!-- <a href="#contact" class="nav-link">Contact</a> -->
                             </template>
                             <template v-else>
                                 <Link :href="route('home')">Home</Link>
-                                <Link :href="route('featured')">Features</Link>
-                                <Link :href="route('pricing')">Pricing</Link>
-                                <Link :href="route('customer.reviews')">Testimonials</Link>
-                                <Link :href="route('contact')">Contact</Link>
+                                <Link :href="route('featured')" :class="['nav-link', route().current('featured') ? 'active' : '']">Features</Link>
+                                <Link :href="route('pricing')" :class="['nav-link', route().current('pricing') ? 'active' : '']">Pricing</Link>
+                                <Link :href="route('customer.reviews')" :class="['nav-link', route().current('customer.reviews') ? 'active' : '']">Testimonials</Link>
+                                <Link :href="route('contact')" :class="['nav-link', route().current('contact') ? 'active' : '']">Contact</Link>
                             </template>
                         </nav>
-                        <div class="other-nav-links">
-                            <template v-if="user">
-                                <a :href="route('app.customer.dashboard')" class="button button-primary">My Account</a>
-                                <button class="button button-secondary" @click="logout()">Logout</button>
-                            </template>
-                            <template v-else>
-                                <a :href="route('app.auth.login')" class="button button-primary text-primary bg-white">Login</a>
-                                <Link :href="route('pricing')" class="button nav-link button-primary">Get LeadX</Link>
-                            </template>
-                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 d-lg-block d-none">
+                    <div class="other-nav-links">
+                        <template v-if="user">
+                            <a :href="route('app.customer.dashboard')" class="button button-primary">My Account</a>
+                            <button class="button button-secondary" @click="logout()">Logout</button>
+                        </template>
+                        <template v-else>
+                            <a :href="route('app.auth.login')"
+                                class="button button-primary text-primary bg-white">Login</a>
+                            <Link :href="route('pricing')" class="button nav-link button-primary">Get LeadX</Link>
+                        </template>
                     </div>
                 </div>
             </div>
@@ -100,8 +103,11 @@
                         <div class="row align-items-center">
                             <div class="col-lg-8 col-md-7 col-sm-12 col-first">
                                 <span class="colFirstTxt">Now Available on Mobile!</span>
-                                <h2 class="my-4 text-black">Grab the LeadXForms Mobile App <br><span style="color: #008543;">Your Leads, On-the-Go!</span></h2>
-                                <Link :href="route('pricing')" class="button button-s2 me-xl-2 me-lg-2 me-md-2 me-0 button-primary">Get {{ $page.props.app.name }} App →</Link>
+                                <h2 class="my-4 text-black">Grab the LeadXForms Mobile App <br><span
+                                        style="color: #008543;">Your Leads, On-the-Go!</span></h2>
+                                <Link :href="route('pricing')"
+                                    class="button button-s2 me-xl-2 me-lg-2 me-md-2 me-0 button-primary">Get {{
+                                $page.props.app.name }} App →</Link>
                             </div>
                             <div class="col-lg-4 col-md-5 col-sm-12 d-flex justify-content-end">
                                 <img src="/_public_assets/testImg/Mobile.png"

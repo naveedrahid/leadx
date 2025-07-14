@@ -498,7 +498,7 @@
                                                         <span class="pricing-box-duration">/ {{ item.duration_lifetime ?
                                                             'Lifetime' : item.format_duration }}</span>
                                                     </div>
-                                                    <Link v-if="!user" :href="`${route('pricing')}?plan=${item.id}`"
+                                                    <Link v-if="!user" :href="`${route('checkout')}?plan=${item.id}`"
                                                         class="button button-s2 button-primary button-block">Get Started
                                                     →
                                                     </Link>

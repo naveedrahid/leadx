@@ -18,7 +18,7 @@
                 </div>
             </div>
         </section>
-        <section class="main-section pricing-section overflow-hidden pb-0 mt-4">
+        <section class="main-section pricing-section overflow-hidden pb-0 mt-4" v-if="route().current('pricing')">
             <div class="container">
                 <!-- <div class="pp-step">Step <span class="stepnum">1</span></div> -->
                 <!-- <div class="row justify-content-center">
@@ -71,25 +71,11 @@
                                                             }}</span>
                                                     </div>
                                                     <template v-if="!user">
-                                                        <button :href="`${route(
-                                                            'pricing'
-                                                        )}?plan=${item.id}`"
-                                                            class="button button-s2 button-primary button-block" :class="{
-                                                                'button-primary':
-                                                                    item.recommended,
-                                                            }" @click="
-                                                                initPayment(
-                                                                    item
-                                                                )
-                                                                ">
-                                                            {{
-                                                                pack !== "" &&
-                                                                    pack.id ==
-                                                                    item.id
-                                                                    ? "Selected"
-                                                                    : "Get Started →"
-                                                            }}
-                                                        </button>
+                                                        <Link :href="`${route('checkout')}?plan=${item.id}`"
+                                                            class="button button-s2 button-primary button-block"
+                                                            :class="{ 'button-primary': item.recommended }">
+                                                            {{ (pack !== '' && pack.id == item.id) ? "Selected" : "Get Started →" }}
+                                                        </Link>
                                                     </template>
                                                     <template v-else-if="
                                                         user.user_type ===
@@ -104,14 +90,6 @@
                                                                     item.recommended,
                                                             }">Upgrade →</Link>
                                                     </template>
-
-                                                    <!-- <Link v-if="!user" :href="`${route('pricing')}?plan=${item.id}`"
-                                                    class="button button-s2 button-primary button-block">Get Started →
-                                                </Link>
-                                                <Link v-else-if="user.user_type === 'customer'"
-                                                    :href="route('app.customer.subscription.billing')"
-                                                    class="button button-s2 button-primary button-block">Upgrade →
-                                                </Link> -->
                                                 </div>
                                                 <div class="pricing-box-body" v-if="item.features">
                                                     <h4 class="pricing-box-title">
@@ -156,23 +134,6 @@
         <template v-if="pack !== ''">
             <section class="pp-section choose-websites-section" id="choose-websites">
                 <div class="container">
-                    <!-- <div class="pp-step">
-                        Step <span class="stepnum">2</span>
-                    </div> -->
-                    <!-- <div class="row justify-content-center">
-                        <div class="col-lg-7 col-md-10">
-                            <div class="pp-head text-center">
-                                <h3 class="pp-heading">Payment Information</h3>
-                                <p>
-                                    Please provide your payment information,
-                                    including your name, credit card number,
-                                    expiration date, and CVC code to complete
-                                    the transaction.
-                                </p>
-                            </div>
-                        </div>
-                    </div> -->
-
                     <div class="row justify-content-center">
                         <div class="col-lg-7 col-md-10">
                             <div class="payment-form-wrap">
@@ -187,7 +148,7 @@
                                             <div class="input-group2">
                                                 <input type="text" v-model="websites[0].website_name"
                                                     id="websites-0-website_name" class="input-control2"
-                                                    placeholder="Website Name" />
+                                                    placeholder="Website Name*" />
                                             </div>
                                             <div class="text-danger my-1" v-if="errors['websites.0.website_name']">
                                                 <small>{{
@@ -208,7 +169,7 @@
                                             <div class="input-group2">
                                                 <input type="text" v-model="websites[0].website_url"
                                                     id="websites-0-website_url" class="input-control2"
-                                                    placeholder="Website URL" />
+                                                    placeholder="Website URL*" />
                                             </div>
                                             <div class="text-danger my-1" v-if="errors['websites.0.website_url']">
                                                 <small>{{
@@ -227,16 +188,13 @@
                                             <label class="input-label" for="first_name">First Name
                                                 <span class="text-danger">*</span></label>
                                             <div class="input-group2">
-                                                <!-- <div class="input-group2-append">
-                                                    <i class="bi bi-person"></i>
-                                                </div> -->
                                                 <input type="text" v-model="first_name" id="first_name"
-                                                    class="input-control2 border-0" placeholder="First Name" />
+                                                    class="input-control2 border-0" placeholder="First Name*" />
                                             </div>
                                             <div class="text-danger my-1" v-if="errors.first_name">
                                                 <small>{{
                                                     errors.first_name
-                                                    }}</small>
+                                                }}</small>
                                             </div>
                                         </div>
                                     </div>
@@ -244,16 +202,13 @@
                                         <div class="form-group3">
                                             <label class="input-label" for="last_name">Last Name</label>
                                             <div class="input-group2">
-                                                <!-- <div class="input-group2-append">
-                                                    <i class="bi bi-person"></i>
-                                                </div> -->
                                                 <input type="text" v-model="last_name" id="last_name"
-                                                    class="input-control2 border-0" placeholder="Last Name" />
+                                                    class="input-control2 border-0" placeholder="Last Name*" />
                                             </div>
                                             <div class="text-danger my-1" v-if="errors.last_name">
                                                 <small>{{
                                                     errors.last_name
-                                                    }}</small>
+                                                }}</small>
                                             </div>
                                         </div>
                                     </div>
@@ -262,17 +217,13 @@
                                             <label class="input-label" for="email-address">Email Address<span
                                                     class="text-danger">*</span></label>
                                             <div class="input-group2">
-                                                <!-- <div class="input-group2-append">
-                                                    <img src="/_public_assets/img/email-address.png"
-                                                        alt="Email Address" />
-                                                </div> -->
                                                 <input type="email" v-model="email" id="email-address"
                                                     class="input-control2 border-0" placeholder="Email Address*" />
                                             </div>
                                             <div class="text-danger my-1" v-if="errors.email">
                                                 <small>{{
                                                     errors.email
-                                                    }}</small>
+                                                }}</small>
                                             </div>
                                         </div>
                                     </div>
@@ -281,17 +232,13 @@
                                             <label class="input-label" for="phone-number">Phone Number<span
                                                     class="text-danger">*</span></label>
                                             <div class="input-group2">
-                                                <!-- <div class="input-group2-append">
-                                                    <img src="/_public_assets/img/email-address.png"
-                                                        alt="Email Address" />
-                                                </div> -->
                                                 <input type="tel" v-model="phone_number" id="phone-number"
-                                                    class="input-control2 border-0" placeholder="Enter Phone Number" />
+                                                    class="input-control2 border-0" placeholder="Enter Phone Number*" />
                                             </div>
                                             <div class="text-danger my-1" v-if="errors.phone_number">
                                                 <small>{{
                                                     errors.phone_number
-                                                    }}</small>
+                                                }}</small>
                                             </div>
                                         </div>
                                     </div>
@@ -300,14 +247,11 @@
                                             <label class="input-label" for="password">Password<span
                                                     class="text-danger">*</span></label>
                                             <div class="input-group2">
-                                                <!-- <div class="input-group2-append">
-                                                    <img src="/_public_assets/img/email-address.png" alt="Password" />
-                                                </div> -->
                                                 <input :type="this.isRevealPassword
                                                     ? 'text'
                                                     : 'password'
                                                     " v-model="password" id="password" class="input-control2 border-0"
-                                                    placeholder="Enter Password" />
+                                                    placeholder="Enter Password*" />
                                                 <span class="input-group-text fs-5" @click="revealPassword()">
                                                     <i class="ti" :class="this
                                                         .isRevealPassword
@@ -319,11 +263,11 @@
                                             <div class="text-danger my-1" v-if="errors.password">
                                                 <small>{{
                                                     errors.password
-                                                    }}</small>
+                                                }}</small>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="mb-4"  v-if="!pack.free_plan"></div>
+                                    <div class="mb-4" v-if="!pack.free_plan"></div>
                                 </div>
                                 <template v-if="!pack.free_plan">
                                     <div class="">
@@ -338,14 +282,14 @@
                                                     <div class="input-group2">
                                                         <input type="text" v-model="card_holder_name
                                                             " id="card-holder-name" class="input-control2 border-0"
-                                                            placeholder="Enter Name On Credit/Debit Card" />
+                                                            placeholder="Enter Name On Credit/Debit Card*" />
                                                     </div>
                                                     <div class="text-danger my-1" v-if="
                                                         errors.card_holder_name
                                                     ">
                                                         <small>{{
                                                             errors.card_holder_name
-                                                            }}</small>
+                                                        }}</small>
                                                     </div>
                                                 </div>
                                             </div>
@@ -407,7 +351,8 @@
 
                                     <!-- Naveed changes -->
                                     <div class="order-summary-box bg-white rounded shadow-sm">
-                                        <h4 class="mb-3 font-weight-bold px-4 pt-4 text-capitalize text-black">your order</h4>
+                                        <h4 class="mb-3 font-weight-bold px-4 pt-4 text-capitalize text-black">your
+                                            order</h4>
                                         <hr />
 
                                         <div class="px-4 pt-2 pb-3">
@@ -420,7 +365,7 @@
                                                 <span>
                                                     Discount Applied
                                                     <span class="badge bg-primary text-white ms-2">{{ discountLabel()
-                                                    }}</span>
+                                                        }}</span>
                                                 </span>
                                                 <span class="text-danger">- ${{ discountAmount().toFixed(2) }}</span>
                                             </div>
@@ -435,7 +380,7 @@
                                             <div class="text-danger my-1" v-if="errors.discount_code">
                                                 <small>{{
                                                     errors.discount_code
-                                                }}</small>
+                                                    }}</small>
                                             </div>
                                         </div>
 
@@ -476,8 +421,8 @@
                                 </div>
                                 <hr class="my-4" />
                                 <div class="moneyBackGarantee d-flex align-items-center px-2">
-                                    <img src="/_public_assets/testImg/Money-Back-Guarantee-1.svg" width="100" class="img-fluid"
-                                        alt="">
+                                    <img src="/_public_assets/testImg/Money-Back-Guarantee-1.svg" width="100"
+                                        class="img-fluid" alt="">
                                     <p class="ms-4 mb-0 text-black"><strong>100% Risk-Free Unconditional <br> Money Back
                                             Guarantee!</strong></p>
                                 </div>

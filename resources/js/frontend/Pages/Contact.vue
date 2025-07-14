@@ -7,7 +7,7 @@
                 <div class="row align-items-center justify-content-center">
                     <div class="col-lg-10 col-md-8">
                         <div class="hero-content text-center">
-                            <h1>Get <span class="text-primary">In </span> Touch</h1>
+                            <h1>Contact Us</h1>
                         </div>
                     </div>
                 </div>
@@ -21,7 +21,6 @@
                             <div class="col-lg-6 order-lg-last">
                                 <div class="contact-content">
                                     <div class="main-head main-head2">
-                                        <h2 class="heading">Contact Us</h2>
                                         <p>Our professional support team is here to help you:</p>
                                     </div>
                                     <div class="contact-form-wrap">
