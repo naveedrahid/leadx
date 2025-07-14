@@ -65,7 +65,7 @@ class GuestController extends Controller
 
     public function validate_subscription(Request $request)
     {
-        dd($request->all());
+
         $package = Package::whereId($request->package)->status('active')->first();
         if (is_null($package)) {
             return response()->json([
