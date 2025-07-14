@@ -8,7 +8,8 @@
                     <div class="col-lg-10 col-md-8">
                         <div class="hero-content text-center">
                             <h4 class="subheading">{{ $page.props.app.name }} Success Stories</h4>
-                            <h1>Why Millions <span class="text-primary">Rely on {{ $page.props.app.name }}</span> to Build Powerful WordPress Forms</h1>
+                            <h1 class="mb-4">Why Millions <span class="text-primary">Rely on {{ $page.props.app.name }}</span> to Build Powerful WordPress Forms</h1>
+                            <Link :href="route('pricing')" class="button button-s2 button-primary button-primary">Get {{ $page.props.app.name }} Now →</Link>
                         </div>
                     </div>
                 </div>
@@ -158,12 +159,13 @@
 </template>
 
 <script>
-import { Head } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import MasterLayout from '@/frontend/Layouts/MasterLayout.vue';
 
 export default {
     components: {
         Head,
+        Link,
         MasterLayout
     },
 

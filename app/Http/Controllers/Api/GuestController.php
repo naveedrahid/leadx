@@ -76,6 +76,9 @@ class GuestController extends Controller
         $rules = [
             "email" => "required|unique:users,email",
             "password" => "required|min:8",
+            "first_name" => "required|string|max:100",
+            "last_name" => "required|string|max:100",
+            'phone_number' => 'required|string|max:20',
             "package" => "required",
             "websites" => "required",
             "websites.*.website_name" => "required|unique:websites,website_name",
@@ -86,7 +89,10 @@ class GuestController extends Controller
         if(!$package->free_plan) {
             $rules['card_holder_name'] = 'required';
         } else {
-            $rules['fullname'] = 'required';
+            // $rules['fullname'] = 'required';
+            $rules['first_name'] = 'required';  // Changed from fullname to first_name
+            $rules['last_name'] = 'required';
+            $rules['phone_number'] = 'required';
         }
 
         $validator = Validator::make($request->all(), $rules);
@@ -159,6 +165,9 @@ class GuestController extends Controller
     public function create_subscription(NewSubscriptionRequest $request)
     {
         $package = Package::whereId($request->package)->status('active')->first();
+        $first_name = $request->first_name;
+        $last_name = $request->last_name;
+        $phone_number = $request->phone_number;
         $user = User::where('email', $request->email)->first();
         if (!is_null($user)) {
             return response()->json([
@@ -229,16 +238,17 @@ class GuestController extends Controller
             $stripe_card = null;
             $payment_token = null;
 
-            $fullname = $package->free_plan ? $request->fullname : $request->card_holder_name;
-            $fullname = explode(' ', $fullname);
-            $first_name = $fullname[0];
-            unset($fullname[0]);
-            $last_name = count($fullname) > 0 ? implode(' ', $fullname) : null;
+            // $fullname = $package->free_plan ? $request->fullname : $request->card_holder_name;
+            // $fullname = explode(' ', $fullname);
+            // $first_name = $fullname[0];
+            // unset($fullname[0]);
+            // $last_name = count($fullname) > 0 ? implode(' ', $fullname) : null;
             $password = explode('@', $request->email)[0] . '12345';
             $user = User::create([
                 "user_type" => "customer",
                 'first_name' => $first_name,
                 'last_name' => $last_name,
+                'phone_number' => $phone_number,
                 'email'  => $request->email,
                 "email_verified_at" => now(),
                 'password' => bcrypt($request->password),
