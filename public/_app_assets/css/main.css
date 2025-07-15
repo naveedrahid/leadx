@@ -533,3 +533,17 @@ footer.mainFooter {
     justify-content: center;
     color: #fff;
 }
+.contactInfo_boxes .contactInfo_item .contactInfo_content p:last-child {
+    color: #008744;
+    text-decoration: underline;
+}
+
+.contactInfo_boxes .contactInfo_item .contactInfo_content h5 {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.contactInfo_boxes .contactInfo_item:first-child .contactInfo_content p a {
+    color: #675bff;
+    text-decoration: underline;
+}

@@ -77,14 +77,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4 order-lg-first">
+                            <div class="col-lg-5 order-lg-first">
                                 <div class="contact_left_info">
                                     <div class="main-head mb-2">
                                         <h4 class="subheading">let's talk</h4>
                                         <h2 class="heading">Need Help? <span class="text-primary">Contact Us Now</span></h2>
                                     </div>
                                     <p>Our professional support team is here to help you:</p>
-                                    <div class="contactInfo_boxes">
+                                    <div class="contactInfo_boxes pt-4">
                                         <div class="contactInfo_item mb-3 bg-light-blue d-flex align-items-center">
                                             <i class="bi bi-envelope"></i>
                                             <div class="contactInfo_content ms-3">

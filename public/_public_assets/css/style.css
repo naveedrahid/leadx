@@ -1212,7 +1212,17 @@ textarea.input-control {
 }
 
 @media (min-width: 360px) and (max-width: 767px) {
-    .testimonial-rate{
+    .pricing-box-featured_label {
+        left: 0;
+        right: 0;
+        text-align: center;
+        margin: auto;
+        width: 30%;
+    }
+    .footer_img__mobile {
+        margin-top: 25px;
+    }
+    .testimonial-rate {
         justify-content: center !important;
     }
     .pricing-section .pricing-area .row {

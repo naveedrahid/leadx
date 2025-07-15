@@ -312,7 +312,7 @@
                             </div>
                         </div>
                         <div class="col-lg-5 col-md-10">
-                            <div class="payment-info-sticky px-4">
+                            <div class="payment-info-sticky px-lg-4 px-md-4 px-0">
                                 <div class="payment-info">
                                     <!-- <div class="mb-1">
                                         <h3 class="payment-info-title">
