@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="col-lg-3 d-lg-block d-none">
-                    <div class="other-nav-links">
+                    <div class="other-nav-links justify-content-end">
                         <template v-if="user">
                             <a :href="route('app.customer.dashboard')" class="button button-primary">My Account</a>
                             <button class="button button-secondary" @click="logout()">Logout</button>
@@ -97,16 +97,17 @@
     <footer class="mainFooter" style="background-color: #008744;">
         <div class="footer-banner container mb-5">
             <div class="row justify-content-center align-items-center">
-                <div class="footer-banner-col col-lg-12 col-md-12 col-sm-12 rounded-5 px-5 pt-3"
+                <div class="footer-banner-col col-lg-12 col-md-12 col-sm-12 rounded-5 px-5 pt-4"
                     style="background-color: #f5f9f9;">
                     <div class="container px-4">
-                        <div class="row align-items-center">
+                        <div class="row align-items-end">
                             <div class="col-lg-8 col-md-7 col-sm-12 col-first">
                                 <span class="colFirstTxt">Now Available on Mobile!</span>
-                                <h2 class="my-4 text-black">Grab the LeadXForms Mobile App <br><span
-                                        style="color: #008543;">Your Leads, On-the-Go!</span></h2>
+                                <h2 class="mt-4 mb-2 text-black">Build Intelligent <br><span
+                                        style="color: #008543;">WordPress Forms With Ease</span></h2>
+                                <p>Forms made fasr and easy <strong>so what's stopping you?</strong></p>
                                 <Link :href="route('pricing')"
-                                    class="button button-s2 me-xl-2 me-lg-2 me-md-2 me-0 button-primary">Get {{
+                                    class="button button-s2 me-xl-2 me-lg-2 me-md-2 me-0 button-primary mb-4">Get {{
                                 $page.props.app.name }} App →</Link>
                             </div>
                             <div class="col-lg-4 col-md-5 col-sm-12 d-flex justify-content-end">

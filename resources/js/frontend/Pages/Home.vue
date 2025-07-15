@@ -11,7 +11,8 @@
                 <div class="row align-items-center justify-content-center">
                     <div class="col-lg-10 col-md-8">
                         <div class="hero-content text-center">
-                            <h1>Build High-Converting WordPress Forms <span class="text-primary d-inline-block">in-Minutes</span> with
+                            <h1>Build High-Converting WordPress Forms <span
+                                    class="text-primary d-inline-block">in-Minutes</span> with
                                 <span class="text-primary">{{ $page.props.app.name }}</span>
                             </h1>
                             <div class="row justify-content-center">
@@ -21,9 +22,11 @@
                                     <!-- <p>The Unlimited solution for creating custom forms and flows to connect users and
                                         enhance engagement and broaden your online presence.</p> -->
                                     <div class="my-5 banner_btn__mobile">
-                                        <Link :href="route('pricing')" class="button me-xl-2 me-lg-2 me-md-2 me-0 button-s2 w-auto button-primary">
-                                            Get {{ $page.props.app.name }} Now →</Link>
-                                        <Link :href="route('featured')" class="ms-xl-2 ms-lg-2 ms-md-2 ms-0 leadX-Ulink">
+                                        <Link :href="route('pricing')"
+                                            class="button me-xl-2 me-lg-2 me-md-2 me-0 button-s2 w-auto button-primary">
+                                        Get {{ $page.props.app.name }} Now →</Link>
+                                        <Link :href="route('featured')"
+                                            class="ms-xl-2 ms-lg-2 ms-md-2 ms-0 leadX-Ulink">
                                         See All Features →</Link>
                                     </div>
                                 </div>
@@ -76,36 +79,39 @@
 
         <section class="main-section features-section overflow-hidden" id="features">
             <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-8 col-md-8">
-                        <div class="main-head text-center mb-2">
-                            <h4 class="subheading">{{ $page.props.app.name }} Features</h4>
-                            <h2 class="heading">Why <span class="text-primary">{{ $page.props.app.name }}</span> Is Your
-                                New Favorite WordPress Form Plugin</h2>
+                <div class="features_box__border">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8 col-md-8">
+                            <div class="main-head text-center mb-2">
+                                <h4 class="subheading">{{ $page.props.app.name }} Features</h4>
+                                <h2 class="heading">Why <span class="text-primary">{{ $page.props.app.name }}</span> Is Your
+                                    New Favorite WordPress Form Plugin</h2>
+                            </div>
+                            <p class="text-center mb-5">LeadXForms is a powerful WordPress form plugin that lets you build
+                                high-converting forms - no coding needed. With SMTP, spam protection, 2000+ templates, and
+                                responsive design, it’s built for speed, security, and simplicity.</p>
                         </div>
-                        <p class="text-center mb-5">LeadXForms is a powerful WordPress form plugin that lets you build
-                            high-converting forms - no coding needed. With SMTP, spam protection, 2000+ templates, and
-                            responsive design, it’s built for speed, security, and simplicity.</p>
                     </div>
-                </div>
-                <div class="features-area" v-if="features.length > 0">
-                    <div class="row g-4">
-                        <div v-for="(feature, index) in features" :key="index" class="col-lg-4 col-md-6 equal-height">
-                            <div class="feature-box">
-                                <div class="feature-icon-box">
-                                    <img :src="feature.image" :alt="feature.title" class="feature-icon">
-                                    <h3 class="feature-title">{{ feature.title }}</h3>
-                                    <p>{{ feature.description }}</p>
+                    <div class="features-area" v-if="features.length > 0">
+                        <div class="row g-4">
+                            <div v-for="(feature, index) in features" :key="index" class="col-lg-4 col-md-6 equal-height">
+                                <div class="feature-box">
+                                    <div class="feature-icon-box">
+                                        <img :src="feature.image" :alt="feature.title" class="feature-icon">
+                                        <h3 class="feature-title">{{ feature.title }}</h3>
+                                        <p>{{ feature.description }}</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="mt-5 text-center banner_btn__mobile">
-                    <Link :href="route('pricing')" class="button me-xl-2 me-lg-2 me-md-2 me-0 button-s2 w-auto button-primary">
+                    <div class="mt-5 text-center banner_btn__mobile">
+                        <Link :href="route('pricing')"
+                            class="button me-xl-2 me-lg-2 me-md-2 me-0 button-s2 w-auto button-primary">
                         Get {{ $page.props.app.name }} Now →</Link>
-                    <Link :href="route('featured')" class="ms-xl-2 ms-lg-2 ms-md-2 ms-0 leadX-Ulink">
-                    See All Features →</Link>
+                        <Link :href="route('featured')" class="ms-xl-2 ms-lg-2 ms-md-2 ms-0 leadX-Ulink">
+                        See All Features →</Link>
+                    </div>
                 </div>
             </div>
         </section>
@@ -421,8 +427,8 @@
                                 :breakpoints="tesimonials_slider_breakpoints">
                                 <slide class="testimonial-slide" v-for="(tesimonial, index) in tesimonials"
                                     :key="index">
-                                    <div class="testimonial-item">
-                                        <div class="testimonial-rate">
+                                    <div class="testimonial-item text-center text-lg-left text-md-left">
+                                        <div class="testimonial-rate justify-content-center justify-md-start justify-lg-start">
                                             <i :class="{
                                                 'bi bi-star-fill': tesimonial.rating >= 1,
                                                 'bi bi-star': tesimonial.rating < 1,
@@ -460,9 +466,11 @@
                             </carousel>
                         </div>
                         <div class="text-center mt-5 banner_btn__mobile">
-                            <Link :href="route('pricing')" class="button button-s2 me-xl-2 me-lg-2 me-md-2 me-0 button-primary">Get
+                            <Link :href="route('pricing')"
+                                class="button button-s2 me-xl-2 me-lg-2 me-md-2 me-0 button-primary">Get
                             LeadX Froms Now →</Link>
-                            <a :href="route('customer.reviews')" class="leadX-Ulink ms-xl-2 ms-lg-2 ms-md-2 ms-0">See All Reviews →</a>
+                            <a :href="route('customer.reviews')" class="leadX-Ulink ms-xl-2 ms-lg-2 ms-md-2 ms-0">See
+                                All Reviews →</a>
                         </div>
                     </div>
                 </div>
@@ -526,7 +534,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row align-items-center border-cst p-4 bg-light-green">
+                <div class="row align-items-center border-cst p-4 bg-light-green guarantee_mobile">
                     <div class="col-lg-3 col-md-5 col-sm-12">
                         <img src="/_public_assets/testImg/Money-Back-Guarantee-1.svg" width="250" height="250"
                             alt="Back-Guarantee img-fluid" />
@@ -540,6 +548,48 @@
                             refund 100% of your money. No questions asked.
                         </p>
                         <img src="/_public_assets/testImg/payment2-1.webp" width="350" alt="payment cards" />
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="secureWrapper main-section pt-0" id="secure">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-4 col-md-4 col-12">
+                        <div class="secure_box__wrapper text-center">
+                            <div class="feature-box bg-light-pink">
+                                <div class="feature-icon-box">
+                                    <img src="/_public_assets/testImg/icon2.svg"
+                                        alt="User-Friendly Interface" class="feature-icon" />
+                                    <h3 class="feature-title">100% Safe and Secure</h3>
+                                    <p>Enjoy peace of mind with our anti-spam and form security features.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-12">
+                        <div class="secure_box__wrapper text-center">
+                            <div class="feature-box bg-light-green-color">
+                                <div class="feature-icon-box">
+                                    <img src="/_public_assets/testImg/icon1.svg"
+                                        alt="User-Friendly Interface" class="feature-icon" />
+                                    <h3 class="feature-title">Award-Winning Support</h3>
+                                    <p>Our dedicated team is here to assist you with expert advice and quick solutions.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-12">
+                        <div class="secure_box__wrapper text-center">
+                            <div class="feature-box bg-light-blue">
+                                <div class="feature-icon-box">
+                                    <img src="/_public_assets/testImg/icon 3.svg"
+                                        alt="User-Friendly Interface" class="feature-icon" />
+                                    <h3 class="feature-title">Satisfaction Guaranteed</h3>
+                                    <p>14-day money-back guarantee. No question asked.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -643,7 +693,7 @@
                 </div>
             </div>
         </section>
-        <section class="latest-blog main-section   d-none" >
+        <section class="latest-blog main-section   d-none">
             <div class="container">
                 <div class="main-head text-center">
                     <h4 class="subheading">Resources</h4>

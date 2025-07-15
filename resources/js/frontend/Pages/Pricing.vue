@@ -113,7 +113,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row align-items-center border-cst p-4 bg-light-green">
+                <div class="row align-items-center border-cst p-4 bg-light-green guarantee_mobile">
                     <div class="col-lg-3 col-md-5 col-sm-12">
                         <img src="/_public_assets/testImg/Money-Back-Guarantee-1.svg" width="250" height="250"
                             alt="Back-Guarantee img-fluid" />
@@ -312,7 +312,7 @@
                             </div>
                         </div>
                         <div class="col-lg-5 col-md-10">
-                            <div class="payment-info-sticky px-4">
+                            <div class="payment-info-sticky px-lg-4 px-md-4 px-0">
                                 <div class="payment-info">
                                     <!-- <div class="mb-1">
                                         <h3 class="payment-info-title">
@@ -356,24 +356,23 @@
                                         <hr />
 
                                         <div class="px-4 pt-2 pb-3">
-                                            <div class="d-flex justify-content-between mb-2">
+                                            <div class="d-flex justify-content-between mb-3 pb-4 border-bottom">
                                                 <span class="planeName">{{ pack.title }} Plan</span>
                                                 <span>${{ Number(pack.price).toFixed(2) }}</span>
                                             </div>
-                                            <div class="d-flex justify-content-between mb-2"
-                                                v-if="discount_code && discountAmount() > 0">
+                                            <!-- <div class="d-flex justify-content-between mb-2" v-if="discount_code && discountAmount() > 0">
                                                 <span>
                                                     Discount Applied
                                                     <span class="badge bg-primary text-white ms-2">{{ discountLabel()
                                                         }}</span>
                                                 </span>
                                                 <span class="text-danger">- ${{ discountAmount().toFixed(2) }}</span>
-                                            </div>
-                                            <div class="d-flex justify-content-between mb-2 handlingFee">
+                                            </div> -->
+                                            <div class="d-flex justify-content-between mb-2 handlingFee border-bottom pb-3">
                                                 <span>Handling Fee</span>
                                                 <span>${{ handlingFee() }}</span>
                                             </div>
-                                            <div class="input-group2 my-3">
+                                            <!-- <div class="input-group2 my-3">
                                                 <input type="text" v-model="discount_code" id="discount-code"
                                                     class="input-control2 border-0" placeholder="Coupon" />
                                             </div>
@@ -381,10 +380,10 @@
                                                 <small>{{
                                                     errors.discount_code
                                                     }}</small>
-                                            </div>
+                                            </div> -->
                                         </div>
 
-                                        <div class="d-flex justify-content-between font-weight-bold px-4 ldx-total">
+                                        <div class="d-flex justify-content-between font-weight-bold p-4 ldx-total">
                                             <span class="fw-bolder">Total:</span>
                                             <span class="fw-bolder">${{ finalAmount() }}</span>
                                         </div>
@@ -439,13 +438,55 @@
                 
             </section> -->
         </template>
+        <section class="secureWrapper main-section pb-0">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-4 col-md-4 col-12">
+                        <div class="secure_box__wrapper text-center">
+                            <div class="feature-box bg-light-pink">
+                                <div class="feature-icon-box">
+                                    <img src="/_public_assets/testImg/icon2.svg"
+                                        alt="User-Friendly Interface" class="feature-icon" />
+                                    <h3 class="feature-title">100% Safe and Secure</h3>
+                                    <p>Enjoy peace of mind with our anti-spam and form security features.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-12">
+                        <div class="secure_box__wrapper text-center">
+                            <div class="feature-box bg-light-green-color">
+                                <div class="feature-icon-box">
+                                    <img src="/_public_assets/testImg/icon1.svg"
+                                        alt="User-Friendly Interface" class="feature-icon" />
+                                    <h3 class="feature-title">Award-Winning Support</h3>
+                                    <p>Our dedicated team is here to assist you with expert advice and quick solutions.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-12">
+                        <div class="secure_box__wrapper text-center">
+                            <div class="feature-box bg-light-blue">
+                                <div class="feature-icon-box">
+                                    <img src="/_public_assets/testImg/icon 3.svg"
+                                        alt="User-Friendly Interface" class="feature-icon" />
+                                    <h3 class="feature-title">Satisfaction Guaranteed</h3>
+                                    <p>14-day money-back guarantee. No question asked.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
         <section class="main-section testimonials-section overflow-hidden" id="testimonials">
             <div class="container">
                 <div class="row g-4" v-if="tesimonials.length > 0">
                     <!-- START BOX -->
                     <div class="col-lg-4 col-md-4 col-sm-12" v-for="(tesimonial, index) in tesimonials" :key="index">
                         <div class="testimonials-area">
-                            <div class="testimonial-item">
+                            <div class="testimonial-item text-center text-lg-left text-md-left">
                                 <div class="testimonial-rate">
                                     <i :class="{
                                         'bi bi-star-fill': tesimonial.rating >= 1,

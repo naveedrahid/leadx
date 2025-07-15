@@ -21,7 +21,7 @@
                     <!-- START BOX -->
                     <div class="col-lg-4 col-md-4 col-sm-12" v-for="(tesimonial, index) in tesimonials" :key="index">
                         <div class="testimonials-area">
-                            <div class="testimonial-item">
+                            <div class="testimonial-item text-center text-lg-left text-md-left">
                                 <div class="testimonial-rate">
                                     <i :class="{
                                         'bi bi-star-fill': tesimonial.rating >= 1,
