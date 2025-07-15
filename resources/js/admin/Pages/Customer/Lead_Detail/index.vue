@@ -1,10 +1,10 @@
 <template>
-    <Head title="Leads"/>
+    <Head title="Contacts"/>
     <AppLayout ref="app_layout" :loader="loader">
         <div class="container-fluid">
             <Breadcrumb>
-                <template v-slot:title>Customers</template>
-                <li class="breadcrumb-item text-muted" aria-current="page">Customers</li>
+                <template v-slot:title>Contacts</template>
+                <li class="breadcrumb-item text-muted" aria-current="page">Contacts</li>
             </Breadcrumb>
             <div class="mb-3">
                 <div class="d-flex align-items-center justify-content-end gap-2">
