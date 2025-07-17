@@ -254,6 +254,9 @@ export default {
                 console.error("Error fetching websites:", error);
             }
         },
+        logout() {
+            this.$emit('logout');
+        }
     }
 };
 </script>
