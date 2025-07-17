@@ -179,20 +179,20 @@
                         <Link :href="route('app.admin.category.index')" class="sidebar-link gap-2" :class="{ 
                             'active': route().current('app.admin.category.index') 
                         }">
-                            <span><i class="ti ti-folder"></i></span>
+                            <span><i class="ti ti-tags"></i></span>
                             <span class="hide-menu">Categories</span>
                         </Link>
                     </li>
                     <li class="nav-small-cap">
                         <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                        <span class="hide-menu">Account</span>
+                        <span class="hide-menu">Setting</span>
                     </li>
                     <li class="sidebar-item">
                         <Link :href="route('app.admin.account_setting')" class="sidebar-link gap-2" :class="{ 
                             'active': route().current('app.admin.account_setting') 
                         }">
                             <span><i class="ti ti-user-cog"></i></span>
-                            <span class="hide-menu">Account Setting</span>
+                            <span class="hide-menu">Account</span>
                         </Link>
                     </li>
                     <li class="sidebar-item">

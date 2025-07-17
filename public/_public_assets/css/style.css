@@ -927,12 +927,12 @@ h4.pricing-box-title {
     color: var(--lxf-primary);
 } */
 
-.pricing-box-featured .button:is(:hover) {
+/* .pricing-box-featured .button:is(:hover) {
     opacity: 1;
     border-color: var(--lxf-light-primary);
     background-color: var(--lxf-light-primary);
     color: var(--lxf-primary);
-}
+} */
 
 .pricing-box-body {
     padding: 30px;
@@ -1212,6 +1212,10 @@ textarea.input-control {
 }
 
 @media (min-width: 360px) and (max-width: 767px) {
+    .testimonial2 .testimonialCol:last-child {
+        flex: 0 0 100% !important;
+        width: 100% !important;
+    }
     .pricing-box-featured_label {
         left: 0;
         right: 0;

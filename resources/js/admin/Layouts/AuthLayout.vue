@@ -127,4 +127,7 @@ export default {
 @import '/public/_app_assets/css/animate.min.css';
 @import '/public/_app_assets/css/style.min.css';
 @import '/public/_app_assets/css/custom.css';
+.Toastify__progress-bar {
+  transform-origin: right !important;
+}
 </style>

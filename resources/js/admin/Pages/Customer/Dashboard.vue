@@ -11,7 +11,7 @@
                                     <img :src="user.profile_image_url" class="rounded" :alt="user.fullname" width="60">
                                 </template>
                                 <template v-else>
-                                    <span class="text-white d-flex align-items-center justify-content-center text-center rounded fs-6 fw-bold bg-dark" style="width: 60px;height: 60px;">{{ user.initials }}</span>
+                                    <span class="text-white d-flex align-items-center justify-content-center text-center rounded fs-6 fw-bold bg-primary" style="width: 60px;height: 60px;">{{ user.initials }}</span>
                                 </template>
                             </div>
                             <div>

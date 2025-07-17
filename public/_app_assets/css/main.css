@@ -466,7 +466,7 @@ footer.mainFooter {
 
 .checkout-achievements li::before{
     content: "";
-    background:url('_public_assets/testImg/check-green.svg') no-repeat center center;
+    background:url('/_public_assets/testImg/check-green.svg') no-repeat center center;
     position: absolute;
     left: 0;
     width: 15px;
@@ -546,4 +546,8 @@ footer.mainFooter {
 .contactInfo_boxes .contactInfo_item:first-child .contactInfo_content p a {
     color: #675bff;
     text-decoration: underline;
+}
+.testimonial2 .testimonialCol:last-child {
+    flex: 0 0 auto;
+    width: 66.66666667%;
 }

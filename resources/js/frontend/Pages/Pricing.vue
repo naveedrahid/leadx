@@ -81,14 +81,9 @@
                                                         user.user_type ===
                                                         'customer'
                                                     ">
-                                                        <Link :href="route(
-                                                            'app.customer.subscription.billing'
-                                                        )
-                                                            " class="button button-s2 button-primary button-block"
-                                                            :class="{
-                                                                'button-primary':
-                                                                    item.recommended,
-                                                            }">Upgrade →</Link>
+                                                        <a :href="route('app.customer.subscription.billing')"
+                                                            class="button button-s2 button-primary button-block"
+                                                            :class="{'button-primary':item.recommended,'button-secondary':!item.recommended}">Upgrade →</a>
                                                     </template>
                                                 </div>
                                                 <div class="pricing-box-body" v-if="item.features">
@@ -486,7 +481,7 @@
                     <!-- START BOX -->
                     <div class="col-lg-4 col-md-4 col-sm-12" v-for="(tesimonial, index) in tesimonials" :key="index">
                         <div class="testimonials-area">
-                            <div class="testimonial-item text-center text-lg-left text-md-left">
+                            <div class="testimonial-item text-center text-lg-start text-md-start">
                                 <div class="testimonial-rate">
                                     <i :class="{
                                         'bi bi-star-fill': tesimonial.rating >= 1,
@@ -936,7 +931,13 @@ export default {
         },
     },
 
-    mounted() { },
+    mounted() {
+        const queryString = window.location.search;
+
+        if (queryString && window.location.pathname === '/pricing') {
+            window.location.href = '/pricing';
+        }
+    },
 
     created() {
         this.getPackages();

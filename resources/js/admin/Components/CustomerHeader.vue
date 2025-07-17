@@ -23,7 +23,7 @@
                                         <img :src="user.profile_image_url" class="rounded-circle" :alt="user.fullname" width="35" height="35">
                                     </template>
                                     <template v-else>
-                                        <span class="text-white d-flex align-items-center justify-content-center text-center rounded-circle fs-2 fw-bold bg-dark" style="width: 35px;height: 35px;">{{ user.initials }}</span>
+                                        <span class="text-white d-flex align-items-center justify-content-center text-center rounded-circle fs-2 fw-bold bg-primary" style="width: 35px;height: 35px;">{{ user.initials }}</span>
                                     </template>
                                 </div>
                                 <div class="ms-2 d-none d-lg-block">
@@ -41,7 +41,7 @@
                                         <img :src="user.profile_image_url" class="rounded-circle" :alt="user.fullname" width="80" height="80">
                                     </template>
                                     <template v-else>
-                                        <span class="text-white d-flex align-items-center justify-content-center text-center rounded-circle fs-6 fw-bold bg-dark" style="width: 80px;height: 80px;">{{ user.initials }}</span>
+                                        <span class="text-white d-flex align-items-center justify-content-center text-center rounded-circle fs-6 fw-bold bg-primary" style="width: 80px;height: 80px;">{{ user.initials }}</span>
                                     </template>
                                     <div class="ms-3">
                                         <h5 class="mb-1 fs-3 word-break fw-bold">{{ user.fullname }}</h5>

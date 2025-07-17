@@ -34,6 +34,7 @@
                         }">
                         <span><i class="ti ti-list"></i></span>
                         <span class="hide-menu">Leads</span>
+                        <span class="badge bg-light-info text-info fs-1">New</span>
                         </Link>
                     </li>
                     <li class="sidebar-item">
@@ -42,6 +43,7 @@
                         }">
                         <span><i class="ti ti-ban"></i></span>
                         <span class="hide-menu">Spam</span>
+                        <span class="badge bg-light-info text-info fs-1">New</span>
                         </Link>
                     </li>
                     <li class="sidebar-item">
@@ -58,7 +60,7 @@
                         }">
                         <span><i class="ti ti-users"></i></span>
                         <span class="hide-menu">Contacts</span>
-                        <span class="badge bg-light-info text-info">New</span>
+                        <span class="badge bg-light-info text-info fs-1">New</span>
                         </Link>
                     </li>
                     <li class="nav-small-cap">
@@ -69,7 +71,7 @@
                         <li class="sidebar-item" v-for="(website, index) in websites" :key="index">
                             <a href="javascript:;" class="sidebar-link gap-2">
                                 <div class="round-16 d-flex align-items-center justify-content-center">
-                                    <i class="ti ti-world fs-3"></i>
+                                    <i class="ti ti-link text-success"></i>
                                 </div>
                                 <span class="hide-menu">{{ website.website_url }}</span>
                             </a>
@@ -87,38 +89,6 @@
                             </Link>
                         </li>
                     </template>
-                    <!-- <li class="sidebar-item">
-                        <a href="#" class="sidebar-link has-arrow gap-2" :class="{
-                            'active': route().current('app.customer.website.*')
-                        }">
-                            <span class="d-flex"><i class="ti ti-world"></i></span>
-                            <span class="hide-menu">Websites</span>
-                        </a>
-                        <ul class="collapse first-level" :class="{
-                            'in': route().current('app.customer.website.*')
-                        }">
-                            <li class="sidebar-item">
-                                <Link :href="route('app.customer.website.index')" class="sidebar-link gap-2" :class="{
-                                    'active': route().current('app.customer.website.index')
-                                }">
-                                <div class="round-16 d-flex align-items-center justify-content-center">
-                                    <i class="ti ti-circle fs-3"></i>
-                                </div>
-                                <span class="hide-menu">All Websites</span>
-                                </Link>
-                            </li>
-                            <li class="sidebar-item">
-                                <Link :href="route('app.customer.website.create')" class="sidebar-link gap-2" :class="{
-                                    'active': route().current('app.customer.website.create')
-                                }">
-                                <div class="round-16 d-flex align-items-center justify-content-center">
-                                    <i class="ti ti-circle fs-3"></i>
-                                </div>
-                                <span class="hide-menu">Add New</span>
-                                </Link>
-                            </li>
-                        </ul>
-                    </li> -->
                     <li class="nav-small-cap">
                         <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                         <span class="hide-menu">Subscription</span>
@@ -183,15 +153,54 @@
 
                     <li class="nav-small-cap">
                         <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                        <span class="hide-menu">Account</span>
+                        <span class="hide-menu">Setting</span>
                     </li>
                     <li class="sidebar-item">
                         <Link :href="route('app.customer.account_setting')" class="sidebar-link gap-2" :class="{
                             'active': route().current('app.customer.account_setting')
                         }">
                         <span><i class="ti ti-user-cog"></i></span>
-                        <span class="hide-menu">Account Setting</span>
+                        <span class="hide-menu">Account</span>
                         </Link>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link has-arrow gap-2" :class="{
+                            'active': route().current('app.customer.website.*')
+                        }">
+                            <span class="d-flex"><i class="ti ti-world"></i></span>
+                            <span class="hide-menu">Websites</span>
+                        </a>
+                        <ul class="collapse first-level" :class="{
+                            'in': route().current('app.customer.website.*')
+                        }">
+                            <li class="sidebar-item">
+                                <Link :href="route('app.customer.website.index')" class="sidebar-link gap-2" :class="{
+                                    'active': route().current('app.customer.website.index')
+                                }">
+                                <div class="round-16 d-flex align-items-center justify-content-center">
+                                    <i class="ti ti-circle fs-3"></i>
+                                </div>
+                                <span class="hide-menu">All Websites</span>
+                                </Link>
+                            </li>
+                            <li class="sidebar-item">
+                                <Link :href="route('app.customer.website.create')" class="sidebar-link gap-2" :class="{
+                                    'active': route().current('app.customer.website.create')
+                                }">
+                                <div class="round-16 d-flex align-items-center justify-content-center">
+                                    <i class="ti ti-circle fs-3"></i>
+                                </div>
+                                <span class="hide-menu">Add New</span>
+                                </Link>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="javascript:void(0)" class="sidebar-link gap-2">
+                            <span><i class="ti ti-flag"></i></span>
+                            <span class="hide-menu">Lead Status</span>
+                            <span class="badge bg-light-info text-info fs-1">Coming Soon</span>
+                        </a>
                     </li>
                     <li class="sidebar-item">
                         <Link :href="route('app.customer.change_password')" class="sidebar-link gap-2" :class="{
