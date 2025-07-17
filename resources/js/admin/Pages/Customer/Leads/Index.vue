@@ -134,7 +134,7 @@
                                                @click="selectAll()">
                                     </div>
                                 </th>
-                                <th>No.</th>
+                                <!-- <th>No.</th> -->
                                 <th>Date & Time</th>
                                 <!--                                    <th>Form Name</th>-->
                                 <th>Email</th>
@@ -153,7 +153,7 @@
                                                            v-model="selectedItems" :value="item.id">
                                                 </div>
                                             </td>
-                                            <td class="align-middle">{{ getItemNum(index) }}</td>
+                                            <!-- <td class="align-middle">{{ getItemNum(index) }}</td> -->
                                             <td class="align-middle">
                                                 {{ dateFormat(item.created_at, 'DD.MM.YYYY  - h:mm a') }}
                                             </td>

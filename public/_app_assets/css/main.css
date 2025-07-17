@@ -422,8 +422,9 @@ footer.mainFooter {
     font-weight: 700;
 }
 
+.payment-info .order-summary-box hr,
 .payment-info .order-summary-box {
-    border:solid 1px #ccc;
+    border:solid 1px #dde1ec;
 }
 .handlingFee {
     font-size: 12px;

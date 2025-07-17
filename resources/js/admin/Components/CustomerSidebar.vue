@@ -34,7 +34,6 @@
                         }">
                         <span><i class="ti ti-list"></i></span>
                         <span class="hide-menu">Leads</span>
-                        <span class="badge bg-light-info text-info fs-1">New</span>
                         </Link>
                     </li>
                     <li class="sidebar-item">
@@ -52,6 +51,7 @@
                         }">
                         <span><i class="ti ti-lock"></i></span>
                         <span class="hide-menu">IP Tracking</span>
+                        <span class="badge bg-light-info text-info fs-1">New</span>
                         </Link>
                     </li>
                     <li class="sidebar-item">
