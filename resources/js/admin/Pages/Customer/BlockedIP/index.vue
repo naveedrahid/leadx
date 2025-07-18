@@ -93,11 +93,14 @@
                                         <input type="checkbox" class="form-check-input" v-model="checkAll" @click="selectAll()">
                                     </div>
                                 </th>
-                                <th>No.</th>
-                                <th>Date & Time</th>
+                                <!-- <th>No.</th> -->
+                                <th>IP Address</th>
+                                <th>Location</th>
+                                <th>Browser</th>
                                 <th>Form Name</th>
-                                <th>IP</th>
-                                <th></th>
+                                <th>Submitted At</th>
+                                <th>Count</th>
+                                <th>Action</th>
                             </tr>
                             </thead>
                             <TransitionGroup tag="tbody" name="fade" class="text-dark fs-2">
@@ -109,10 +112,16 @@
                                                     <input type="checkbox" class="form-check-input" v-model="selectedItems" :value="item.id">
                                                 </div>
                                             </td>
-                                            <td class="align-middle">{{ getItemNum(index) }}</td>
-                                            <td class="align-middle">{{ dateFormat(item.created_at, 'DD.MM.YYYY  - h:mm a') }}</td>
-                                            <td class="align-middle">{{ item.wpform_name }}</td>
+                                            <!-- <td class="align-middle">{{ getItemNum(index) }}</td> -->
                                             <td class="align-middle">{{item.form_data?.visitor_info.ip}}</td>
+                                            <td class="align-middle">{{item.form_data?.visitor_info.city}} - {{item.form_data?.visitor_info.country}} </td>
+                                            <td class="align-middle">
+                                                <img :src="getBrowserIcon(item.form_data?.visitor_info.browser)" alt="browser" width="20" class="me-1" />
+                                                {{ item.form_data?.visitor_info.browser }} ({{ item.form_data?.visitor_info.platform }})
+                                            </td>
+                                            <td class="align-middle">{{ item.wpform_name }}</td>
+                                            <td class="align-middle">{{ dateFormat(item.created_at, 'DD.MM.YYYY  - h:mm a') }}</td>
+                                            <td class="align-middle">{{ item?.user?.other?.leads_count }}</td>
 
                                             <td class="align-middle">
                                                 <div class="action-btn d-flex align-items-center gap-2">
@@ -120,12 +129,15 @@
                                                         <i class="ti ti-lock-open fs-3 pe-1"></i> Unblock
                                                     </button>
                                                     <button v-else type="button" class="btn btn-danger btn-sm" @click="BlockedIP($event, item)">
-                                                        <i class="ti ti-lock fs-3 pe-1"></i> Block
+                                                        <i class="ti ti-lock fs-3 pe-1"></i> Block IP
+                                                    </button>
+                                                    <button type="button" class="btn btn-info btn-sm">
+                                                        <i class="ti ti-eye fs-3"></i> Activity Log
                                                     </button>
                                                 </div>
                                             </td>
                                         </tr>
-                                        <tr v-show="itemId === item.id">
+                                        <!-- <tr>
                                             <td colspan="9" class="p-4">
                                                 <div :id="'lead-details-'+item.id">
                                                     <div class="row">
@@ -241,7 +253,7 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                        </tr>
+                                        </tr> -->
                                     </template>
                                 </template>
                                 <template v-else>
@@ -478,7 +490,7 @@ export default {
                 let $response = response.data;
                 if($response.data.length > 0) {
                     this.websites = $response.data;
-                    console.log($response.data);
+                    // console.log($response.data);
                 }
 
                 this.loader = false;
@@ -528,6 +540,7 @@ export default {
                 },
             }).then((response) => {
                 let $response = response.data;
+                // console.log('my-data', $response);
 
                 if($response.data.length > 0) {
                     this.collection = $response.data.map((item) => {
@@ -653,6 +666,18 @@ export default {
                 toast.error(error.response.data.message);
             });
         },
+
+        getBrowserIcon(browser) {
+            browser = (browser || '').toLowerCase();
+
+            if (browser.includes('chrome')) return '/_public_assets/testImg/chrome.svg';
+            if (browser.includes('firefox')) return '/_public_assets/testImg/firefox.svg';
+            if (browser.includes('edge')) return '/_public_assets/testImg/edge.svg';
+            if (browser.includes('safari')) return '/_public_assets/testImg/safari.svg';
+            if (browser.includes('opera')) return '/_public_assets/testImg/opera.svg';
+
+            return '/_public_assets/testImg/unknown.png';
+        }
 
     },
 
