@@ -62,64 +62,64 @@ export default {
              features: [
                 {
                     title: 'User-Friendly Interface',
-                    image: '/_public_assets/img/features-icons/user-friendly-interface.png',
+                    image: '/_public_assets/img/features-icons/Union.svg',
                     description: this.$page.props.app.name + '  is fully responsive and works seamlessly across mobile, tablet, and desktop devices.'
                 },
                 {
                     title: 'Entry Management',
-                    image: '/_public_assets/img/features-icons/entry-management.png',
+                    image: '/_public_assets/img/features-icons/Union (1).svg',
                     description: 'Easily view, track, manage, and export all form submissions from one centralized dashboard.'
                 },
                 {
                     title: 'Easy to Embed',
-                    image: '/_public_assets/img/features-icons/easy-to-embed.png',
+                    image: '/_public_assets/img/features-icons/Union (2).svg',
                     description: 'Instantly add your forms to pages, blog posts, sidebars, footers, and more with just a few clicks.'
                 },
                 {
                     title: 'Customizable Forms',
-                    image: '/_public_assets/img/features-icons/customizable-forms.png',
+                    image: '/_public_assets/img/features-icons/Union (3).svg',
                     description: 'Create fully customizable forms that match your brand and needs - no coding required.'
                 },
                 {
                     title: '2000+ Form Tamplates',
-                    image: '/_public_assets/img/features-icons/customizable-forms.png',
+                    image: '/_public_assets/img/features-icons/Union (4).svg',
                     description: 'Save time and streamline your workflow with our ready-to-use form templates.'
                 },
                 {
                     title: 'Styled Email Templates',
-                    image: '/_public_assets/img/features-icons/instant-notifications.png',
+                    image: '/_public_assets/img/features-icons/Union (5).svg',
                     description: 'Send beautifully formatted emails for each form response.'
                 },
                 {
                     title: 'Smart Spam Filters',
-                    image: '/_public_assets/img/features-icons/instant-notifications.png',
+                    image: '/_public_assets/img/features-icons/Union (6).svg',
                     description: 'LeadXForms uses smart spam filters to block bots and junk effortlessly, ensuring only genuine submissions reach your inbox.'
                 },
-                
+
                 {
                     title: 'Email Notifications',
-                    image: '/_public_assets/img/features-icons/instant-notifications.png',
+                    image: '/_public_assets/img/features-icons/Union (7).svg',
                     description: 'With our fast form notification function for your team, respond to leads promptly.'
                 },
                 {
                     title: 'Custom Redirection',
-                    image: '/_public_assets/img/features-icons/customizable-forms.png',
+                    image: '/_public_assets/img/features-icons/Union (8).svg',
                     description: 'Send users to a thank-you page or a custom URL after submission.'
                 },
                 {
                     title: 'SMTP Integration',
-                    image: '/_public_assets/img/features-icons/easy-to-embed.png',
+                    image: '/_public_assets/img/features-icons/Union (9).svg',
                     description: 'Ensure reliable email delivery by connecting your SMTP provider.'
                 },
                 
                 {
                     title: 'Form Security',
-                    image: '/_public_assets/img/features-icons/easy-to-embed.png',
+                    image: '/_public_assets/img/features-icons/Union (10).svg',
                     description: 'Your data is protected with built-in spam filters, IP blocking, and CAPTCHA—so you get real leads, not bots.'
                 },
                 {
                     title: 'Spam Protection',
-                    image: '/_public_assets/img/features-icons/spam-protection.png',
+                    image: '/_public_assets/img/features-icons/Union (11).svg',
                     description: 'Use Google reCAPTCHA, block specific keywords, and even block IPs.'
                 },
             ],

@@ -102,6 +102,123 @@
                                 <th>Count</th>
                                 <th>Action</th>
                             </tr>
+                            <!-- <tr>
+                                            <td colspan="9" class="p-4">
+                                                <div :id="'lead-details-'+item.id">
+                                                    <div class="row">
+                                                        <div class="col-md-5">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="card border mt-0 mb-3">
+                                                                        <div class="card-body p-3">
+                                                                            <h5 class="card-title mb-3 fs-3 fw-bolder">Lead Details</h5>
+                                                                            <ul class="list-group list-group-flush">
+                                                                                <li class="list-group-item d-flex gap-2 px-0">
+                                                                                    <strong class="d-flex align-items-center gap-2"><i class="fs-3 ti ti-fingerprint"></i> Lead ID:</strong>
+                                                                                    <span>#{{ item.id }}</span>
+                                                                                </li>
+                                                                                <li class="list-group-item d-flex gap-2 px-0">
+                                                                                    <strong class="d-flex align-items-center gap-2"><i class="fs-3 ti ti-building-pavilion"></i> Form Name:</strong>
+                                                                                    <span>{{ item.wpform_name }}</span>
+                                                                                </li>
+                                                                                <li class="list-group-item d-flex gap-2 px-0">
+                                                                                    <strong class="d-flex align-items-center gap-2"><i class="fs-3 ti ti-chart-bubble"></i> Status:</strong>
+                                                                                    <span>{{ statuses.hasOwnProperty(item.status) ? statuses[item.status] : item.status }}</span>
+                                                                                </li>
+                                                                                <li class="list-group-item d-flex gap-2 px-0">
+                                                                                    <strong class="d-flex align-items-center gap-2"><i class="fs-3 ti ti-eye"></i> Is View:</strong>
+                                                                                    <span>{{ item.is_viewed ? 'Yes' : 'No' }}</span>
+                                                                                </li>
+                                                                                <li class="list-group-item d-flex gap-2 px-0">
+                                                                                    <strong class="d-flex align-items-center gap-2"><i class="fs-3 ti ti-calendar-time"></i> Submitted on:</strong>
+                                                                                    <span>{{ dateFormat(item.created_at, 'DD.MM.YYYY') }}</span>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-12">
+                                                                    <div class="card border mt-0 mb-3">
+                                                                        <div class="card-body p-3">
+                                                                            <h5 class="card-title mb-3 fs-3 fw-bolder">User Information</h5>
+                                                                            <ul class="list-group list-group-flush">
+                                                                                <li class="list-group-item d-flex gap-2 px-0">
+                                                                                    <strong class="d-flex align-items-center gap-2"><i class="fs-3 ti ti-anchor"></i> IP Address:</strong>
+                                                                                    <span>{{ item.form_data?.visitor_info.ip }}</span>
+                                                                                </li>
+                                                                                <li class="list-group-item d-flex gap-2 px-0">
+                                                                                    <strong class="d-flex align-items-center gap-2"><i class="fs-3 ti ti-device-desktop-analytics"></i> Platform:</strong>
+                                                                                    <span>{{ item.form_data?.visitor_info.platform }}</span>
+                                                                                </li>
+                                                                                <li class="list-group-item d-flex gap-2 px-0">
+                                                                                    <strong class="d-flex align-items-center gap-2"><i class="fs-3 ti ti-app-window"></i> Browser/OS:</strong>
+                                                                                    <span>{{ item.form_data?.visitor_info.browser }}</span>
+                                                                                </li>
+                                                                                <li class="list-group-item d-flex gap-2 px-0">
+                                                                                    <strong class="d-flex align-items-center gap-2"><i class="fs-3 ti ti-link"></i> Referrer URL:</strong>
+                                                                                    <span><a :href="item.form_data?.visitor_info.ref_url" target="_blank">{{ item.form_data?.visitor_info.ref_url }}</a></span>
+                                                                                </li>
+                                                                                <li class="list-group-item d-flex gap-2 px-0">
+                                                                                    <strong class="d-flex align-items-center gap-2"><i class="fs-3 ti ti-map-pin"></i> Continent:</strong>
+                                                                                    <span>{{ (item.form_data?.visitor_info.continent !== '' && item.form_data?.visitor_info.continent !== 'unknown') ? item.form_data?.visitor_info.continent : "Not Available" }}</span>
+                                                                                </li>
+                                                                                <li class="list-group-item d-flex gap-2 px-0">
+                                                                                    <strong class="d-flex align-items-center gap-2"><i class="fs-3 ti ti-map-pin"></i> Country:</strong>
+                                                                                    <span>{{ (item.form_data?.visitor_info.country !== '' && item.form_data?.visitor_info.country !== 'unknown') ? item.form_data?.visitor_info.country : "Not Available" }}</span>
+                                                                                </li>
+                                                                                <li class="list-group-item d-flex gap-2 px-0">
+                                                                                    <strong class="d-flex align-items-center gap-2"><i class="fs-3 ti ti-map-pin"></i> Country Code:</strong>
+                                                                                    <span>{{ (item.form_data?.visitor_info.country_code !== '' && item.form_data?.visitor_info.country_code !== 'unknown') ? item.form_data?.visitor_info.country_code : "Not Available" }}</span>
+                                                                                </li>
+                                                                                <li class="list-group-item d-flex gap-2 px-0">
+                                                                                    <strong class="d-flex align-items-center gap-2"><i class="fs-3 ti ti-map-pin"></i> State:</strong>
+                                                                                    <span>{{ (item.form_data?.visitor_info.state !== '' && item.form_data?.visitor_info.state !== 'unknown') ? item.form_data?.visitor_info.state : "Not Available" }}</span>
+                                                                                </li>
+                                                                                <li class="list-group-item d-flex gap-2 px-0">
+                                                                                    <strong class="d-flex align-items-center gap-2"><i class="fs-3 ti ti-map-pin"></i> City:</strong>
+                                                                                    <span>{{ (item.form_data?.visitor_info.city !== '' && item.form_data?.visitor_info.city !== 'unknown') ? item.form_data?.visitor_info.city : "Not Available" }}</span>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-7">
+                                                            <div class="card border mt-0 mb-3">
+                                                                <div class="card-body p-3">
+                                                                    <h5 class="card-title mb-3 fs-3 fw-bolder">Form Lead Details</h5>
+                                                                    <ul class="list-group list-group-flush" v-if="item.form_data?.data">
+                                                                        <template v-for="(item, field) in item.form_data?.data">
+                                                                            <template v-if="field == 'checkbox-list'">
+                                                                                <li class="list-group-item d-flex gap-2 px-0" v-for="(value, key) in item">
+                                                                                    <strong class="text-capitalize">{{ formatText(key) }}:</strong>
+                                                                                    <span>
+                                                                                        <span v-for="(value1, key1) in value">{{ value1 }}{{ (key1 < Object.keys(value).length) ? ', ' : '' }}</span>
+                                                                                    </span>
+                                                                                </li>
+                                                                            </template>
+                                                                            <template v-else-if="field == 'file'">
+                                                                                <li class="list-group-item d-flex gap-2 px-0" v-for="(value, key) in item">
+                                                                                    <strong class="text-capitalize">{{ formatText(key) }}:</strong>
+                                                                                    <span><a :href="value.url" target="_blank" class="text-success">{{ value.name }}</a></span>
+                                                                                </li>
+                                                                            </template>
+                                                                            <template v-else>
+                                                                                <li class="list-group-item d-flex gap-2 px-0" v-for="(value, key) in item">
+                                                                                    <strong class="text-capitalize">{{ formatText(key) }}:</strong>
+                                                                                    <span>{{ value }}</span>
+                                                                                </li>
+                                                                            </template>
+                                                                        </template>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr> -->
                             </thead>
                             <TransitionGroup tag="tbody" name="fade" class="text-dark fs-2">
                                 <template v-if="collection.length>0">
@@ -114,7 +231,17 @@
                                             </td>
                                             <!-- <td class="align-middle">{{ getItemNum(index) }}</td> -->
                                             <td class="align-middle">{{item.form_data?.visitor_info.ip}}</td>
-                                            <td class="align-middle">{{item.form_data?.visitor_info.city}} - {{item.form_data?.visitor_info.country}} </td>
+                                            <td class="align-middle">
+                                                    <template v-if="item?.form_data?.visitor_info?.country_code">
+                                                    <img
+                                                        :src="`https://flagcdn.com/${item.form_data.visitor_info.country_code.toLowerCase()}.svg`"  width="30" height="20"/>
+                                                    {{ item.form_data.visitor_info.city }} - {{ item.form_data.visitor_info.country }}
+                                                </template>
+                                                <template v-else>
+                                                    No Location Info
+                                                </template>
+                                                {{item.form_data?.visitor_info.city}} - {{item.form_data?.visitor_info.country}} 
+                                            </td>
                                             <td class="align-middle">
                                                 <img :src="getBrowserIcon(item.form_data?.visitor_info.browser)" alt="browser" width="20" class="me-1" />
                                                 {{ item.form_data?.visitor_info.browser }} ({{ item.form_data?.visitor_info.platform }})
@@ -131,7 +258,7 @@
                                                     <button v-else type="button" class="btn btn-danger btn-sm" @click="BlockedIP($event, item)">
                                                         <i class="ti ti-lock fs-3 pe-1"></i> Block IP
                                                     </button>
-                                                    <button type="button" class="btn btn-info btn-sm">
+                                                    <button type="button" class="btn btn-info btn-sm" @click="openActivityModal(item)">
                                                         <i class="ti ti-eye fs-3"></i> Activity Log
                                                     </button>
                                                 </div>
@@ -273,424 +400,516 @@
                 </div>
             </div>
         </div>
+        <!-- Modal here -->
+        <div v-if="showActivityModal" class="modal fade show d-block visitorModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header p-0">
+                        <button type="button" class="btn-close position-absolute top-0 end-0" @click="closeActivityModal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-5 col-12">
+                                <div class="leftModalContent bg__gray h-100">
+                                    <p class="fs-2">
+                                        Welcome back! LeadX Forms,
+                                    </p>
+                                    <p class="fs-2">
+                                        Great to see you here. <br>
+                                        This is your submitted number  <strong>{{ selectedItem?.user?.other?.leads_count ?? 0 }}</strong> with using <strong>{{selectedItem?.form_data?.visitor_info?.browser || ''}}</strong>.
+                                    </p>
+                                    <p class="fs-2">
+                                        Your current IP suggests you're near
+                                        <strong>{{ selectedItem?.form_data?.visitor_info?.city || '' }}, {{ selectedItem?.form_data?.visitor_info?.country || 'N/A' }}</strong>.
+                                        What a beautiful place!
+                                        <img
+                                            :src="`https://flagcdn.com/24x18/${selectedItem?.form_data?.visitor_info?.country_code?.toLowerCase()}.png`"
+                                            width="18"
+                                            height="14"
+                                            v-if="selectedItem?.form_data?.visitor_info?.country_code"
+                                        />
+                                    </p>                                    
+                                </div>
+                            </div>
+                            <div class="col-md-7 col-12">
+                                <div class="rightModelInfo">
+                                    <h5 class="modal-title">Activity Log IP <strong class="text-primary">{{selectedItem?.form_data?.visitor_info?.ip || ''}}</strong></h5>
+                                    <div class="d-flex visitorInfo justify-content-between mt-2 mb-3">
+                                        <div class="visitorBox p-1 flex-1">
+                                            <p class="text-uppercase mb-0 fs-1">your visit summary</p>
+                                            <p class="fw-bold mb-0 fs-1">You Visited {{ selectedItem?.user?.other?.leads_count ?? 0 }} times</p>
+                                        </div>
+                                        <div class="visitorBox p-1 flex-1">
+                                            <p class="text-uppercase mb-0 fs-1">Browser</p>
+                                            <p class="fw-bold mb-0 fs-1">{{ selectedItem?.form_data?.visitor_info?.browser || '' }}</p>
+                                        </div>
+                                        <div class="visitorBox p-1 flex-1">
+                                            <p class="text-uppercase mb-0 fs-1">IP Status</p>
+                                            <!-- <p class="fw-bold mb-0 fs-1">{{ selectedItem?.is_blocked ? 'Block' : 'Unblock' }}</p> -->
+                                            <p class="fw-bold mb-0 fs-1">{{ selectedItem?.lead_blocked_ip?.is_blocked == 0 ? 'Unblock' : 'Block' }}</p>
+                                        </div>
+                                    </div>
+                                    <h5 class="my-2 text-uppercase fs-1 text-black fw-semibold">Your visit history</h5>
+                                    <div class="d-flex visitorInfo visitorMap justify-content-between mt-2">
+                                        <div class="visitorBox p-1">
+                                            <p class="text-uppercase mb-0 fs-1">Now</p>
+                                            <p class="fw-bold mb-0 fs-1">
+                                                {{ selectedItem?.form_data?.visitor_info?.city || '' }}, {{ selectedItem?.form_data?.visitor_info?.country || '' }}
+                                            </p>
+                                        </div>
+                                        <div class="visitorBox p-1">
+                                            <iframe
+                                                v-if="selectedItem?.form_data?.visitor_info?.city && selectedItem?.form_data?.visitor_info?.country"
+                                                :src="`https://maps.google.com/maps?q=${encodeURIComponent(selectedItem.form_data.visitor_info.city + ', ' + selectedItem.form_data.visitor_info.country)}&output=embed`"
+                                                width="100%"
+                                                height="80"
+                                                style="border:0;">
+                                            </iframe>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex visitorInfo justify-content-between mt-1">
+                                        <div class="visitorBox p-1 flex-1">
+                                            <p class="text-uppercase mb-0 fs-1">Website URL</p>
+                                            <p class="fw-bold mb-0 fs-1">
+                                                <a :href="selectedItem.form_data?.visitor_info.ref_url" target="_blank">{{ selectedItem.form_data?.visitor_info.ref_url }}</a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal End -->
     </AppLayout>
 </template>
 
 <script>
-import { Head, Link } from '@inertiajs/vue3';
-import AppLayout from '@/admin/Layouts/AppLayout.vue';
-import Breadcrumb from '@/admin/Components/Breadcrumb.vue';
-import Pagination from '@/admin/Components/Pagination.vue';
-import VueDatePicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css';
-import { toast } from 'vue3-toastify';
-import 'vue3-toastify/dist/index.css';
-import Swal from 'sweetalert2/dist/sweetalert2.js';
-import 'sweetalert2/dist/sweetalert2.css';
-import moment from 'moment';
+    import { Head, Link } from '@inertiajs/vue3';
+    import AppLayout from '@/admin/Layouts/AppLayout.vue';
+    import Breadcrumb from '@/admin/Components/Breadcrumb.vue';
+    import Pagination from '@/admin/Components/Pagination.vue';
+    import VueDatePicker from '@vuepic/vue-datepicker';
+    import '@vuepic/vue-datepicker/dist/main.css';
+    import { toast } from 'vue3-toastify';
+    import 'vue3-toastify/dist/index.css';
+    import Swal from 'sweetalert2/dist/sweetalert2.js';
+    import 'sweetalert2/dist/sweetalert2.css';
+    import moment from 'moment';
 
-export default {
-    components: {
-        Head,
-        Link,
-        AppLayout,
-        Breadcrumb,
-        Pagination,
-        VueDatePicker
-    },
-
-    data() {
-        return {
-            statuses: {
-                "new": "New",
-                "pending": "Pending",
-                "assigned": "Assigned",
-                "in-progress": "In Progress",
-                "on-hold": "On Hold",
-                "follow-up": "Follow Up",
-                "duplicate": "Duplicate",
-                "contacted": "Contacted",
-                "qualified": "Qualified",
-                "unqualified": "Unqualified",
-                "lost": "Lost",
-                "closed": "Closed"
-            },
-            user: this.$cookies.get('lxf-user'),
-            token: this.$cookies.get('lxf-token'),
-            collection: [],
-            paginate: {},
-            perpage: 10,
-            page: 1,
-            orderBy: 'id',
-            order: 'DESC',
-            checkAll: false,
-            selectedItems: [],
-            renderPaginate: true,
-            forms: [],
-            websites: [],
-            itemId: false,
-            loadFormSelectBox: false,
-            form: '',
-            website: '',
-            status: '',
-            view: '',
-            search: '',
-            showForm: false,
-            dates: null,
-            bulkAction : '',
-            loader: false
-        };
-    },
-
-    methods: {
-        formatText(str) {
-            return str.replace(/-/g, ' ').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    export default {
+        components: {
+            Head,
+            Link,
+            AppLayout,
+            Breadcrumb,
+            Pagination,
+            VueDatePicker
         },
 
-        async handleWebsiteForms() {
-            this.loader = true;
-            this.showForm = this.website !== '';
-            this.getData();
-
-            await axios.get(route('api.customer_leads.website.forms'), {
-                params: { website_id: this.website },
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: "Bearer " + this.token,
+        data() {
+            return {
+                statuses: {
+                    "new": "New",
+                    "pending": "Pending",
+                    "assigned": "Assigned",
+                    "in-progress": "In Progress",
+                    "on-hold": "On Hold",
+                    "follow-up": "Follow Up",
+                    "duplicate": "Duplicate",
+                    "contacted": "Contacted",
+                    "qualified": "Qualified",
+                    "unqualified": "Unqualified",
+                    "lost": "Lost",
+                    "closed": "Closed"
                 },
-            }).then((response) => {
-                let $response = response.data;
-                if ($response.data.length > 0) {
-                    this.forms = $response.data;
-                    if (!this.forms.some(item => item.id === this.form)) {
-                        this.form = '';
-                    }
-                }
-
-                this.loader = false;
-            }).catch((error) => {
-                this.loader = false
-                toast.error(error.response.data.message);
-            });
-        },
-
-        dateFormat(date, format, cformat = null) {
-            if(cformat) {
-                return moment(date, cformat).format(format);
-            }
-
-            return moment(date).format(format);
-        },
-
-        getItemNum(index) {
-            index = index+1;
-            if(this.page > 1) {
-                let num = (this.page-1) * this.perpage;
-                index = index+num;
-            }
-
-            return (index < 10) ? '0'+index : index;
-        },
-
-        perPageSet() {
-            if(this.perpage>100) {
-                this.perpage = 100;
-            }
-
-            if(this.perpage == '' || this.perpage == 0) {
-                this.perpage = 1;
-            }
-
-            this.getData();
-        },
-
-        selectAll() {
-            this.checkAll = this.checkAll ? false : true;
-            let itemsIds = [];
-            if(this.collection.length) {
-                this.collection.forEach((item) => {
-                    if(!item.other?.is_subscription_active) {
-                        itemsIds.push(item.id);
-                    }
-                });
-            }
-
-            if(this.checkAll) {
-                this.selectedItems = itemsIds;
-            } else {
-                this.selectedItems = [];
-            }
-        },
-
-        datesChange() {
-            if(this.dates != null) {
-                let dateStart = this.dates[0];
-                let dateEnd = this.dates[1];
-                if(this.dates[0] != null) {
-                    dateStart = moment(this.dates[0]).format('YYYY-MM-DD');
-                } else {
-                    dateStart = moment().format('YYYY-MM-DD');
-                }
-
-                if(this.dates[1] != null) {
-                    dateEnd = moment(this.dates[1]).format('YYYY-MM-DD');
-                } else {
-                    dateEnd = moment().format('YYYY-MM-DD');
-                }
-
-                this.dates = [dateStart, dateEnd];
-            }
-
-            this.getData();
-        },
-
-        itemToggle(item) {
-            if(!this.itemId) {
-                this.itemId = item.id;
-                this.leadViewed(item);
-            } else if(this.itemId && this.itemId !== item.id) {
-                this.itemId = item.id;
-                this.leadViewed(item);
-            } else {
-                this.itemId = false;
-            }
-        },
-
-
-
-
-        async getForms() {
-            this.loader = true;
-            await axios.get(route('api.customer_leads.get.forms'), {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: "Bearer " + this.token,
-                },
-            }).then((response) => {
-                let $response = response.data;
-                if($response.data.length > 0) {
-                    this.forms = $response.data;
-                }
-
-                this.loader = false;
-            }).catch((error) => {
-                this.loader = false
-                toast.error(error.response.data.message);
-            });
-        },
-
-        async getWebsites() {
-            this.loader = true;
-            await axios.get(route('api.customer_leads.get.websites'), {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: "Bearer " + this.token,
-                },
-            }).then((response) => {
-                let $response = response.data;
-                if($response.data.length > 0) {
-                    this.websites = $response.data;
-                    // console.log($response.data);
-                }
-
-                this.loader = false;
-            }).catch((error) => {
-                this.loader = false
-                toast.error(error.response.data.message);
-            });
-        },
-
-        async getData(page = this.page) {
-            this.page = page;
-            this.collection = [];
-            this.renderPaginate = false;
-            this.loader = true;
-            let params = {
-                orderby: this.orderBy,
-                order: this.order,
-                perpage: this.perpage,
-                page: this.page
+                user: this.$cookies.get('lxf-user'),
+                token: this.$cookies.get('lxf-token'),
+                collection: [],
+                paginate: {},
+                perpage: 10,
+                page: 1,
+                orderBy: 'id',
+                order: 'DESC',
+                checkAll: false,
+                selectedItems: [],
+                renderPaginate: true,
+                forms: [],
+                websites: [],
+                itemId: false,
+                loadFormSelectBox: false,
+                form: '',
+                website: '',
+                status: '',
+                view: '',
+                search: '',
+                showForm: false,
+                dates: null,
+                bulkAction : '',
+                loader: false,
+                showActivityModal: false,
+                selectedItem: null,
             };
+        },
 
-            if(this.form !== '') {
-                params.wpform_id = this.form;
-            }
+        methods: {
+            formatText(str) {
+                return str.replace(/-/g, ' ').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+            },
 
-            if(this.website !== '') {
-                params.website_id = this.website;
-            }
+            async handleWebsiteForms() {
+                this.loader = true;
+                this.showForm = this.website !== '';
+                this.getData();
 
-            if(this.status !== '') {
-                params.status = this.status;
-            }
+                await axios.get(route('api.customer_leads.website.forms'), {
+                    params: { website_id: this.website },
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: "Bearer " + this.token,
+                    },
+                }).then((response) => {
+                    let $response = response.data;
+                    if ($response.data.length > 0) {
+                        this.forms = $response.data;
+                        if (!this.forms.some(item => item.id === this.form)) {
+                            this.form = '';
+                        }
+                    }
 
-            if(this.view !== '') {
-                params.is_viewed = this.view;
-            }
+                    this.loader = false;
+                }).catch((error) => {
+                    this.loader = false
+                    toast.error(error.response.data.message);
+                });
+            },
 
-            if(this.dates != null) {
-                params.dates = this.dates;
-            }
+            dateFormat(date, format, cformat = null) {
+                if(cformat) {
+                    return moment(date, cformat).format(format);
+                }
 
-            await axios.get(route('api.blocked_ip.get.all'), {
-                params: params,
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: "Bearer " + this.token,
-                },
-            }).then((response) => {
-                let $response = response.data;
-                // console.log('my-data', $response);
+                return moment(date).format(format);
+            },
 
-                if($response.data.length > 0) {
-                    this.collection = $response.data.map((item) => {
-                        item.form_data = JSON.parse(item.form_data);
-                        return item;
+            getItemNum(index) {
+                index = index+1;
+                if(this.page > 1) {
+                    let num = (this.page-1) * this.perpage;
+                    index = index+num;
+                }
+
+                return (index < 10) ? '0'+index : index;
+            },
+
+            perPageSet() {
+                if(this.perpage>100) {
+                    this.perpage = 100;
+                }
+
+                if(this.perpage == '' || this.perpage == 0) {
+                    this.perpage = 1;
+                }
+
+                this.getData();
+            },
+
+            selectAll() {
+                this.checkAll = this.checkAll ? false : true;
+                let itemsIds = [];
+                if(this.collection.length) {
+                    this.collection.forEach((item) => {
+                        if(!item.other?.is_subscription_active) {
+                            itemsIds.push(item.id);
+                        }
                     });
                 }
 
-                this.paginate = $response.paginate;
-                this.page = this.paginate.current_page;
-                this.$nextTick(() => {
-                    this.renderPaginate = true;
+                if(this.checkAll) {
+                    this.selectedItems = itemsIds;
+                } else {
+                    this.selectedItems = [];
+                }
+            },
+
+            datesChange() {
+                if(this.dates != null) {
+                    let dateStart = this.dates[0];
+                    let dateEnd = this.dates[1];
+                    if(this.dates[0] != null) {
+                        dateStart = moment(this.dates[0]).format('YYYY-MM-DD');
+                    } else {
+                        dateStart = moment().format('YYYY-MM-DD');
+                    }
+
+                    if(this.dates[1] != null) {
+                        dateEnd = moment(this.dates[1]).format('YYYY-MM-DD');
+                    } else {
+                        dateEnd = moment().format('YYYY-MM-DD');
+                    }
+
+                    this.dates = [dateStart, dateEnd];
+                }
+
+                this.getData();
+            },
+
+            itemToggle(item) {
+                if(!this.itemId) {
+                    this.itemId = item.id;
+                    this.leadViewed(item);
+                } else if(this.itemId && this.itemId !== item.id) {
+                    this.itemId = item.id;
+                    this.leadViewed(item);
+                } else {
+                    this.itemId = false;
+                }
+            },
+
+            async getForms() {
+                this.loader = true;
+                await axios.get(route('api.customer_leads.get.forms'), {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: "Bearer " + this.token,
+                    },
+                }).then((response) => {
+                    let $response = response.data;
+                    if($response.data.length > 0) {
+                        this.forms = $response.data;
+                    }
+
+                    this.loader = false;
+                }).catch((error) => {
+                    this.loader = false
+                    toast.error(error.response.data.message);
                 });
-                this.loader = false;
-            }).catch((error) => {
-                this.$nextTick(() => {
-                    this.renderPaginate = true;
+            },
+
+            async getWebsites() {
+                this.loader = true;
+                await axios.get(route('api.customer_leads.get.websites'), {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: "Bearer " + this.token,
+                    },
+                }).then((response) => {
+                    let $response = response.data;
+                    if($response.data.length > 0) {
+                        this.websites = $response.data;
+                        // console.log($response.data);
+                    }
+
+                    this.loader = false;
+                }).catch((error) => {
+                    this.loader = false
+                    toast.error(error.response.data.message);
                 });
-                this.loader = false;
-                toast.error(error.response.data.message);
-            });
-        },
+            },
+
+            async getData(page = this.page) {
+                this.page = page;
+                this.collection = [];
+                this.renderPaginate = false;
+                this.loader = true;
+                let params = {
+                    orderby: this.orderBy,
+                    order: this.order,
+                    perpage: this.perpage,
+                    page: this.page
+                };
+
+                if(this.form !== '') {
+                    params.wpform_id = this.form;
+                }
+
+                if(this.website !== '') {
+                    params.website_id = this.website;
+                }
+
+                if(this.status !== '') {
+                    params.status = this.status;
+                }
+
+                if(this.view !== '') {
+                    params.is_viewed = this.view;
+                }
+
+                if(this.dates != null) {
+                    params.dates = this.dates;
+                }
+
+                await axios.get(route('api.blocked_ip.get.all'), {
+                    params: params,
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: "Bearer " + this.token,
+                    },
+                }).then((response) => {
+                    let $response = response.data;
+                    console.log('my-data', $response);
+
+                    if($response.data.length > 0) {
+                        this.collection = $response.data.map((item) => {
+                            item.form_data = JSON.parse(item.form_data);
+                            return item;
+                        });
+                    }
+
+                    this.paginate = $response.paginate;
+                    this.page = this.paginate.current_page;
+                    this.$nextTick(() => {
+                        this.renderPaginate = true;
+                    });
+                    this.loader = false;
+                }).catch((error) => {
+                    this.$nextTick(() => {
+                        this.renderPaginate = true;
+                    });
+                    this.loader = false;
+                    toast.error(error.response.data.message);
+                });
+            },
+
+            UnBlockedIP(event, item) {
+                let ele = $(event.target);
+                if(ele.prop("tagName").toLowerCase() != 'button') {
+                    ele = ele.closest('button');
+                }
+                this.unblocked_ip(ele, item);
+            },
+
+            async unblocked_ip(ele, item) {
+                ele.prop('disabled', true);
+                ele.find('i').removeClass("ti-trash").addClass('ti-loader rotate');
+                this.loader = true;
+                await axios.post(route('api.blocked_ip.unblocked.ip', [item]), {}, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: "Bearer " + this.token,
+                    },
+                }).then((response) => {
+                    let $response = response.data;
+                    toast.success($response.message);
+                    this.getData();
+                    ele.prop('disabled', false);
+                    ele.find('i').addClass("ti-trash").removeClass('ti-loader rotate');
+                    this.loader = false;
+                }).catch((error) => {
+                    ele.prop('disabled', false);
+                    ele.find('i').addClass("ti-trash").removeClass('ti-loader rotate');
+                    this.loader = false;
+                    toast.error(error.response.data.message);
+                });
+            },
+
+            BlockedIP(event, item) {
+                let ele = $(event.target);
+                if(ele.prop("tagName").toLowerCase() != 'button') {
+                    ele = ele.closest('button');
+                }
+                this.blocked_ip(ele, item);
 
 
+            },
 
-        UnBlockedIP(event, item) {
-            let ele = $(event.target);
-            if(ele.prop("tagName").toLowerCase() != 'button') {
-                ele = ele.closest('button');
+            async blocked_ip(ele, item) {
+                ele.prop('disabled', true);
+                ele.find('i').removeClass("ti-trash").addClass('ti-loader rotate');
+                this.loader = true;
+                await axios.post(route('api.blocked_ip.blocked.ip', [item.id]), {}, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: "Bearer " + this.token,
+                    },
+                }).then((response) => {
+                    let $response = response.data;
+                    toast.success($response.message);
+                    this.getData();
+
+                    ele.prop('disabled', false);
+                    ele.find('i').addClass("ti-trash").removeClass('ti-loader rotate');
+                    this.loader = false;
+                }).catch((error) => {
+                    ele.prop('disabled', false);
+                    ele.find('i').addClass("ti-trash").removeClass('ti-loader rotate');
+                    this.loader = false;
+                    toast.error(error.response.data.message);
+                });
+            },
+
+
+            async blukDelete() {
+                this.loader = true;
+                $('#bulk-action-apply').prop('disabled', true);
+                await axios.post(route('api.customer_leads.bulk.delete'), {
+                    ids: this.selectedItems
+                }, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: "Bearer " + this.token,
+                    },
+                }).then((response) => {
+                    let $response = response.data;
+                    this.bulkAction = '';
+                    this.checkAll = false;
+                    this.selectedItems = [];
+                    toast.success($response.message);
+                    this.getData();
+                    this.$nextTick(() => {
+                        this.renderPaginate = true;
+                    });
+                    this.loader = false;
+                    $('#bulk-action-apply').prop('disabled', false);
+                }).catch((error) => {
+                    this.loader = false;
+                    $('#bulk-action-apply').prop('disabled', false);
+                    this.$nextTick(() => {
+                        this.renderPaginate = true;
+                    });
+                    toast.error(error.response.data.message);
+                });
+            },
+
+            getBrowserIcon(browser) {
+                browser = (browser || '').toLowerCase();
+
+                if (browser.includes('chrome')) return '/_public_assets/testImg/chrome.svg';
+                if (browser.includes('firefox')) return '/_public_assets/testImg/firefox.svg';
+                if (browser.includes('edge')) return '/_public_assets/testImg/edge.svg';
+                if (browser.includes('safari')) return '/_public_assets/testImg/safari.svg';
+                if (browser.includes('opera')) return '/_public_assets/testImg/opera.svg';
+
+                return '/_public_assets/testImg/unknown.png';
+            },
+
+            openActivityModal(item){
+                this.selectedItem = item;
+                this.showActivityModal = true;
+                document.body.classList.add('overflow-hidden');
+            },
+
+            closeActivityModal() {
+                this.selectedItem = null;
+                this.showActivityModal = false;
+                document.body.classList.remove('overflow-hidden');
             }
-            this.unblocked_ip(ele, item);
-        },
-
-        async unblocked_ip(ele, item) {
-            ele.prop('disabled', true);
-            ele.find('i').removeClass("ti-trash").addClass('ti-loader rotate');
-            this.loader = true;
-            await axios.post(route('api.blocked_ip.unblocked.ip', [item]), {}, {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: "Bearer " + this.token,
-                },
-            }).then((response) => {
-                let $response = response.data;
-                toast.success($response.message);
-                this.getData();
-                ele.prop('disabled', false);
-                ele.find('i').addClass("ti-trash").removeClass('ti-loader rotate');
-                this.loader = false;
-            }).catch((error) => {
-                ele.prop('disabled', false);
-                ele.find('i').addClass("ti-trash").removeClass('ti-loader rotate');
-                this.loader = false;
-                toast.error(error.response.data.message);
-            });
-        },
-
-
-        BlockedIP(event, item) {
-            let ele = $(event.target);
-            if(ele.prop("tagName").toLowerCase() != 'button') {
-                ele = ele.closest('button');
-            }
-            this.blocked_ip(ele, item);
-
 
         },
 
-        async blocked_ip(ele, item) {
-            ele.prop('disabled', true);
-            ele.find('i').removeClass("ti-trash").addClass('ti-loader rotate');
-            this.loader = true;
-            await axios.post(route('api.blocked_ip.blocked.ip', [item.id]), {}, {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: "Bearer " + this.token,
-                },
-            }).then((response) => {
-                let $response = response.data;
-                toast.success($response.message);
-                this.getData();
-
-                ele.prop('disabled', false);
-                ele.find('i').addClass("ti-trash").removeClass('ti-loader rotate');
-                this.loader = false;
-            }).catch((error) => {
-                ele.prop('disabled', false);
-                ele.find('i').addClass("ti-trash").removeClass('ti-loader rotate');
-                this.loader = false;
-                toast.error(error.response.data.message);
-            });
+        created() {
+            this.getForms();
+            this.getWebsites();
+            this.getData();
         },
 
-
-        async blukDelete() {
-            this.loader = true;
-            $('#bulk-action-apply').prop('disabled', true);
-            await axios.post(route('api.customer_leads.bulk.delete'), {
-                ids: this.selectedItems
-            }, {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: "Bearer " + this.token,
-                },
-            }).then((response) => {
-                let $response = response.data;
-                this.bulkAction = '';
-                this.checkAll = false;
-                this.selectedItems = [];
-                toast.success($response.message);
-                this.getData();
-                this.$nextTick(() => {
-                    this.renderPaginate = true;
-                });
-                this.loader = false;
-                $('#bulk-action-apply').prop('disabled', false);
-            }).catch((error) => {
-                this.loader = false;
-                $('#bulk-action-apply').prop('disabled', false);
-                this.$nextTick(() => {
-                    this.renderPaginate = true;
-                });
-                toast.error(error.response.data.message);
-            });
-        },
-
-        getBrowserIcon(browser) {
-            browser = (browser || '').toLowerCase();
-
-            if (browser.includes('chrome')) return '/_public_assets/testImg/chrome.svg';
-            if (browser.includes('firefox')) return '/_public_assets/testImg/firefox.svg';
-            if (browser.includes('edge')) return '/_public_assets/testImg/edge.svg';
-            if (browser.includes('safari')) return '/_public_assets/testImg/safari.svg';
-            if (browser.includes('opera')) return '/_public_assets/testImg/opera.svg';
-
-            return '/_public_assets/testImg/unknown.png';
+        mounted() {
+            this.$refs.app_layout.loadScript();
         }
-
-    },
-
-    created() {
-        this.getForms();
-        this.getWebsites();
-        this.getData();
-    },
-
-    mounted() {
-        this.$refs.app_layout.loadScript();
     }
-}
 </script>
 
 <style>

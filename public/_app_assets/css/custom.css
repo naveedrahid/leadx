@@ -281,3 +281,51 @@ input.dp__pointer.dp__input_readonly.dp__input.dp__input_icon_pad.dp__input_focu
     background-color: #dfe5ef !important;
 }
 
+
+/* naveed */
+
+.visitorInfo  .visitorBox {
+    flex: 1;
+    border-top: 1px solid #dde1ec;
+    border-bottom: 1px solid #dde1ec;
+    border-right: 1px solid #dde1ec;
+}
+
+.visitorInfo .visitorBox p {
+    color: #000;
+}
+
+.visitorInfo .visitorBox p.text-uppercase {
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.visitorInfo .visitorBox:first-child {
+    border-left: 1px solid #dde1ec;
+}
+/* .visitorMap .visitorBox:first-child {
+    width: 30%;
+    max-width: 30%;
+} */
+.bg__gray {
+    background: #f0f0ed;
+}
+
+.visitorModal  button.btn-close {
+    z-index: 9;
+    width: 30px;
+    height: 30px;
+    border: solid 1px #dde1ec;
+    padding: 0;
+    top: 15px !important;
+    right: 15px !important;
+}
+
+.visitorModal .leftModalContent {
+    border-radius: 10px;
+    padding: 20px 10px;
+    color: #000;
+}
+.visitorModal {
+    background: #0000004f;
+}

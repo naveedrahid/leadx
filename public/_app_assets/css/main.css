@@ -230,8 +230,7 @@ nav ul li {
     width: 232px;
     align-items: center;
     justify-content: center;
-    display: flex
-;
+    display: flex;
 }
 .leadxhome .icon-content {
     span {
@@ -338,7 +337,7 @@ footer .footer-list ul li {
 .banner .banner-title p,
 .customer-trusted .banner-title span,
 .pricing-plan .banner-title span,
-.faq-section .faq-content>div>span,
+.faq-section .faq-content > div > span,
 .latest-blog .banner-title span {
     background-image: linear-gradient(93deg, #0087447d 0%, #ffffff 100%);
     color: #000;
@@ -359,7 +358,7 @@ footer .footer-list ul li {
 .leadxhome .faq-section button.accordion-button {
     padding: 17px !important;
     background-color: transparent;
-    background-image:linear-gradient(340deg, #0087444d 0%, #ffffff 100%);
+    background-image: linear-gradient(340deg, #0087444d 0%, #ffffff 100%);
     border-style: solid;
     border-width: 1.5px 1.5px 1.5px 1.5px;
     border-color: #ebebeb;
@@ -369,7 +368,7 @@ footer .footer-list ul li {
 .leadxhome .accordion-button:focus {
     box-shadow: none !important;
 }
-.leadxhome .latest-blog a h4{
+.leadxhome .latest-blog a h4 {
     font-size: 20px;
     font-weight: 600;
 }
@@ -417,14 +416,13 @@ footer.mainFooter {
     width: 100%;
 }
 
-
 .payment-info h4 {
     font-weight: 700;
 }
 
 .payment-info .order-summary-box hr,
 .payment-info .order-summary-box {
-    border:solid 1px #dde1ec;
+    border: solid 1px #dde1ec;
 }
 .handlingFee {
     font-size: 12px;
@@ -446,7 +444,7 @@ footer.mainFooter {
 .testimonial-checkout img {
     object-fit: cover;
 }
-.testimonial-checkout .textTestimonial{
+.testimonial-checkout .textTestimonial {
     font-size: 14px !important;
 }
 .testimonial-checkout i.bi.bi-star-fill {
@@ -461,13 +459,14 @@ footer.mainFooter {
     border-radius: 4px;
     font-size: 13px;
 }
-.checkout-achievements li{
+.checkout-achievements li {
     position: relative;
 }
 
-.checkout-achievements li::before{
+.checkout-achievements li::before {
     content: "";
-    background:url('/_public_assets/testImg/check-green.svg') no-repeat center center;
+    background: url("/_public_assets/testImg/check-green.svg") no-repeat center
+        center;
     position: absolute;
     left: 0;
     width: 15px;
@@ -478,12 +477,13 @@ footer.mainFooter {
     padding-left: 27px;
     margin-bottom: 10px;
     font-size: 14px;
-    line-height:18px;
+    line-height: 18px;
 }
 .verifiedLdx {
     font-size: 12px;
 }
-.footerMenu ul.unstyled-list li a, .footer-rights p {
+.footerMenu ul.unstyled-list li a,
+.footer-rights p {
     font-size: 14px;
 }
 .payment-info .order-summary-box span {
@@ -499,33 +499,34 @@ footer.mainFooter {
 .handlingFee span {
     font-size: 14px;
 }
-.contact-form-wrap input.input-control, .contact-form-wrap textarea {
+.contact-form-wrap input.input-control,
+.contact-form-wrap textarea {
     background: transparent;
-    border: solid 1px #DDE1EC;
+    border: solid 1px #dde1ec;
     transition: all 0.4s;
 }
 
 .contact-form-wrap input.input-control:focus,
-.contact-form-wrap textarea:focus{
+.contact-form-wrap textarea:focus {
     border: 1px solid #008744 !important;
     box-shadow: unset;
     transition: all 0.4s;
 }
 .contactInfo_boxes .contactInfo_item {
-    border: solid 1px #DDE1EC;
+    border: solid 1px #dde1ec;
     border-radius: 10px;
     padding: 10px 20px;
 }
-.contactInfo_content  p {
+.contactInfo_content p {
     font-size: 14px;
 }
-.contactInfo_item  i.bi.bi-geo-alt {
+.contactInfo_item i.bi.bi-geo-alt {
     background: #008744;
 }
-.contactInfo_item  i.bi.bi-envelope {
+.contactInfo_item i.bi.bi-envelope {
     background: #675bff;
 }
-.contactInfo_item  i.bi{
+.contactInfo_item i.bi {
     min-width: 40px;
     height: 40px;
     border-radius: 10px;
@@ -548,7 +549,19 @@ footer.mainFooter {
     color: #675bff;
     text-decoration: underline;
 }
-.testimonial2 .testimonialCol:last-child {
+.testimonials-section .row .testimonialCol {
     flex: 0 0 auto;
     width: 66.66666667%;
+}
+.page-wrapper.mini-sidebar.show-sidebar ul#sidebarnav span.badge {
+    display: none;
+}
+
+#main-wrapper[data-layout="vertical"][data-sidebartype="mini-sidebar"]
+    .left-sidebar:hover
+    span.badge {
+    display: block;
+}
+.testimonials-section .row .testimonialCol .testimonial-item {
+    background: #daf7e9;
 }
