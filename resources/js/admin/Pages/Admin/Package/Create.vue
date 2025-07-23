@@ -157,6 +157,30 @@
                                     <div class="col-md-12">
                                         <div class="form-group mb-3">
                                             <div class="form-check form-check-inline">
+                                                <input type="checkbox" class="form-check-input" id="is_checked"
+                                                    v-model="form.is_checked">
+                                                <label class="form-check-label" for="is_checked">Enable Stripe Percentage</label>
+                                            </div>
+                                            <div class="text-danger" v-if="errors.is_checked">
+                                                <small>{{ errors.is_checked }}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <template v-if="form.is_checked">
+                                        <div class="col-md-12">
+                                            <div class="form-group mb-3">
+                                                <label for="strip_precent" class="form-label">Stripe Fee (%)</label>
+                                                <input type="number" min="0" step="0.01" class="form-control" id="strip_precent"
+                                                    v-model="form.strip_precent" placeholder="e.g. 10">
+                                                <div class="text-danger" v-if="errors.strip_precent">
+                                                    <small>{{ errors.strip_precent }}</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                    <div class="col-md-12">
+                                        <div class="form-group mb-3">
+                                            <div class="form-check form-check-inline">
                                                 <input type="checkbox" class="form-check-input primary check-outline outline-primary" id="duration_lifetime" v-model="form.duration_lifetime" @change.prevent="durationLifeTimeToggle()">
                                                 <label class="form-check-label" for="duration_lifetime">Package Duration Set to Lifetime</label>
                                             </div>
@@ -289,7 +313,9 @@ export default {
                 lead_limit: '',
                 unlimited_leads: false,
                 app_access: false,
-                is_private: false
+                is_private: false,
+                is_checked: false,
+                strip_precent: '',
             },
             errors: {},
             loader: false

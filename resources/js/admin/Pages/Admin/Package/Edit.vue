@@ -143,6 +143,20 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group mb-3">
+                                            <div class="form-check form-check-inline">
+                                               <input type="checkbox" class="form-check-input" id="is_checked"
+                                                    v-model="form.is_checked"
+                                                    :true-value="1"
+                                                    :false-value="0">
+                                                <label class="form-check-label" for="is_checked">Enable Stripe Percentage</label>
+                                            </div>
+                                            <div class="text-danger" v-if="errors.is_checked">
+                                                <small>{{ errors.is_checked }}</small>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -194,7 +208,9 @@ export default {
                 unlimited_websites: false,
                 lead_limit: '',
                 unlimited_leads: false,
-                app_access: false
+                app_access: false,
+                is_checked: false,
+                strip_precent: '',
             },
             errors: {},
             loader: false
@@ -221,6 +237,8 @@ export default {
                 this.form.website_limit = this.item.website_limit ? this.item.website_limit : '';
                 this.form.lead_limit = this.item.lead_limit ? this.item.lead_limit : '';
                 this.form.app_access = this.item.app_access == 1 ? true : false;
+                this.form.is_checked = this.item.is_checked ?? 0;
+                this.form.strip_precent = this.item.strip_precent ?? '';
                 if(!this.item.website_limit) {
                     this.form.unlimited_websites = true;
                 }

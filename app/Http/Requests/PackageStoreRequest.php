@@ -32,6 +32,10 @@ class PackageStoreRequest extends FormRequest
             $rule['website_limit'] = 'required';
         }
 
+        if (request()->boolean('is_checked')) {
+            $rule['strip_precent'] = 'required|numeric|min:0';
+        }
+
         if(!request()->get('unlimited_leads')) {
             $rule['lead_limit'] = 'required';
         }

@@ -41,6 +41,8 @@ class PackageResource extends JsonResource
             'is_public' => $this->is_public,
             'pro_fields' => $this->pro_fields,
             'form_restrictions' => $this->form_restrictions,
+            'strip_precent' => $this->strip_precent,
+            'is_checked' => $this->is_checked,
             'status' => $this->status,
             'subscription_count' => $this->subscrptions()->count(),
             'created_at' => $this->created_at,

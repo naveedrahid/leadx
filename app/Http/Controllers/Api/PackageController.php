@@ -196,6 +196,7 @@ class PackageController extends Controller
 
     public function store(PackageStoreRequest $request)
     {
+        // dd($request->toArray());
         $user = $this->resolveUser($request);
         if(is_null($user)) {
             return response()->json([
@@ -213,13 +214,23 @@ class PackageController extends Controller
                 ]);
             }
 
+            $regularPrice = $request->regular_price;
+            $stripPrecent = $request->strip_precent;
+            $isChecked = $request->is_checked;
+
+            if ($isChecked && $stripPrecent > 0) {
+                $regularPrice = $regularPrice + ($regularPrice * $stripPrecent / 100);
+            }
+
             $package = Package::create([
                 'title' => $request->title,
                 'duration' => $request->duration,
                 'duration_type' => $request->duration_type,
                 'duration_lifetime' => $request->duration_lifetime,
                 'trial_period_days' => $request->trial_period_days,
-                'regular_price' => $request->regular_price,
+                'regular_price' => $regularPrice,
+                'strip_precent' => $stripPrecent,
+                'is_checked' => $isChecked,
                 'sale_price' => $request->sale_price,
                 'features' => count($request->features) ? json_encode($request->features) : '',
                 'description' => $request->description,
@@ -294,6 +305,16 @@ class PackageController extends Controller
         try {
             DB::beginTransaction();
 
+            
+            $regularPrice = $package->regular_price;
+            $oldPercent = $package->strip_precent ?? 0;
+            $isChecked = $request->is_checked;
+
+            if (!$isChecked && $oldPercent > 0) {
+                $regularPrice = $regularPrice / (1 + ($oldPercent / 100));
+                $regularPrice = round($regularPrice, 2);
+            }
+
             $package->update([
                 'title' => $request->title,
                 'features' => count($request->features) ? json_encode($request->features) : '',
@@ -303,6 +324,9 @@ class PackageController extends Controller
                 'website_limit' => $request->website_limit,
                 'lead_limit' => $request->lead_limit,
                 'app_access' => $request->app_access,
+                'regular_price' => $regularPrice,
+                'strip_precent' => $request->strip_precent,
+                'is_checked' => $isChecked,
                 'status' => $request->status
             ]);
 
