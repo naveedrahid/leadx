@@ -250,7 +250,7 @@ class PackageController extends Controller
                 ]);
 
                 $price = $this->stripe->prices->create([
-                    'unit_amount' => $package->price * 100,
+                    'unit_amount' => $regularPrice * 100,
                     'currency' => currency_code(),
                     'product' => $product->id,
                     'recurring' => [
@@ -305,7 +305,7 @@ class PackageController extends Controller
         try {
             DB::beginTransaction();
 
-            
+
             $regularPrice = $package->regular_price;
             $oldPercent = $package->strip_precent ?? 0;
             $isChecked = $request->is_checked;
@@ -314,6 +314,7 @@ class PackageController extends Controller
                 $regularPrice = $regularPrice / (1 + ($oldPercent / 100));
                 $regularPrice = round($regularPrice, 2);
             }
+
 
             $package->update([
                 'title' => $request->title,
@@ -335,6 +336,24 @@ class PackageController extends Controller
                 $this->stripe->products->update($pm->pm_product_id, [
                     'name' => $package->title
                 ]);
+
+                $this->stripe->prices->update($pm->pm_price_id, [
+                    'active' => false
+                ]);
+
+                $newPrice = $this->stripe->prices->create([
+                    'unit_amount' => $regularPrice * 100,
+                    'currency' => currency_code(),
+                    'product' => $pm->pm_product_id,
+                    'recurring' => [
+                        'interval' => $package->duration_type,
+                        'interval_count' => $package->duration
+                    ]
+                ]);
+
+                $pm->pm_price_id = $newPrice->id;
+                $pm->save();
+
             }
 
             $package->load('payment_methods');
