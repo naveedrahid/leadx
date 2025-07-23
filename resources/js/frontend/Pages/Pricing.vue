@@ -631,25 +631,22 @@ export default {
             tesimonials: [
                 {
                     rating: 5,
-                    text: "LeadX has completely transformed how we manage our customer interactions. The intuitive form builder made it easy to create custom forms that fit our needs perfectly. Our lead generation has increased by 40% since we started using LeadX!",
-                    author: "Sarah J.",
-                    image: "/_public_assets/testImg/Crystal Raminez.webp",
-                    verified: true,
+                    text: "Since we switched to LeadxForm, we’ve noticed a big improvement in both the number and quality of leads coming in. The conditional logic keeps things relevant for each user, and it’s really helped us qualify leads more effectively.",
+                    author: "-James R",
+                    verified: true
                 },
                 {
                     rating: 5,
-                    text: "Thanks to LeadX, our workflow has become much more efficient. The pre-built form templates saved us a ton of time, and the mobile-friendly forms ensure our clients can reach us from any device. Truly a fantastic tool!",
-                    author: "Emily R.",
-                    image: "/_public_assets/testImg/Crystal Raminez.webp",
-                    verified: true,
+                    text: "Thanks to LeadxForm, which has made collecting leads so much easier. We have already seen a noticeable increase in conversions just by improving our form flow.",
+                    author: "-Sarah M",
+                    verified: true
                 },
                 {
                     rating: 5,
-                    text: "We've been using LeadX for a few months now, and it's been a game-changer for our business. The smart conditional logic feature allows us to personalize our forms, leading to higher engagement and better data collection. Highly recommend!",
-                    author: "John D.",
-                    image: "/_public_assets/testImg/Crystal Raminez.webp",
-                    verified: true,
-                },
+                    text: "We would definitely accept that this platform has streamlined our client intake process. What used to take hours to sort through is now happening in real time.",
+                    author: "-Ben T",
+                    verified: true
+                }
             ],
             computed: {
                 selectedTestimonial() {
