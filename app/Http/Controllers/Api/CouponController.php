@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Traits\ApiPaginate;
 use App\Models\{
-    Coupon, 
+    Coupon,
     User
 };
 use App\Http\Requests\{
@@ -24,12 +24,14 @@ class CouponController extends Controller
 
     protected $stripe;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->stripe = new StripeClient(config('services.stripe.secret'));
     }
 
-    public function resolveUser(Request $request) {
-        if($request->filled('user_id')) {
+    public function resolveUser(Request $request)
+    {
+        if ($request->filled('user_id')) {
             return User::whereId($request->user_id)->first();
         } else {
             return $request->user();
@@ -39,7 +41,7 @@ class CouponController extends Controller
     public function get_count(Request $request)
     {
         $user = $this->resolveUser($request);
-        if(is_null($user)) {
+        if (is_null($user)) {
             return response()->json([
                 "error" => 1,
                 "message" => "Access Denied!"
@@ -59,7 +61,7 @@ class CouponController extends Controller
     public function get_all(Request $request)
     {
         $user = $this->resolveUser($request);
-        if(is_null($user)) {
+        if (is_null($user)) {
             return response()->json([
                 "error" => 1,
                 "message" => "Access Denied!"
@@ -76,7 +78,7 @@ class CouponController extends Controller
         if ($request->filled('perpage')) {
             $coupons = $couponQuery->paginate($request->perpage);
         } else {
-            if($request->filled('limit')) {
+            if ($request->filled('limit')) {
                 $couponQuery->limit($request->limit);
             }
 
@@ -89,7 +91,7 @@ class CouponController extends Controller
             "message" => "Coupons have been successfully retrieved"
         ];
 
-        if($request->filled('perpage')) {
+        if ($request->filled('perpage')) {
             $response['paginate'] = $this->paginate($coupons);
         }
         return response()->json($response, 200);
@@ -98,7 +100,7 @@ class CouponController extends Controller
     public function get_by(Request $request, $id)
     {
         $user = $this->resolveUser($request);
-        if(is_null($user)) {
+        if (is_null($user)) {
             return response()->json([
                 "error" => 1,
                 "message" => "Access Denied!"
@@ -123,7 +125,7 @@ class CouponController extends Controller
     public function store(CouponStoreRequest $request)
     {
         $user = $this->resolveUser($request);
-        if(is_null($user)) {
+        if (is_null($user)) {
             return response()->json([
                 "error" => 1,
                 "message" => "Access Denied!"
@@ -141,7 +143,7 @@ class CouponController extends Controller
                 'amount' => $request->amount,
                 'max_uses' => $request->max_uses,
                 'max_uses_user' => $request->max_uses_user,
-                'duration' => $request->duration, 
+                'duration' => $request->duration,
                 'duration_month' => $request->duration_month,
                 'expires_at' => $request->expires_at,
                 'status' => 'active'
@@ -151,14 +153,14 @@ class CouponController extends Controller
                 'name' => $request->title
             ];
 
-            if($request->type == 'fixed') {
+            if ($request->type == 'fixed') {
                 $stripe_coupon_data['amount_off'] = $request->amount;
                 $stripe_coupon_data['currency'] = 'AUD';
             } else {
                 $stripe_coupon_data['percent_off'] = $request->amount;
             }
 
-            if($request->duration == 'repeating') {
+            if ($request->duration == 'repeating') {
                 $stripe_coupon_data['duration'] = $request->duration;
                 $stripe_coupon_data['duration_in_months'] = $request->duration_month;
             } else {
@@ -176,7 +178,7 @@ class CouponController extends Controller
             DB::rollBack();
             return response()->json([
                 "error" => 1,
-                "message" => "Error: ". $e->getMessage()
+                "message" => "Error: " . $e->getMessage()
             ], 400);
         }
 
@@ -190,7 +192,7 @@ class CouponController extends Controller
     public function update(CouponUpdateRequest $request, $id)
     {
         $user = $this->resolveUser($request);
-        if(is_null($user)) {
+        if (is_null($user)) {
             return response()->json([
                 "error" => 1,
                 "message" => "Access Denied!"
@@ -223,7 +225,7 @@ class CouponController extends Controller
     public function status(CouponStatusUpdateRequest $request, $id)
     {
         $user = $this->resolveUser($request);
-        if(is_null($user)) {
+        if (is_null($user)) {
             return response()->json([
                 "error" => 1,
                 "message" => "Access Denied!"
@@ -252,7 +254,7 @@ class CouponController extends Controller
     public function delete(Request $request, $id)
     {
         $user = $this->resolveUser($request);
-        if(is_null($user)) {
+        if (is_null($user)) {
             return response()->json([
                 "error" => 1,
                 "message" => "Access Denied!"
@@ -267,25 +269,25 @@ class CouponController extends Controller
             ], 404);
         }
 
-        if($coupon->users()->exists()) {
+        if ($coupon->users()->exists()) {
             return response()->json([
                 "error" => 1,
                 "message" => "You can't delete this coupon."
             ], 404);
         }
-        
+
         try {
             DB::beginTransaction();
-        
+
             $this->stripe->coupons->delete($coupon->pm_coupon_id, []);
             $coupon->delete();
-         
+
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json([
                 "error" => 1,
-                "message" => "Error: ". $e->getMessage()
+                "message" => "Error: " . $e->getMessage()
             ], 400);
         }
 
@@ -298,7 +300,7 @@ class CouponController extends Controller
     public function bulk_delete(CouponBulkDeleteRequest $request)
     {
         $user = $this->resolveUser($request);
-        if(is_null($user)) {
+        if (is_null($user)) {
             return response()->json([
                 "error" => 1,
                 "message" => "Access Denied!"
@@ -316,19 +318,19 @@ class CouponController extends Controller
         $deletedCount = 0;
         $failedToDelete = [];
 
-        foreach($coupons as $coupon) {
+        foreach ($coupons as $coupon) {
             try {
                 DB::beginTransaction();
 
-                if(!$coupon->users()->exists()) {
+                if (!$coupon->users()->exists()) {
                     $this->stripe->coupons->delete($coupon->pm_coupon_id, []);
                     $coupon->delete();
-                    
+
                     $deletedCount++;
                 } else {
                     $failedToDelete[] = $coupon->id;
                 }
-                
+
                 DB::commit();
             } catch (\Exception $e) {
                 DB::rollBack();
@@ -352,5 +354,29 @@ class CouponController extends Controller
             ],
             'message' => $message
         ], 200);
+    }
+
+    public function validateCoupon(Request $request)
+    {
+        $code = $request->code;
+        $package_id = $request->package_id;
+
+        $coupon = Coupon::where('code', $code)->where('status', 'active')->first();
+
+        if (!$coupon) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid or expired coupon.'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'discount' => $coupon->amount,
+            'discount_type' => $coupon->type,
+            'title' => $coupon->title,
+            'code' => $coupon->code,
+            'message' => 'Coupon applied successfully.'
+        ]);
     }
 }

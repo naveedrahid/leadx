@@ -565,3 +565,22 @@ footer.mainFooter {
 .testimonials-section .row .testimonialCol .testimonial-item {
     background: #daf7e9;
 }
+.coupon_code button {
+    max-width: 20%;
+    flex-basis:20%;
+    font-size: 14px;
+    border-radius: 0px 5px 5px 0px;
+    padding: 8px;
+}
+
+.coupon_code .input-group2 input {
+    border-radius: 5px 0px 0px 5px;
+}
+
+.coupon_code .input-group2 {
+    max-width: 80%;
+    flex-basis: 80%;
+}
+.fs-14{
+    font-size:14px;
+}

@@ -228,7 +228,9 @@ Route::prefix('v1')->middleware(['cors', 'json.response'])->as('api.')->group(fu
     });
 
 
-
+    Route::controller(CouponController::class)->prefix('coupon')->as('coupon.')->group(function() {
+        Route::post('/validate', 'validateCoupon')->name('validate');
+    });
 
     Route::controller(GuestController::class)->prefix('guest')->as('guest.')->group(function () {
         Route::post('/validate_subscription', 'validate_subscription')->name('validate.subscription');

@@ -7,12 +7,12 @@
                 <div class="row align-items-center justify-content-center">
                     <div class="col-lg-10 col-md-8">
                         <div class="hero-content text-center">
-                            <h1 v-if="pack === ''">Get started with <span class="text-primary">LeadXForms</span> today.
+                            <h1 v-if="!pack.id">Get started with <span class="text-primary">LeadXForms</span> today.
                             </h1>
-                            <p v-if="pack === ''">The Unlimited solution for creating custom forms and flows to connect
+                            <p v-if="!pack.id">The Unlimited solution for creating custom forms and flows to connect
                                 users and enhance
                                 engagement and broaden your online presence.</p>
-                            <h1 v-if="pack !== ''">Checkout</h1>
+                            <h1 v-else>Checkout</h1>
                         </div>
                     </div>
                 </div>
@@ -56,13 +56,7 @@
                                                         {{ item.title }}
                                                     </h3>
                                                     <div class="pricing-box-price">
-                                                        <div class="pricing-box-amount">
-                                                            {{
-                                                                priceFormat(
-                                                                    item.price
-                                                                )
-                                                            }}
-                                                        </div>
+                                                        <div class="pricing-box-amount">{{ getDisplayPrice(item) }}</div>
                                                         <span class="pricing-box-duration">/
                                                             {{
                                                                 item.duration_lifetime
@@ -126,7 +120,7 @@
                 </div>
             </div>
         </section>
-        <template v-if="pack !== ''">
+        <template v-if="pack.id">
             <section class="pp-section choose-websites-section" id="choose-websites">
                 <div class="container">
                     <div class="row justify-content-center">
@@ -309,72 +303,48 @@
                         <div class="col-lg-5 col-md-10">
                             <div class="payment-info-sticky px-lg-4 px-md-4 px-0">
                                 <div class="payment-info">
-                                    <!-- <div class="mb-1">
-                                        <h3 class="payment-info-title">
-                                            Order Total
-                                        </h3>
-                                        <p>
-                                            {{ pack.title }}
-                                            <strong>{{
-                                                priceFormat(pack.price)
-                                                }}</strong>
-                                            /
-                                            {{
-                                                pack.duration_lifetime
-                                                    ? "Lifetime"
-                                                    : pack.format_duration
-                                            }}
-                                            <br />
-                                            Handling Fee
-                                            <strong>${{ handlingFee() }}</strong>
-                                            {{
-                                                pack.trial_period_days
-                                                    ? " with " +
-                                                    pack.trial_period_days +
-                                                    " " +
-                                                    (pack.trial_period_days > 1
-                                                        ? "Days"
-                                                        : "Day") +
-                                                    " Free Trial"
-                                                    : ""
-                                            }}
-                                        </p>
-                                    </div>
-                                    <button class="button button-s2 button-white button-block" @click="payNow()">
-                                        Pay Now <strong>{{ totalAmount() }}</strong>
-                                    </button> -->
-
                                     <!-- Naveed changes -->
                                     <div class="order-summary-box bg-white rounded shadow-sm">
-                                        <h4 class="mb-3 font-weight-bold px-4 pt-4 text-capitalize text-black">your
-                                            order</h4>
+                                        <h4 class="mb-3 font-weight-bold px-4 pt-4 text-capitalize text-black">your order</h4>
                                         <hr />
 
                                         <div class="px-4 pt-2 pb-3">
-                                            <div class="d-flex justify-content-between mb-3 pb-4 border-bottom">
+                                            <div class="d-flex justify-content-between fs-14 mb-3 pb-2 border-bottom">
                                                 <span class="planeName">{{ pack.title }} Plan</span>
-                                                <span>${{ Number(pack.price).toFixed(2) }}</span>
+                                                <span>{{ getDisplayPrice(pack) }}</span>
                                             </div>
-                                            <!-- <div class="d-flex justify-content-between mb-2" v-if="discount_code && discountAmount() > 0">
-                                                <span>
-                                                    Discount Applied
-                                                    <span class="badge bg-primary text-white ms-2">{{ discountLabel()
-                                                        }}</span>
-                                                </span>
-                                                <span class="text-danger">- ${{ discountAmount().toFixed(2) }}</span>
-                                            </div> -->
-                                            <div class="d-flex justify-content-between mb-2 handlingFee border-bottom pb-3">
+                                            <div class="d-flex justify-content-between fs-14 mb-2 handlingFee border-bottom pb-3" v-if="pack.is_checked && pack.strip_precent">
                                                 <span>Handling Fee</span>
-                                                <span>${{ handlingFee() }}</span>
+                                                <span>${{ getDiscountAmount(pack) }}
+                                                    
+                                                </span>
                                             </div>
-                                            <!-- <div class="input-group2 my-3">
-                                                <input type="text" v-model="discount_code" id="discount-code"
-                                                    class="input-control2 border-0" placeholder="Coupon" />
+                                            <div class="d-flex justify-content-between fs-14 mb-3 pb-2 border-bottom" v-if="discount_amount > 0">
+                                                <span class="planeName">Subtotal</span>
+                                                <span>${{ pack.regular_price || pack.price }}</span>
                                             </div>
-                                            <div class="text-danger my-1" v-if="errors.discount_code">
-                                                <small>{{
-                                                    errors.discount_code
-                                                    }}</small>
+                                            <div class="d-flex justify-content-between fs-14 mb-3 pb-2 border-bottom" v-if="discount_amount > 0">
+                                                <span class="planeName text-danger">
+                                                    Coupon: {{ pack.coupon_title }} ({{ pack.coupon_code }})
+                                                </span>
+                                                <span class="text-danger">
+                                                    -${{ pack.price - finalAmount() }}
+                                                </span>
+                                            </div>
+                                            <div class="mb-3 pb-2 border-bottom" v-if="discount_amount == 0">
+                                                <div class="coupon_code d-flex align-items-center">
+                                                    <div class="input-group2 my-3">
+                                                        <input
+                                                            v-model="discount_code"
+                                                            type="text"
+                                                            class="form-control"
+                                                            placeholder="Enter coupon code"
+                                                            />
+                                                    </div>
+                                                    <button class="btn btn-primary" @click="applyCoupon">Apply</button>
+                                                </div>
+                                            </div>
+                                            <!-- <div class="text-danger my-1" v-if="errors.discount_code">
                                             </div> -->
                                         </div>
 
@@ -577,7 +547,15 @@ export default {
             user: this.$cookies.get("lxf-user"),
             token: this.$cookies.get("lxf-token"),
             packages: [],
-            pack: "",
+            pack: {
+                id: null,
+                price: 0,
+                regular_price: 0,
+                is_checked: false,
+                strip_precent: 0,
+                coupon_title: '',
+                coupon_code: '',
+            },
             stripe: false,
             cardElement: false,
             paymentMethodId: "",
@@ -595,6 +573,10 @@ export default {
             ],
             card_holder_name: "",
             discount_code: "",
+            discount_amount: 0,
+            discount_type: '',
+            coupon_error: '',
+            coupon_success: '',
 
             faqs: [
                 {
@@ -664,23 +646,94 @@ export default {
     methods: {
         // naveed changes
 
+        async applyCoupon() {
+            this.coupon_error = '';
+            this.coupon_success = '';
+            this.discount_amount = 0;
+            this.discount_type = '';
+
+            if (!this.discount_code) {
+                toast.error("Please enter a coupon code.");
+                return;
+            }
+
+            try {
+                const response = await axios.post(route('api.coupon.validate'), {
+                code: this.discount_code,
+                package_id: this.pack.id,
+            });
+
+            if (response.data.success) {
+                const { discount, discount_type, title, code, original_price } = response.data;
+                this.discount_amount = discount;
+                this.discount_type = discount_type;
+                this.coupon_success = response.data.message;
+
+                this.pack.coupon_discount = discount;
+                this.pack.discount_type = discount_type;
+                this.pack.coupon_title = title;
+                this.pack.coupon_code = code;
+                this.pack.original_price = original_price;
+
+                toast.success(response.data.message);
+            } else {
+                toast.error(response.data.message || "Coupon invalid.");
+                // this.coupon_error = response.data.message || "Coupon invalid.";
+            }
+        } catch (error) {
+            // this.coupon_error =
+            // error?.response?.data?.message || "Something went wrong!";
+                toast.error(error?.response?.data?.message || "Something went wrong!");
+            }
+        },
+
+        getDisplayPrice(item) {
+            const price = Number(item.regular_price || item.price || 0);
+            const discount = item.is_checked && item.strip_precent
+                ? (price * item.strip_precent) / 100
+                : 0;
+
+            const final = price - discount;
+
+            return this.priceFormat(Math.round(final));
+        },
+
+        getDiscountAmount(item) {
+            if (!item || typeof item !== 'object') return "0";
+
+            const price = Number(item.regular_price || item.price || 0);
+            const percent = Number(item.strip_precent || 0);
+
+            if (!item.is_checked || !percent) return "0";
+
+            const discount = (price * percent) / 100;
+            return Math.round(discount);
+        },
+
         faqsToggle(index) {
             this.faqs[index].show = !this.faqs[index].show;
         },
+
         discountAmount() {
-            if (!this.pack || !this.discount_code) return 0;
-            let price = Number(this.pack.price);
-            let discountPercent = this.pack.coupon_discount || 0;
-            return (price * discountPercent) / 100;
+            if (!this.pack || !this.discount_type || !this.discount_amount) return 0;
+
+            const price = Number(this.pack.price);
+
+            if (this.discount_type === 'percent') {
+                return (price * this.discount_amount) / 100;
+            } else if (this.discount_type === 'fixed') {
+                return this.discount_amount;
+            }
+            return 0;
         },
+
         discountLabel() {
             return "50% Off";
         },
         finalAmount() {
             let base = Number(this.pack.price);
             let discount = this.discountAmount();
-            let handling = Number(this.handlingFee());
-            return (base - discount + handling).toFixed(2);
+            return (base - discount).toFixed(2);
         },
         // naveed changes end
 
@@ -688,12 +741,12 @@ export default {
             this.isRevealPassword = this.isRevealPassword ? false : true;
         },
 
-        handlingFee() {
-            let price = Number(this.pack.price) || 0;
-            return price > 0 ? (price * 0.1).toFixed(2) : "0.00";
-        },
+        // handlingFee() {
+        //     let price = Number(this.pack.price) || 0;
+        //     return price > 0 ? (price * 0.1).toFixed(2) : "0.00";
+        // },
         totalAmount() {
-            let total = Number(this.pack.price) + Number(this.handlingFee());
+            let total = Number(this.pack.price);
             return this.$page.props.currency_symbol + total.toFixed(2);
         },
         priceFormat(price, symbol = true) {
@@ -768,7 +821,6 @@ export default {
 
             this.errors = {};
             this.pack = pack;
-            console.log(this.pack);
             setTimeout(function () {
                 if ($("#choose-websites").length) {
                     $("html, body").animate(

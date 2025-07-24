@@ -25,7 +25,8 @@ class PackageController extends Controller
 
     protected $stripe;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->stripe = new StripeClient(config('services.stripe.secret'));
     }
 
@@ -98,8 +99,9 @@ class PackageController extends Controller
         return true;
     }
 
-    public function resolveUser(Request $request) {
-        if($request->filled('user_id')) {
+    public function resolveUser(Request $request)
+    {
+        if ($request->filled('user_id')) {
             return User::whereId($request->user_id)->first();
         } else {
             return $request->user();
@@ -109,7 +111,7 @@ class PackageController extends Controller
     public function get_count(Request $request)
     {
         $user = $this->resolveUser($request);
-        if(is_null($user)) {
+        if (is_null($user)) {
             return response()->json([
                 "error" => 1,
                 "message" => "Access Denied!"
@@ -129,7 +131,7 @@ class PackageController extends Controller
     public function get_all(Request $request)
     {
         $user = $this->resolveUser($request);
-        if(is_null($user)) {
+        if (is_null($user)) {
             return response()->json([
                 "error" => 1,
                 "message" => "Access Denied!"
@@ -146,7 +148,7 @@ class PackageController extends Controller
         if ($request->filled('perpage')) {
             $packages = $packageQuery->paginate($request->perpage);
         } else {
-            if($request->filled('limit')) {
+            if ($request->filled('limit')) {
                 $packageQuery->limit($request->limit);
             }
 
@@ -161,7 +163,7 @@ class PackageController extends Controller
             "message" => "Packages have been successfully retrieved"
         ];
 
-        if($request->filled('perpage')) {
+        if ($request->filled('perpage')) {
             $response['paginate'] = $this->paginate($packages);
         }
         return response()->json($response, 200);
@@ -170,7 +172,7 @@ class PackageController extends Controller
     public function get_by(Request $request, $id)
     {
         $user = $this->resolveUser($request);
-        if(is_null($user)) {
+        if (is_null($user)) {
             return response()->json([
                 "error" => 1,
                 "message" => "Access Denied!"
@@ -198,7 +200,7 @@ class PackageController extends Controller
     {
         // dd($request->toArray());
         $user = $this->resolveUser($request);
-        if(is_null($user)) {
+        if (is_null($user)) {
             return response()->json([
                 "error" => 1,
                 "message" => "Access Denied!"
@@ -208,7 +210,7 @@ class PackageController extends Controller
         try {
             DB::beginTransaction();
 
-            if($request->recommended == 1) {
+            if ($request->recommended == 1) {
                 Package::where('recommended', true)->update([
                     'recommended' => false
                 ]);
@@ -243,7 +245,7 @@ class PackageController extends Controller
                 'status' => 'active'
             ]);
 
-            if(!$request->free_package && !$package->duration_lifetime) {
+            if (!$request->free_package && !$package->duration_lifetime) {
                 $product = $this->stripe->products->create([
                     'name' => $package->title,
                     'active' => true
@@ -273,7 +275,7 @@ class PackageController extends Controller
             DB::rollBack();
             return response()->json([
                 "error" => 1,
-                "message" => "Error: ". $e->getMessage()
+                "message" => "Error: " . $e->getMessage()
             ], 400);
         }
 
@@ -284,17 +286,107 @@ class PackageController extends Controller
         ], 200);
     }
 
+    // public function update(PackageUpdateRequest $request, $id)
+    // {
+    //     $user = $this->resolveUser($request);
+    //     if(is_null($user)) {
+    //         return response()->json([
+    //             "error" => 1,
+    //             "message" => "Access Denied!"
+    //         ], 404);
+    //     }
+
+    //     $package = Package::whereId($id)->first();
+    //     if (is_null($package)) {
+    //         return response()->json([
+    //             "error" => 1,
+    //             "message" => "Package Not Found!"
+    //         ], 404);
+    //     }
+
+    //     try {
+    //         DB::beginTransaction();
+
+
+    //         $regularPrice = $package->regular_price;
+    //         $oldPercent = $package->strip_precent ?? 0;
+    //         $isChecked = $request->is_checked;
+
+    //         if (!$isChecked && $oldPercent > 0) {
+    //             $regularPrice = $regularPrice / (1 + ($oldPercent / 100));
+    //             $regularPrice = round($regularPrice, 2);
+    //         }
+
+
+    //         $package->update([
+    //             'title' => $request->title,
+    //             'features' => count($request->features) ? json_encode($request->features) : '',
+    //             'description' => $request->description,
+    //             'recommended' => $request->recommended,
+    //             'sort' => $request->sort ? $request->sort : 0,
+    //             'website_limit' => $request->website_limit,
+    //             'lead_limit' => $request->lead_limit,
+    //             'app_access' => $request->app_access,
+    //             'regular_price' => $regularPrice,
+    //             'strip_precent' => $request->strip_precent,
+    //             'is_checked' => $isChecked,
+    //             'status' => $request->status
+    //         ]);
+
+    //         $pm = $package->payment_methods()->where('payment_method', 'stripe')->first();
+    //         if(!is_null($pm)) {
+    //             $this->stripe->products->update($pm->pm_product_id, [
+    //                 'name' => $package->title
+    //             ]);
+
+    //             $this->stripe->prices->update($pm->pm_price_id, [
+    //                 'active' => false
+    //             ]);
+
+    //             $newPrice = $this->stripe->prices->create([
+    //                 'unit_amount' => $regularPrice * 100,
+    //                 'currency' => currency_code(),
+    //                 'product' => $pm->pm_product_id,
+    //                 'recurring' => [
+    //                     'interval' => $package->duration_type,
+    //                     'interval_count' => $package->duration
+    //                 ]
+    //             ]);
+
+    //             $pm->pm_price_id = $newPrice->id;
+    //             $pm->save();
+
+    //         }
+
+    //         $package->load('payment_methods');
+
+    //         DB::commit();
+    //     } catch (\Exception $e) {
+    //         DB::rollBack();
+    //         return response()->json([
+    //             "error" => 1,
+    //             "message" => "Error: ". $e->getMessage()
+    //         ], 400);
+    //     }
+
+    //     return response()->json([
+    //         "error" => 0,
+    //         "data" => $package,
+    //         "message" => "Package has been successfully updated"
+    //     ], 200);
+    // }
+
     public function update(PackageUpdateRequest $request, $id)
     {
         $user = $this->resolveUser($request);
-        if(is_null($user)) {
+        if (is_null($user)) {
             return response()->json([
                 "error" => 1,
                 "message" => "Access Denied!"
             ], 404);
         }
 
-        $package = Package::whereId($id)->first();
+        $package = Package::find($id);
         if (is_null($package)) {
             return response()->json([
                 "error" => 1,
@@ -305,44 +397,51 @@ class PackageController extends Controller
         try {
             DB::beginTransaction();
 
-
             $regularPrice = $package->regular_price;
             $oldPercent = $package->strip_precent ?? 0;
+            $newPercent = $request->strip_precent ?? 0;
             $isChecked = $request->is_checked;
 
-            if (!$isChecked && $oldPercent > 0) {
+            if ($package->is_checked && $oldPercent > 0) {
                 $regularPrice = $regularPrice / (1 + ($oldPercent / 100));
-                $regularPrice = round($regularPrice, 2);
             }
 
+            if ($isChecked && $newPercent > 0) {
+                $regularPrice = $regularPrice + ($regularPrice * $newPercent / 100);
+            }
+
+            $regularPrice = round($regularPrice, 2);
 
             $package->update([
                 'title' => $request->title,
                 'features' => count($request->features) ? json_encode($request->features) : '',
                 'description' => $request->description,
                 'recommended' => $request->recommended,
-                'sort' => $request->sort ? $request->sort : 0,
+                'sort' => $request->sort ?? 0,
                 'website_limit' => $request->website_limit,
                 'lead_limit' => $request->lead_limit,
                 'app_access' => $request->app_access,
                 'regular_price' => $regularPrice,
-                'strip_precent' => $request->strip_precent,
+                'strip_precent' => $newPercent,
                 'is_checked' => $isChecked,
                 'status' => $request->status
             ]);
 
             $pm = $package->payment_methods()->where('payment_method', 'stripe')->first();
-            if(!is_null($pm)) {
+            if (!is_null($pm)) {
+
                 $this->stripe->products->update($pm->pm_product_id, [
                     'name' => $package->title
                 ]);
 
-                $this->stripe->prices->update($pm->pm_price_id, [
-                    'active' => false
-                ]);
+                if (!empty($pm->pm_price_id)) {
+                    $this->stripe->prices->update($pm->pm_price_id, [
+                        'active' => false
+                    ]);
+                }
 
                 $newPrice = $this->stripe->prices->create([
-                    'unit_amount' => $regularPrice * 100,
+                    'unit_amount' => intval($regularPrice * 100),
                     'currency' => currency_code(),
                     'product' => $pm->pm_product_id,
                     'recurring' => [
@@ -351,33 +450,34 @@ class PackageController extends Controller
                     ]
                 ]);
 
-                $pm->pm_price_id = $newPrice->id;
-                $pm->save();
-
+                $pm->update([
+                    'pm_price_id' => $newPrice->id
+                ]);
             }
 
             $package->load('payment_methods');
 
             DB::commit();
+
+            return response()->json([
+                "error" => 0,
+                "data" => $package,
+                "message" => "Package has been successfully updated"
+            ], 200);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json([
                 "error" => 1,
-                "message" => "Error: ". $e->getMessage()
+                "message" => "Error: " . $e->getMessage()
             ], 400);
         }
-
-        return response()->json([
-            "error" => 0,
-            "data" => $package,
-            "message" => "Package has been successfully updated"
-        ], 200);
     }
+
 
     public function status(PackageStatusUpdateRequest $request, $id)
     {
         $user = $this->resolveUser($request);
-        if(is_null($user)) {
+        if (is_null($user)) {
             return response()->json([
                 "error" => 1,
                 "message" => "Access Denied!"
@@ -392,7 +492,7 @@ class PackageController extends Controller
             ], 404);
         }
 
-        if($package->subscriptions()->exists()) {
+        if ($package->subscriptions()->exists()) {
             return response()->json([
                 "error" => 1,
                 "message" => "Unable to update package status."
@@ -407,7 +507,7 @@ class PackageController extends Controller
             ]);
 
             $pm = $package->payment_methods()->where('payment_method', 'stripe')->first();
-            if(!is_null($pm)) {
+            if (!is_null($pm)) {
                 $this->stripe->products->update($package->pm_product_id, [
                     'active' => ($request->status == 'active') ? true : false
                 ]);
@@ -418,7 +518,7 @@ class PackageController extends Controller
             DB::rollBack();
             return response()->json([
                 "error" => 1,
-                "message" => "Error: ". $e->getMessage()
+                "message" => "Error: " . $e->getMessage()
             ], 400);
         }
 
@@ -432,7 +532,7 @@ class PackageController extends Controller
     public function delete(Request $request, $id)
     {
         $user = $this->resolveUser($request);
-        if(is_null($user)) {
+        if (is_null($user)) {
             return response()->json([
                 "error" => 1,
                 "message" => "Access Denied!"
@@ -447,7 +547,7 @@ class PackageController extends Controller
             ], 404);
         }
 
-        if($package->subscriptions()->exists()) {
+        if ($package->subscriptions()->exists()) {
             return response()->json([
                 "error" => 1,
                 "message" => "You can't delete this package."
@@ -458,7 +558,7 @@ class PackageController extends Controller
             DB::beginTransaction();
 
             $pm = $package->payment_methods()->where('payment_method', 'stripe')->first();
-            if(!is_null($pm)) {
+            if (!is_null($pm)) {
                 $this->stripe->products->update($pm->pm_product_id, [
                     'active' => false
                 ]);
@@ -472,7 +572,7 @@ class PackageController extends Controller
             DB::rollBack();
             return response()->json([
                 "error" => 1,
-                "message" => "Error: ". $e->getMessage()
+                "message" => "Error: " . $e->getMessage()
             ], 400);
         }
 
@@ -486,7 +586,7 @@ class PackageController extends Controller
     public function bulk_delete(PackageBulkDeleteRequest $request)
     {
         $user = $this->resolveUser($request);
-        if(is_null($user)) {
+        if (is_null($user)) {
             return response()->json([
                 "error" => 1,
                 "message" => "Access Denied!"
@@ -504,13 +604,13 @@ class PackageController extends Controller
         $deletedCount = 0;
         $failedToDelete = [];
 
-        foreach($packages as $package) {
+        foreach ($packages as $package) {
             try {
                 DB::beginTransaction();
 
-                if(!$package->subscriptions()->exists()) {
+                if (!$package->subscriptions()->exists()) {
                     $pm = $package->payment_methods()->where('payment_method', 'stripe')->first();
-                    if(!is_null($pm)) {
+                    if (!is_null($pm)) {
                         $this->stripe->products->update($pm->pm_product_id, [
                             'active' => false
                         ]);
