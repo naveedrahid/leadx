@@ -66,7 +66,7 @@ export default {
                     description: this.$page.props.app.name + '  is fully responsive and works seamlessly across mobile, tablet, and desktop devices.'
                 },
                 {
-                    title: 'Entry Management',
+                    title: 'Lead Management',
                     image: '/_public_assets/img/features-icons/Union (1).svg',
                     description: 'Easily view, track, manage, and export all form submissions from one centralized dashboard.'
                 },

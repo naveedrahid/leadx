@@ -155,7 +155,7 @@ nav ul li {
 }
 /* slider */
 .leadxhome .img-gray {
-    filter: grayscale(100%);
+    /* filter: grayscale(100%); */
     object-fit: none;
 }
 @-webkit-keyframes scroll {
