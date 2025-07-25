@@ -15,6 +15,8 @@ use App\Http\Requests\{
     CouponBulkDeleteRequest,
     CouponStatusUpdateRequest
 };
+use Carbon\Carbon;
+use DateTime;
 use Stripe\StripeClient;
 use Illuminate\Support\Facades\DB;
 
@@ -366,8 +368,17 @@ class CouponController extends Controller
         if (!$coupon) {
             return response()->json([
                 'success' => false,
-                'message' => 'Invalid or expired coupon.'
+                'message' => 'Coupon not found.'
             ], 404);
+        }
+
+        if ($coupon->expires_at) {
+            $now = new DateTime();
+            $expiry = new DateTime($coupon->expires_at);
+            $expiry->setTime(23, 59, 59);
+            if ($now > $expiry) {
+                return response()->json(['success' => false, 'message' => 'Coupon has expired.']);
+            }
         }
 
         return response()->json([

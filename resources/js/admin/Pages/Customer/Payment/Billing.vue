@@ -826,6 +826,23 @@ export default {
     },
 
     methods: {
+        discountPrice(original, value, type) {
+            if (!original || !value || !type) return original;
+
+            if (type === 'percent') {
+                return (original - (original * value / 100)).toFixed(2);
+            } else if (type === 'fixed') {
+                return (original - value).toFixed(2);
+            }
+            return original;
+        },
+        checkExpiry(date) {
+            if (!date) return false;
+            const now = new Date();
+            const expiryDate = new Date(date);
+            return expiryDate > now;
+        },
+
         numFormat(number) {
             return number > 9 ? number : '0'+number;
         },

@@ -68,7 +68,7 @@
                         <span class="hide-menu">Websites</span>
                     </li>
                     <template v-if="websites.length">
-                        <li class="sidebar-item" v-for="(website, index) in websites" :key="index">
+                        <li class="sidebar-item web-urls" v-for="(website, index) in websites" :key="index">
                             <a href="javascript:;" class="sidebar-link gap-2">
                                 <div class="round-16 d-flex align-items-center justify-content-center">
                                     <i class="ti ti-link text-success"></i>

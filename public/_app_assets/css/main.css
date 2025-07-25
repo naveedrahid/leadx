@@ -570,7 +570,7 @@ footer.mainFooter {
     flex-basis:20%;
     font-size: 14px;
     border-radius: 0px 5px 5px 0px;
-    padding: 8px;
+    padding:15px 8px;
 }
 
 .coupon_code .input-group2 input {
@@ -583,4 +583,14 @@ footer.mainFooter {
 }
 .fs-14{
     font-size:14px;
+}
+.couponBtn {
+    padding: 0;
+    width: 17px;
+    height: 17px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+    font-family: monospace;
 }

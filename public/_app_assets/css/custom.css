@@ -329,3 +329,8 @@ input.dp__pointer.dp__input_readonly.dp__input.dp__input_icon_pad.dp__input_focu
 .visitorModal {
     background: #0000004f;
 }
+.web-urls a span {
+    word-break: break-all;
+    white-space: normal;
+    line-height: 18px;
+}

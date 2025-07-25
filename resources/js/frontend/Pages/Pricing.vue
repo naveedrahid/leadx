@@ -319,17 +319,20 @@
                                                     
                                                 </span>
                                             </div>
-                                            <div class="d-flex justify-content-between fs-14 mb-3 pb-2 border-bottom" v-if="discount_amount > 0">
+                                            <div class="d-flex justify-content-between fs-14 mb-2 pb-2 border-bottom">
                                                 <span class="planeName">Subtotal</span>
                                                 <span>${{ pack.regular_price || pack.price }}</span>
                                             </div>
-                                            <div class="d-flex justify-content-between fs-14 mb-3 pb-2 border-bottom" v-if="discount_amount > 0">
+                                            <div class="d-flex justify-content-between fs-14 mb-3 pb-2 border-bottom position-relative" v-if="discount_amount > 0">
                                                 <span class="planeName text-danger">
                                                     Coupon: {{ pack.coupon_title }} ({{ pack.coupon_code }})
                                                 </span>
-                                                <span class="text-danger">
-                                                    -${{ pack.price - finalAmount() }}
-                                                </span>
+                                                <div class="d-flex align-items-center">
+                                                    <span class="text-danger">
+                                                        -${{ pack.price - finalAmount() }}
+                                                    </span>
+                                                    <button class="ms-1 btn btn-danger btn-sm couponBtn" v-if="discount_amount > 0" @click="resetCoupon">x</button>
+                                                </div>
                                             </div>
                                             <div class="mb-3 pb-2 border-bottom" v-if="discount_amount == 0">
                                                 <div class="coupon_code d-flex align-items-center">
@@ -337,7 +340,7 @@
                                                         <input
                                                             v-model="discount_code"
                                                             type="text"
-                                                            class="form-control"
+                                                            class="input-control2 border-0"
                                                             placeholder="Enter coupon code"
                                                             />
                                                     </div>
@@ -685,6 +688,13 @@ export default {
             // error?.response?.data?.message || "Something went wrong!";
                 toast.error(error?.response?.data?.message || "Something went wrong!");
             }
+        },
+
+        resetCoupon() {
+            this.discount_code = "";
+            this.discount_amount = 0;
+            this.discount_type = "";
+            this.coupon_success = "";
         },
 
         getDisplayPrice(item) {
