@@ -33,9 +33,17 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-8 col-md-6">
-                        <div class="hero-image text-center">
-                            <img src="/_public_assets/img/welcome-to-leadxforms.png"
+         
+                </div>
+            </div>
+        </section>
+        <section class="hero-section overflow-hidden" id="hero-2">
+            <div class="container">
+                <div class="row align-items-center justify-content-center">
+                  
+                    <div class="col-lg-12 col-md-12">
+                        <div class="text-center">
+                            <img src="/_public_assets/img/welcome-to-leadxforms.svg"
                                 :alt="'Welcome To' + $page.props.app.name" class="img-fluid">
                         </div>
                     </div>
@@ -72,10 +80,6 @@
             </div>
         </div>
     </section> -->
-
-        <!-- BEGIN::BRAND LOGOs COMPONENT -->
-        <BrandLogos></BrandLogos>
-        <!-- END::BRAND LOGOs COMPONENT -->
 
         <section class="main-section features-section overflow-hidden" id="features">
             <div class="container">
@@ -594,6 +598,9 @@
                 </div>
             </div>
         </section>
+                <!-- BEGIN::BRAND LOGOs COMPONENT -->
+        <BrandLogos></BrandLogos>
+        <!-- END::BRAND LOGOs COMPONENT -->
         <section class="main-section blog-section bg-light overflow-hidden  d-none" id="blog">
             <div class="container">
                 <div class="row justify-content-center">
