@@ -195,7 +195,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="sidebar-item">
+                    <li class="sidebar-item d-none">
                         <Link :href="route('app.customer.lead-statuses.index')" class="sidebar-link gap-2" :class="{
                                     'active': route().current('app.customer.lead-statuses.index')
                                 }">
