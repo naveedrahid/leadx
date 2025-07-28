@@ -26,12 +26,14 @@ class Lead extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function spam_keywords(){
-        return $this->hasMany(SpamKeywordLead::class,'lead_id','id');
+    public function spam_keywords()
+    {
+        return $this->hasMany(SpamKeywordLead::class, 'lead_id', 'id');
     }
 
-    public function spam_keyword_lists(){
-        return $this->hasMany(FormSettingKeyword::class,'form_id','wpform_id');
+    public function spam_keyword_lists()
+    {
+        return $this->hasMany(FormSettingKeyword::class, 'form_id', 'wpform_id');
     }
 
 
@@ -59,13 +61,13 @@ class Lead extends Model
             $query->where('uuid', $request->uuid);
         }
 
-//        if ($request->get('is_viewed') == "1") {
-//            $query->whereNotNull('is_viewed', 1);
-//        }
-//
-//        if ($request->get('is_viewed') == "0") {
-//            $query->whereNotNull('is_viewed', 0);
-//        }
+        //        if ($request->get('is_viewed') == "1") {
+        //            $query->whereNotNull('is_viewed', 1);
+        //        }
+        //
+        //        if ($request->get('is_viewed') == "0") {
+        //            $query->whereNotNull('is_viewed', 0);
+        //        }
         if ($request->filled('is_viewed')) {
             $query->where('is_viewed', $request->get('is_viewed'));
         }
@@ -102,5 +104,10 @@ class Lead extends Model
         } else {
             $query->where('status', $status);
         }
+    }
+
+    public function leadStatus()
+    {
+        return $this->belongsTo(LeadStatus::class, 'lead_status_id');
     }
 }

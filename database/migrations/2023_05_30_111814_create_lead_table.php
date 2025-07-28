@@ -16,6 +16,7 @@ return new class extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->bigInteger('website_id')->unsigned();
             $table->bigInteger('wpform_id')->unsigned();
+            $table->bigInteger('lead_status_id')->unsigned()->nullable();
             $table->string('wpform_name')->nullable();
             $table->string('uuid')->unique();
             $table->longText('form_data')->nullable();

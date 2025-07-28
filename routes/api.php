@@ -20,7 +20,8 @@ use App\Http\Controllers\Api\{
     FormTemplateController,
     BlockedIPController,
     SpamKeywordController,
-    CustomerLeadDetailController
+    CustomerLeadDetailController,
+    LeadStatusController
 };
 
 /*
@@ -122,6 +123,10 @@ Route::prefix('v1')->middleware(['cors', 'json.response'])->as('api.')->group(fu
             Route::get('/', 'get_all')->name('get.all');
         });
 
+        Route::apiResource('lead-statuses', LeadStatusController::class)->names('lead-statuses');
+        Route::post('lead-statuses/bulk-delete', [LeadStatusController::class, 'bulkDelete'])->name('lead-statuses.bulk-delete');
+        Route::post('lead-statuses/status/{id}', [LeadStatusController::class, 'status'])->name('lead-statuses.status');
+
         Route::controller(CustomerLeadDetailController::class)->prefix('lead-customers')->as('lead-customers.')->group(function () {
             Route::get('/', 'get_all')->name('get.all');
         });
@@ -158,7 +163,6 @@ Route::prefix('v1')->middleware(['cors', 'json.response'])->as('api.')->group(fu
         Route::controller(CustomerDashboardController::class)->prefix('customer_dashboard')->as('customer_dashboard.')->group(function() {
             Route::get('/get_data', 'get_data')->name('get_data');
         });
-
 
         Route::controller(BlockedIPController::class)->prefix('blocked_ip')->as('blocked_ip.')->group(function() {
             Route::get('/', 'get_all')->name('get.all');
@@ -204,7 +208,6 @@ Route::prefix('v1')->middleware(['cors', 'json.response'])->as('api.')->group(fu
         Route::post('/signup', 'signup')->name('signup');
     });
 
-
     Route::controller(SpamKeywordController::class)->middleware('auth.license')->prefix('keyword')->as('keyword.')->group(function () {
         Route::post('updateOrCreate', 'updateOrCreate');
         Route::get('selectBoxKeyword','selectBoxKeyword');
@@ -226,7 +229,6 @@ Route::prefix('v1')->middleware(['cors', 'json.response'])->as('api.')->group(fu
         Route::get('/{lead_id}', 'get_by')->name('get.single');
         Route::get('/', 'get_all')->name('get.all');
     });
-
 
     Route::controller(CouponController::class)->prefix('coupon')->as('coupon.')->group(function() {
         Route::post('/validate', 'validateCoupon')->name('validate');

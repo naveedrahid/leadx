@@ -196,11 +196,13 @@
                         </ul>
                     </li>
                     <li class="sidebar-item">
-                        <a href="javascript:void(0)" class="sidebar-link gap-2">
+                        <Link :href="route('app.customer.lead-statuses.index')" class="sidebar-link gap-2" :class="{
+                                    'active': route().current('app.customer.lead-statuses.index')
+                                }">
                             <span><i class="ti ti-flag"></i></span>
                             <span class="hide-menu">Lead Status</span>
                             <span class="badge bg-light-info text-info fs-1">Coming Soon</span>
-                        </a>
+                        </Link>
                     </li>
                     <li class="sidebar-item">
                         <Link :href="route('app.customer.change_password')" class="sidebar-link gap-2" :class="{

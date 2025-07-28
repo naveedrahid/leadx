@@ -20,6 +20,7 @@ use App\Http\Controllers\Customer\{
     BlockedIPController as CustomerBlockedIPController,
     SpamKeywordController as CustomerSpamKeywordController,
     CustomerController as CustomersLeadDetailController,
+    LeadStatusPageController,
     WebhookController as CustomerWebhookController,
     PluginController as CustomerPluginController
 };
@@ -106,6 +107,12 @@ Route::prefix('app')->as('app.')->group(function() {
             Route::get('/', 'index')->name('index');
         });
 
+        Route::prefix('leads-statuses')->name('lead-statuses.')->controller(LeadStatusPageController::class)->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::get('/{id}/edit', 'edit')->name('edit');
+        });
+
         Route::controller(CustomerBlockedIPController::class)->prefix('blocked-ip')->as('blocked-ip.')->group(function() {
             Route::get('/', 'index')->name('index');
         });
@@ -117,9 +124,6 @@ Route::prefix('app')->as('app.')->group(function() {
         Route::controller(CustomersLeadDetailController::class)->prefix('lead-customers')->as('lead-customers.')->group(function() {
             Route::get('/', 'index')->name('index');
         });
-
-
-
 
         Route::controller(CustomerWebsiteController::class)->prefix('website')->as('website.')->group(function() {
             Route::get('/create', 'create')->name('create');
