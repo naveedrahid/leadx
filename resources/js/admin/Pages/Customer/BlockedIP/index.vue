@@ -97,7 +97,7 @@
                                 <th>IP Address</th>
                                 <th>Location</th>
                                 <th>Browser</th>
-                                <th>Form Name</th>
+                                <!-- <th>Form Name</th> -->
                                 <th>Submitted At</th>
                                 <th>Count</th>
                                 <th>Action</th>
@@ -230,9 +230,9 @@
                                                 </div>
                                             </td>
                                             <!-- <td class="align-middle">{{ getItemNum(index) }}</td> -->
-                                            <td class="align-middle">{{item.form_data?.visitor_info.ip}}</td>
+                                            <td class="align-middle">{{item.id +' - ' +  item.form_data?.visitor_info.ip}}</td>
                                             <td class="align-middle">
-                                                    <template v-if="item?.form_data?.visitor_info?.country_code">
+                                                <template v-if="item?.form_data?.visitor_info?.country_code">
                                                     <img
                                                         :src="`https://flagcdn.com/${item.form_data.visitor_info.country_code.toLowerCase()}.svg`"  width="30" height="20"/>
                                                     {{ item.form_data.visitor_info.city }} - {{ item.form_data.visitor_info.country }}
@@ -240,16 +240,13 @@
                                                 <template v-else>
                                                     No Location Info
                                                 </template>
-                                                {{item.form_data?.visitor_info.city}} - {{item.form_data?.visitor_info.country}} 
                                             </td>
                                             <td class="align-middle">
                                                 <img :src="getBrowserIcon(item.form_data?.visitor_info.browser)" alt="browser" width="20" class="me-1" />
                                                 {{ item.form_data?.visitor_info.browser }} ({{ item.form_data?.visitor_info.platform }})
                                             </td>
-                                            <td class="align-middle">{{ item.wpform_name }}</td>
                                             <td class="align-middle">{{ dateFormat(item.created_at, 'DD.MM.YYYY  - h:mm a') }}</td>
-                                            <td class="align-middle">{{ item?.user?.other?.leads_count }}</td>
-
+                                            <td class="align-middle">{{ item.leads_count }}</td>
                                             <td class="align-middle">
                                                 <div class="action-btn d-flex align-items-center gap-2">
                                                     <button v-if="item.lead_blocked_ip?.is_blocked === 1" type="button" class="btn btn-success btn-sm" @click="UnBlockedIP($event, item.lead_blocked_ip?.id)">
@@ -446,7 +443,7 @@
                                         <div class="visitorBox p-1 flex-1">
                                             <p class="text-uppercase mb-0 fs-1">IP Status</p>
                                             <!-- <p class="fw-bold mb-0 fs-1">{{ selectedItem?.is_blocked ? 'Block' : 'Unblock' }}</p> -->
-                                            <p class="fw-bold mb-0 fs-1">{{ selectedItem?.lead_blocked_ip?.is_blocked == 0 ? 'Unblock' : 'Block' }}</p>
+                                            <p class="fw-bold mb-0 fs-1">{{ selectedItem?.lead_blocked_ip == null || selectedItem?.lead_blocked_ip?.is_blocked == 0 ? 'Unblock' : 'Block' }}</p>
                                         </div>
                                     </div>
                                     <h5 class="my-2 text-uppercase fs-1 text-black fw-semibold">Your visit history</h5>
@@ -472,7 +469,14 @@
                                         <div class="visitorBox p-1 flex-1">
                                             <p class="text-uppercase mb-0 fs-1">Website URL</p>
                                             <p class="fw-bold mb-0 fs-1">
-                                                <a :href="selectedItem.form_data?.visitor_info.ref_url" target="_blank">{{ selectedItem.form_data?.visitor_info.ref_url }}</a>
+                                                <a
+                                                    :href="cleanUrl(selectedItem.form_data?.visitor_info.ref_url)"
+                                                    target="_blank"
+                                                    class="d-inline-block text-truncate"
+                                                    style="max-width: 100%; overflow: hidden;"
+                                                    >
+                                                    {{ cleanUrl(selectedItem.form_data?.visitor_info.ref_url) }}
+                                                </a>
                                             </p>
                                         </div>
                                     </div>
@@ -585,6 +589,16 @@
                     this.loader = false
                     toast.error(error.response.data.message);
                 });
+            },
+
+            cleanUrl(url) {
+                try {
+                    if (!url) return '';
+                    const parsed = new URL(decodeURIComponent(url));
+                    return parsed.origin + parsed.pathname;
+                } catch (e) {
+                    return url;
+                }
             },
 
             dateFormat(date, format, cformat = null) {
@@ -750,7 +764,7 @@
                     },
                 }).then((response) => {
                     let $response = response.data;
-                    console.log('my-data', $response);
+                    // console.log('my-data', $response);
 
                     if($response.data.length > 0) {
                         this.collection = $response.data.map((item) => {

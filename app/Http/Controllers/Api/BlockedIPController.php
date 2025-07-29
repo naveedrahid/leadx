@@ -14,6 +14,52 @@ class BlockedIPController extends Controller
 
     use ApiPaginate;
 
+    // public function get_all(Request $request)
+    // {
+    //     $user = auth()->user();
+
+    //     $order = (object)[
+    //         'orderby' => $request->filled('orderby') ? $request->orderby : 'id',
+    //         'order' => $request->filled('order') ? $request->order : 'DESC',
+    //     ];
+
+    //     $leadsQuery = Lead::with(['user', 'website', 'lead_blocked_ip'])
+    //         ->byUser($user->id)
+    //         ->filterLeads($request)
+    //         ->orderBy($order->orderby, $order->order);
+
+    //     $leadsQuery->orWhere('website_id', $request->website_id);
+
+    //     if ($request->filled('perpage')) {
+    //         $leads = $leadsQuery->paginate($request->perpage);
+    //         $filteredLeads = collect($leads->items())->unique(function ($lead) {
+    //             $formData = json_decode($lead->form_data, true);
+    //             return data_get($formData, 'visitor_info.ip');
+    //         })->values();
+    //     } else {
+    //         if ($request->filled('limit')) {
+    //             $leadsQuery->limit($request->limit);
+    //         }
+    //         $leads = $leadsQuery->get();
+    //         $filteredLeads = $leads->unique(function ($lead) {
+    //             $formData = json_decode($lead->form_data, true);
+    //             return data_get($formData, 'visitor_info.ip');
+    //         })->values();
+    //     }
+
+
+    //     $response = [
+    //         "error" => 0,
+    //         "data" => $filteredLeads,
+    //         "message" => "Leads have been successfully retrieved"
+    //     ];
+
+    //     if ($request->filled('perpage')) {
+    //         $response['paginate'] = $this->paginate($leads);
+    //     }
+
+    //     return response()->json($response, 200);
+    // }
     public function get_all(Request $request)
     {
         $user = auth()->user();
@@ -47,6 +93,28 @@ class BlockedIPController extends Controller
             })->values();
         }
 
+        $allLeadsForIPCount = Lead::select('form_data')
+            ->byUser($user->id)
+            ->filterLeads($request);
+
+        $allLeadsForIPCount->orWhere('website_id', $request->website_id);
+
+        $leadsForCount = $allLeadsForIPCount->get();
+
+        $ipCounts = [];
+        foreach ($leadsForCount as $lead) {
+            $formData = json_decode($lead->form_data, true);
+            $ip = data_get($formData, 'visitor_info.ip');
+            if ($ip) {
+                $ipCounts[$ip] = ($ipCounts[$ip] ?? 0) + 1;
+            }
+        }
+
+        foreach ($filteredLeads as $lead) {
+            $formData = json_decode($lead->form_data, true);
+            $ip = data_get($formData, 'visitor_info.ip');
+            $lead->leads_count = $ipCounts[$ip] ?? 1;
+        }
 
         $response = [
             "error" => 0,
@@ -61,7 +129,6 @@ class BlockedIPController extends Controller
         return response()->json($response, 200);
     }
 
-
     public function trackIP(Request $request, $id, $ip)
     {
         $formId = LeadBlockedIP::where('form_id', $id)->where('ip_address', $ip)->where('is_blocked', 1)->first();
@@ -73,7 +140,6 @@ class BlockedIPController extends Controller
                 } else {
                     return response()->json(["error" => "not found"], 404);
                 }
-
             }
         }
         return response()->json(["data" => $formId], 200);
@@ -129,5 +195,4 @@ class BlockedIPController extends Controller
         ];
         return response()->json($response, 200);
     }
-
 }
