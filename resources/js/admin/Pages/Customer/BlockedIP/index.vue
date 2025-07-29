@@ -235,7 +235,8 @@
                                                 <template v-if="item?.form_data?.visitor_info?.country_code">
                                                     <img
                                                         :src="`https://flagcdn.com/${item.form_data.visitor_info.country_code.toLowerCase()}.svg`"  width="30" height="20"/>
-                                                    {{ item.form_data.visitor_info.city }} - {{ item.form_data.visitor_info.country }}
+                                                    <strong class="ms-2">{{ item.form_data.visitor_info.city }}</strong> <br>
+                                                    {{ item.form_data.visitor_info.state }} - {{ item.form_data.visitor_info.country }}
                                                 </template>
                                                 <template v-else>
                                                     No Location Info
@@ -256,7 +257,7 @@
                                                         <i class="ti ti-lock fs-3 pe-1"></i> Block IP
                                                     </button>
                                                     <button type="button" class="btn btn-info btn-sm" @click="openActivityModal(item)">
-                                                        <i class="ti ti-eye fs-3"></i> Activity Log
+                                                        <i class="ti ti-eye fs-3"></i> Activity
                                                     </button>
                                                 </div>
                                             </td>
@@ -417,7 +418,7 @@
                                     </p>
                                     <p class="fs-2">
                                         Your current IP suggests you're near
-                                        <strong>{{ selectedItem?.form_data?.visitor_info?.city || '' }}, {{ selectedItem?.form_data?.visitor_info?.country || 'N/A' }}</strong>.
+                                        <strong>{{ selectedItem?.form_data?.visitor_info?.city || '' }}, {{selectedItem?.form_data?.visitor_info?.state || '' }}, {{ selectedItem?.form_data?.visitor_info?.country || 'N/A' }}</strong>.
                                         What a beautiful place!
                                         <img
                                             :src="`https://flagcdn.com/24x18/${selectedItem?.form_data?.visitor_info?.country_code?.toLowerCase()}.png`"
@@ -451,7 +452,7 @@
                                         <div class="visitorBox p-1">
                                             <p class="text-uppercase mb-0 fs-1">Now</p>
                                             <p class="fw-bold mb-0 fs-1">
-                                                {{ selectedItem?.form_data?.visitor_info?.city || '' }}, {{ selectedItem?.form_data?.visitor_info?.country || '' }}
+                                                {{ selectedItem?.form_data?.visitor_info?.city || '' }}, {{selectedItem?.form_data?.visitor_info?.state || '' }}, {{ selectedItem?.form_data?.visitor_info?.country || '' }}
                                             </p>
                                         </div>
                                         <div class="visitorBox p-1">
@@ -466,17 +467,23 @@
                                     </div>
                                     
                                     <div class="d-flex visitorInfo justify-content-between mt-1">
-                                        <div class="visitorBox p-1 flex-1">
-                                            <p class="text-uppercase mb-0 fs-1">Website URL</p>
+                                        <div class="visitorBox p-1 w-75" style="flex:unset;">
+                                            <p class="text-uppercase mb-0 fs-1">Website URL / referral url</p>
                                             <p class="fw-bold mb-0 fs-1">
                                                 <a
-                                                    :href="cleanUrl(selectedItem.form_data?.visitor_info.ref_url)"
+                                                    :href="selectedItem.form_data?.visitor_info.ref_url"
                                                     target="_blank"
-                                                    class="d-inline-block text-truncate"
-                                                    style="max-width: 100%; overflow: hidden;"
+                                                    class="d-inline-block text-truncate word-break "
+                                                    style="max-width: 100%; overflow: hidden;white-space: normal;"
                                                     >
-                                                    {{ cleanUrl(selectedItem.form_data?.visitor_info.ref_url) }}
+                                                    {{ selectedItem.form_data?.visitor_info.ref_url }}
                                                 </a>
+                                            </p>
+                                        </div>
+                                        <div class="visitorBox p-1 w-25" style="flex:unset;">
+                                            <p class="text-uppercase mb-0 fs-1">WP Form</p>
+                                            <p class="fw-bold mb-0 fs-1">
+                                               {{selectedItem?.wpform_name}}
                                             </p>
                                         </div>
                                     </div>
@@ -591,15 +598,15 @@
                 });
             },
 
-            cleanUrl(url) {
-                try {
-                    if (!url) return '';
-                    const parsed = new URL(decodeURIComponent(url));
-                    return parsed.origin + parsed.pathname;
-                } catch (e) {
-                    return url;
-                }
-            },
+            // cleanUrl(url) {
+            //     try {
+            //         if (!url) return '';
+            //         const parsed = new URL(decodeURIComponent(url));
+            //         return parsed.origin + parsed.pathname;
+            //     } catch (e) {
+            //         return url;
+            //     }
+            // },
 
             dateFormat(date, format, cformat = null) {
                 if(cformat) {
