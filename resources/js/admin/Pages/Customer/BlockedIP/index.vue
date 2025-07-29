@@ -230,7 +230,7 @@
                                                 </div>
                                             </td>
                                             <!-- <td class="align-middle">{{ getItemNum(index) }}</td> -->
-                                            <td class="align-middle">{{item.id +' - ' +  item.form_data?.visitor_info.ip}}</td>
+                                            <td class="align-middle">{{item.form_data?.visitor_info.ip}}</td>
                                             <td class="align-middle">
                                                 <template v-if="item?.form_data?.visitor_info?.country_code">
                                                     <img
@@ -413,7 +413,7 @@
                                     </p>
                                     <p class="fs-2">
                                         Great to see you here. <br>
-                                        This is your submitted number  <strong>{{ selectedItem?.user?.other?.leads_count ?? 0 }}</strong> with using <strong>{{selectedItem?.form_data?.visitor_info?.browser || ''}}</strong>.
+                                        This is your submitted number  <strong>{{ selectedItem.leads_count }}</strong> with using <strong>{{selectedItem?.form_data?.visitor_info?.browser || ''}}</strong>.
                                     </p>
                                     <p class="fs-2">
                                         Your current IP suggests you're near
@@ -434,7 +434,7 @@
                                     <div class="d-flex visitorInfo justify-content-between mt-2 mb-3">
                                         <div class="visitorBox p-1 flex-1">
                                             <p class="text-uppercase mb-0 fs-1">your visit summary</p>
-                                            <p class="fw-bold mb-0 fs-1">You Visited {{ selectedItem?.user?.other?.leads_count ?? 0 }} times</p>
+                                            <p class="fw-bold mb-0 fs-1">You Visited {{ selectedItem.leads_count }} times</p>
                                         </div>
                                         <div class="visitorBox p-1 flex-1">
                                             <p class="text-uppercase mb-0 fs-1">Browser</p>
