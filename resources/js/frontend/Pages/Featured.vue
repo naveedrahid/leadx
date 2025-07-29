@@ -15,7 +15,7 @@
                 </div>
             </div>
         </section>
-        <section class="main-section features-section overflow-hidden pb-250" id="features">
+        <section class="main-section features-section overflow-hidden pb-250">
             <div class="container">
                 <!-- <div class="row justify-content-center">
                     <div class="col-lg-6 col-md-8">
