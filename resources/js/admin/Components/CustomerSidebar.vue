@@ -37,6 +37,15 @@
                         </Link>
                     </li>
                     <li class="sidebar-item">
+                        <Link :href="route('app.customer.keyword.index')" class="sidebar-link gap-2" :class="{
+                            'active': route().current('app.customer.keyword.index')
+                        }">
+                        <span><i class="ti ti-key"></i></span>
+                        <span class="hide-menu">Keyword</span>
+                        <span class="badge bg-light-info text-info fs-1">New</span>
+                        </Link>
+                    </li>
+                    <li class="sidebar-item">
                         <Link :href="route('app.customer.spam-leads.index')" class="sidebar-link gap-2" :class="{
                             'active': route().current('app.customer.spam-leads.index')
                         }">

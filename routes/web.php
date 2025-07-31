@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+// use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\Admin\{
     HomeController as AdminHomeController,
     CustomerController as AdminCustomerController,
@@ -20,6 +21,7 @@ use App\Http\Controllers\Customer\{
     BlockedIPController as CustomerBlockedIPController,
     SpamKeywordController as CustomerSpamKeywordController,
     CustomerController as CustomersLeadDetailController,
+    KeywordController,
     LeadStatusPageController,
     WebhookController as CustomerWebhookController,
     PluginController as CustomerPluginController
@@ -113,6 +115,12 @@ Route::prefix('app')->as('app.')->group(function() {
             Route::get('/{id}/edit', 'edit')->name('edit');
         });
 
+        Route::prefix('keywords')->name('keyword.')->controller(KeywordController::class)->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::get('/{id}/edit', 'edit')->name('edit');
+        });
+
         Route::controller(CustomerBlockedIPController::class)->prefix('blocked-ip')->as('blocked-ip.')->group(function() {
             Route::get('/', 'index')->name('index');
         });
@@ -167,3 +175,33 @@ Route::get('/contact-us', [HomeController::class, 'contact'])->name('contact');
 Route::get('/features', [HomeController::class, 'featured'])->name('featured');
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
+// Route::get('/test-wp-api', function () {
+//     $url = 'https://wp-lead-forms.test/wp-admin/admin-ajax.php';
+
+//     $data = [
+//         'action' => 'lxf_form_getall',
+//         'nonce' => 'lxform-nonce', 
+//         'per_page' => 5,
+//         'paged' => 1,
+//     ];
+
+//     $ch = curl_init();
+
+//     curl_setopt($ch, CURLOPT_URL, $url);
+//     curl_setopt($ch, CURLOPT_POST, true);
+//     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+//     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // local dev only
+
+//     $response = curl_exec($ch);
+
+//     if (curl_errno($ch)) {
+//         return 'Curl error: ' . curl_error($ch);
+//     }
+
+//     curl_close($ch);
+
+//     return response()->json(json_decode($response, true));
+// });
+
+
