@@ -21,4 +21,19 @@ class FormKeyword extends Model
     {
         return $this->belongsTo(User::class, 'created_by');
     }
+
+    public function website()
+    {
+        return $this->belongsTo(Website::class);
+    }
+
+    public function form()
+    {
+        return $this->belongsTo(CustomerForm::class);
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'active');
+    }
 }

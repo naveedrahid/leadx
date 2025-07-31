@@ -19,6 +19,7 @@ use App\Http\Controllers\Customer\{
     SubscriptionController as CustomerSubscriptionController,
     LeadsController as CustomerLeadsController,
     BlockedIPController as CustomerBlockedIPController,
+    BlockKeywordController,
     SpamKeywordController as CustomerSpamKeywordController,
     CustomerController as CustomersLeadDetailController,
     KeywordController,
@@ -44,9 +45,9 @@ use App\Http\Controllers\Auth\{
 |
 */
 
-Route::prefix('app')->as('app.')->group(function() {
-    Route::prefix('admin')->as('admin.')->group(function() {
-        Route::controller(AdminCustomerController::class)->prefix('customer')->as('customer.')->group(function() {
+Route::prefix('app')->as('app.')->group(function () {
+    Route::prefix('admin')->as('admin.')->group(function () {
+        Route::controller(AdminCustomerController::class)->prefix('customer')->as('customer.')->group(function () {
             Route::get('/create', 'create')->name('create');
             Route::get('/subscription/invoice_download/{invoice_id}/{user_id}', 'invoice_download')->name('subscription.invoice_download');
             Route::get('{id}/edit', 'edit')->name('edit');
@@ -58,54 +59,53 @@ Route::prefix('app')->as('app.')->group(function() {
             Route::get('/', 'index')->name('index');
         });
 
-        Route::controller(AdminPackageController::class)->prefix('package')->as('package.')->group(function() {
+        Route::controller(AdminPackageController::class)->prefix('package')->as('package.')->group(function () {
             Route::get('/create', 'create')->name('create');
             Route::get('{id}/edit', 'edit')->name('edit');
             Route::get('{id}', 'show')->name('show');
             Route::get('/', 'index')->name('index');
         });
 
-        Route::controller(AdminFormTemplateController::class)->prefix('template')->as('template.')->group(function() {
+        Route::controller(AdminFormTemplateController::class)->prefix('template')->as('template.')->group(function () {
             Route::get('/', 'index')->name('index');
         });
 
-        Route::controller(AdminFormCategoryController::class)->prefix('category')->as('category.')->group(function() {
+        Route::controller(AdminFormCategoryController::class)->prefix('category')->as('category.')->group(function () {
             Route::get('/', 'index')->name('index');
         });
 
-        Route::controller(AdminCouponController::class)->prefix('coupon')->as('coupon.')->group(function() {
+        Route::controller(AdminCouponController::class)->prefix('coupon')->as('coupon.')->group(function () {
             Route::get('/create', 'create')->name('create');
             Route::get('{id}/edit', 'edit')->name('edit');
             Route::get('{id}', 'show')->name('show');
             Route::get('/', 'index')->name('index');
         });
 
-        Route::controller(AdminPluginController::class)->prefix('plugin')->as('plugin.')->group(function() {
+        Route::controller(AdminPluginController::class)->prefix('plugin')->as('plugin.')->group(function () {
             Route::get('/create', 'create')->name('create');
             Route::get('{id}/edit', 'edit')->name('edit');
             Route::get('/', 'index')->name('index');
         });
 
-        Route::controller(AdminFeedBackController::class)->prefix('feedback')->as('feedback.')->group(function() {
+        Route::controller(AdminFeedBackController::class)->prefix('feedback')->as('feedback.')->group(function () {
             Route::get('{id}', 'show')->name('show');
             Route::get('/', 'index')->name('index');
         });
 
-        Route::controller(AdminHomeController::class)->group(function() {
+        Route::controller(AdminHomeController::class)->group(function () {
             Route::get('/account-setting', 'account_setting')->name('account_setting');
             Route::get('/change-password', 'change_password')->name('change_password');
             Route::get('/', 'dashboard')->name('dashboard');
         });
     });
 
-    Route::prefix('customer')->as('customer.')->group(function() {
-        Route::controller(CustomerPluginController::class)->prefix('your_downloads')->as('plugin.')->group(function() {
+    Route::prefix('customer')->as('customer.')->group(function () {
+        Route::controller(CustomerPluginController::class)->prefix('your_downloads')->as('plugin.')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/documentation', 'documentation')->name('documentation');
-
         });
 
-        Route::controller(CustomerLeadsController::class)->prefix('leads')->as('leads.')->group(function() {
+        Route::controller(CustomerLeadsController::class)->prefix('leads')->as('leads.')->group(function () {
             Route::get('/', 'index')->name('index');
         });
 
@@ -121,25 +121,25 @@ Route::prefix('app')->as('app.')->group(function() {
             Route::get('/{id}/edit', 'edit')->name('edit');
         });
 
-        Route::controller(CustomerBlockedIPController::class)->prefix('blocked-ip')->as('blocked-ip.')->group(function() {
+        Route::controller(CustomerBlockedIPController::class)->prefix('blocked-ip')->as('blocked-ip.')->group(function () {
             Route::get('/', 'index')->name('index');
         });
 
-        Route::controller(CustomerSpamKeywordController::class)->prefix('spam-leads')->as('spam-leads.')->group(function() {
+        Route::controller(CustomerSpamKeywordController::class)->prefix('spam-leads')->as('spam-leads.')->group(function () {
             Route::get('/', 'index')->name('index');
         });
 
-        Route::controller(CustomersLeadDetailController::class)->prefix('lead-customers')->as('lead-customers.')->group(function() {
+        Route::controller(CustomersLeadDetailController::class)->prefix('lead-customers')->as('lead-customers.')->group(function () {
             Route::get('/', 'index')->name('index');
         });
 
-        Route::controller(CustomerWebsiteController::class)->prefix('website')->as('website.')->group(function() {
+        Route::controller(CustomerWebsiteController::class)->prefix('website')->as('website.')->group(function () {
             Route::get('/create', 'create')->name('create');
             Route::get('{id}/edit', 'edit')->name('edit');
             Route::get('/', 'index')->name('index');
         });
 
-        Route::controller(CustomerSubscriptionController::class)->prefix('subscription')->as('subscription.')->group(function() {
+        Route::controller(CustomerSubscriptionController::class)->prefix('subscription')->as('subscription.')->group(function () {
             Route::get('/invoice_download/{invoice_id}/{user_id}', 'invoice_download')->name('invoice_download');
             Route::get('/license', 'license')->name('license');
             Route::get('/billing/history', 'billing_history')->name('billing.history');
@@ -148,14 +148,19 @@ Route::prefix('app')->as('app.')->group(function() {
             Route::get('/', 'subscription')->name('index');
         });
 
-        Route::controller(CustomerHomeController::class)->group(function() {
+        Route::controller(CustomerHomeController::class)->group(function () {
             Route::get('/account-setting', 'account_setting')->name('account_setting');
             Route::get('/change-password', 'change_password')->name('change_password');
             Route::get('/', 'dashboard')->name('dashboard');
         });
+
+        Route::prefix('block-keywords')->name('block-keyword.')->controller(BlockKeywordController::class)->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+        });
     });
 
-    Route::as('auth.')->group(function() {
+    Route::as('auth.')->group(function () {
         Route::get('/login', [LoginController::class, 'show'])->name('login');
         Route::get('/register', [RegisterController::class, 'show'])->name('register');
         Route::get('/forgot-password', [ForgotPasswordController::class, 'show'])->name('password.forgot');
@@ -203,5 +208,3 @@ Route::get('/', [HomeController::class, 'home'])->name('home');
 
 //     return response()->json(json_decode($response, true));
 // });
-
-

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class CustomerForm extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
         'user_id',
         'form_id',
@@ -23,4 +23,14 @@ class CustomerForm extends Model
         'template_image',
         'status',
     ];
+
+    public function website()
+    {
+        return $this->belongsTo(Website::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

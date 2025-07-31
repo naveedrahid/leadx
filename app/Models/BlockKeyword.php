@@ -12,8 +12,8 @@ class BlockKeyword extends Model
     protected $fillable = [
         'user_id',
         'website_id',
-        'form_id',
         'keywords',
+        'form_id',
         'is_blocked',
     ];
 
@@ -31,4 +31,18 @@ class BlockKeyword extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function form()
+    {
+        return $this->belongsTo(CustomerForm::class);
+    }
+
+    // public function form()
+    // {
+    //     return $this->belongsTo(CustomerForm::class)->where('status', 'active');
+    // }
+    // public function keywordItems()
+    // {
+    //     return $this->hasMany(FormKeyword::class, 'id', 'keywords');
+    // }
 }

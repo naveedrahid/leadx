@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\{
     FormCategoryController,
     FormTemplateController,
     BlockedIPController,
+    BlockKeywordController,
     CustomerFormController,
     SpamKeywordController,
     CustomerLeadDetailController,
@@ -39,6 +40,15 @@ use App\Http\Controllers\Api\{
 
 Route::prefix('v1')->middleware(['cors', 'json.response'])->as('api.')->group(function () {
     Route::middleware('auth:api')->group(function () {
+
+        Route::prefix('block-keywords')->name('block-keyword.')->controller(BlockKeywordController::class)->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('customer-websites', 'getWebsites')->name('websites.by-user');
+            Route::get('customer-forms/{website}', 'getForms')->name('forms.by-website');
+            Route::get('form-keywords/{form}', 'getKeywords')->name('keywords.by-form');
+            Route::post('store', 'store')->name('store');
+        });
+
         Route::controller(AuthController::class)->prefix('auth')->as('auth.')->group(function () {
             Route::post('account-setting', 'account_setting')->name('account.setting');
             Route::post('change-password', 'change_password')->name('account.change_password');
