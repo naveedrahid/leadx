@@ -16,15 +16,38 @@ class BlockKeywordController extends Controller
 {
     public function index(Request $request)
     {
-    $userId = $request->user()->id;
+        $userId = $request->user()->id;
 
-    $blocks = BlockKeyword::with(['website', 'form'])
-        ->where('user_id', $userId)
-        ->latest()
-        ->get();
+        $blocks = BlockKeyword::with(['website:id,website_name', 'form:id,form_name'])
+            ->where('user_id', $userId)
+            ->latest()
+            ->get();
+
+        $allKeywords = FormKeyword::where('status', 'active')
+            ->get(['id', 'keyword'])
+            ->keyBy('id');
+
+        $data = $blocks->map(function ($block) use ($allKeywords) {
+            return [
+                'id' => $block->id,
+                'website' => [
+                    'id' => $block->website->id ?? null,
+                    'website_name' => $block->website->website_name ?? 'N/A',
+                ],
+                'form_id' => $block->form_id,
+                'keywords' => collect($block->keywords ?? [])->map(function ($id) use ($allKeywords) {
+                    return [
+                        'id' => $id,
+                        'keyword' => $allKeywords[$id]->keyword ?? 'Unknown',
+                    ];
+                }),
+                'is_blocked' => $block->is_blocked,
+                'created_at' => $block->created_at?->format('Y-m-d H:i:s'),
+            ];
+        });
 
         return response()->json([
-            'blocked_keywords' => BlockKeywordResource::collection($blocks),
+            'blocked_keywords' => $data,
         ]);
     }
 
@@ -66,7 +89,6 @@ class BlockKeywordController extends Controller
         return response()->json(['forms' => $forms]);
     }
 
-
     public function getKeywords()
     {
         $keywords = FormKeyword::where('status', 'active')->get(['id', 'keyword']);
@@ -85,5 +107,30 @@ class BlockKeywordController extends Controller
             });
 
         return response()->json(['users' => $users]);
+    }
+
+    public function toggleStatus(Request $request, $id)
+    {
+        $blockKeyword = BlockKeyword::findOrFail($id);
+        $request->validate([
+            'is_blocked' => 'required|boolean'
+        ]);
+        $blockKeyword->is_blocked = $request->is_blocked;
+        $blockKeyword->save();
+
+        return response()->json([
+            'message' => 'Status updated successfully.',
+        ]);
+    }
+
+    public function update(BlockKeywordRequest $request, $id)
+    {
+        $block = BlockKeyword::findOrFail($id);
+        $data = $request->validated();
+        $data['user_id'] = auth()->id();
+
+        $block->update($data);
+
+        return response()->json(['message' => 'Block updated successfully.']);
     }
 }

@@ -37,12 +37,22 @@ class BlockKeyword extends Model
         return $this->belongsTo(CustomerForm::class);
     }
 
-    // public function form()
-    // {
-    //     return $this->belongsTo(CustomerForm::class)->where('status', 'active');
-    // }
+    public function keywords_detail()
+    {
+        return FormKeyword::whereIn('id', $this->keywords)->get();
+    }
+
     // public function keywordItems()
     // {
     //     return $this->hasMany(FormKeyword::class, 'id', 'keywords');
     // }
+    public function getKeywordsDetailAttribute()
+    {
+        return FormKeyword::whereIn('id', $this->keywords)->get();
+    }
+
+    public function keywords()
+    {
+        return $this->belongsToMany(FormKeyword::class, 'block_keyword_form_keyword', 'block_keyword_id', 'form_keyword_id');
+    }
 }

@@ -157,6 +157,7 @@ Route::prefix('app')->as('app.')->group(function () {
         Route::prefix('block-keywords')->name('block-keyword.')->controller(BlockKeywordController::class)->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
+            Route::get('{id}/edit', 'edit')->name('edit');
         });
     });
 

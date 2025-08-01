@@ -18,11 +18,20 @@ class BlockKeywordResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'form_id' => optional($this->form)->form_name ?? 'N/A',
-            'website' => optional($this->website)->website_name ?? 'N/A',
-            'keywords' => is_array($this->keywords) ? $this->keywords : json_decode($this->keywords),
+            'website_id' => $this->website_id,
+            'form_id' => $this->form_id,
+            'keywords' => FormKeyword::whereIn('id', $this->keywords ?? [])->get(['id', 'keyword']),
+            'user_id' => $this->user_id,
             'is_blocked' => (bool) $this->is_blocked,
-            'created_at' => $this->created_at->format('d M Y'),
+            'website' => $this->website ? [
+                'id' => $this->website->id,
+                'website_name' => $this->website->website_name
+            ] : null,
+            'form' => $this->form ? [
+                'id' => $this->form->id,
+                'form_name' => $this->form->form_name
+            ] : null,
+            'created_at' => optional($this->created_at)->format('Y-m-d H:i'),
         ];
     }
 }

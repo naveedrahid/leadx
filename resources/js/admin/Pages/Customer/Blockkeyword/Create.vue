@@ -12,41 +12,43 @@
             <div class="card">
                 <div class="card-body p-4">
                     <form @submit.prevent="submit">
-                        <!-- Website Selection -->
-                        <div class="form-group mb-3">
-                            <label class="form-label">Select Website <span class="text-danger">*</span></label>
-                            <select class="form-control" v-model="form.website_id" @change="fetchForms">
-                                <option value="">-- Select Website --</option>
-                                <option v-for="w in websites" :key="w.id" :value="w.id">{{ w.name }}</option>
-                            </select>
-                        </div>
-
-
-                        <!-- Form Selection -->
-                        <div class="form-group mb-3">
-                            <label class="form-label">Select Form <span class="text-danger">*</span></label>
-                            <select class="form-control" v-model="form.form_id" @change="fetchKeywords">
-                                <option value="">-- Select Form --</option>
-                                <option v-for="f in forms" :key="f.id" :value="f.id">{{ f.form_name }}</option>
-                            </select>
-                        </div>
-
-                        <!-- Keyword Multi-select -->
-                        <div class="form-group mb-3">
-                            <label class="form-label">Keywords to Block <span class="text-danger">*</span></label>
-                            <select class="form-control" multiple v-model="form.keywords">
-                                <option v-for="k in keywords" :key="k.id" :value="k.id">{{ k.keyword }}</option>
-                            </select>
-                        </div>
-
-                        <div class="d-flex align-items-center gap-2 mt-4">
-                            <button type="submit" class="btn btn-light-primary text-primary">
-                                <i class="ti ti-device-floppy"></i> Save
-                            </button>
-                            <a :href="route('app.customer.block-keyword.index')"
-                                class="btn btn-light-danger text-danger">
-                                <i class="ti ti-x"></i> Cancel
-                            </a>
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label class="form-label">Select Website <span class="text-danger">*</span></label>
+                                    <select class="form-control" v-model="form.website_id" @change="fetchForms">
+                                        <option value="">-- Select Website --</option>
+                                        <option v-for="w in websites" :key="w.id" :value="w.id">{{ w.name }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label class="form-label">Select Form <span class="text-danger">*</span></label>
+                                    <select class="form-control" v-model="form.form_id" @change="fetchKeywords">
+                                        <option value="">-- Select Form --</option>
+                                        <option v-for="f in forms" :key="f.id" :value="f.id">{{ f.form_name }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group mb-3">
+                                    <label class="form-label">Keywords to Block <span
+                                            class="text-danger">*</span></label>
+                                    <select class="form-control" multiple v-model="form.keywords">
+                                        <option v-for="k in keywords" :key="k.id" :value="k.id">{{ k.keyword }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center gap-2 mt-4">
+                                <button type="submit" class="btn btn-light-primary text-primary">
+                                    <i class="ti ti-device-floppy"></i> Save
+                                </button>
+                                <a :href="route('app.customer.block-keyword.index')"
+                                    class="btn btn-light-danger text-danger">
+                                    <i class="ti ti-x"></i> Cancel
+                                </a>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -189,11 +191,15 @@ export default {
                 this.$inertia.visit(route('app.customer.block-keyword.index'))
             } catch (error) {
                 if (error.response?.status === 422) {
-                    this.errors = error.response.data.errors
+                    this.errors = error.response.data.errors;
+                    if (error.response.data.message) {
+                        toast.error(error.response.data.message);
+                    }
                 } else {
-                    toast.error(error.response?.data?.message || "Something went wrong.")
+                    toast.error(error.response?.data?.message || "Something went wrong.");
                 }
-            } finally {
+            }
+            finally {
                 this.loader = false
             }
         }
