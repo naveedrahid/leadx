@@ -14,6 +14,8 @@ class FormKeywordController extends Controller
     {
         $query = FormKeyword::query();
 
+        $query->where('created_by', auth()->id());
+
         if ($request->filled('search')) {
             $query->where('keyword', 'like', "%{$request->search}%");
         }

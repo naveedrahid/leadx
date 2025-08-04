@@ -42,7 +42,7 @@
                         }">
                         <span><i class="ti ti-key"></i></span>
                         <span class="hide-menu">Block Keyword</span>
-                        <span class="badge bg-light-info text-info fs-1">New</span>
+                        <span class="badge bg-light-danger text-danger fs-1">Beta</span>
                         </Link>
                     </li>
                     <li class="sidebar-item">

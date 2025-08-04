@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Models\Website;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class BlockKeywordController extends Controller
 {
@@ -79,6 +80,27 @@ class BlockKeywordController extends Controller
     {
         $user = auth()->user();
 
+        if (!Schema::hasTable('customer_forms')) {
+            $websites = Website::where('user_id', $user->id)
+                ->where('status', 'active')
+                ->get(['id', 'website_name as name']);
+
+            $keywords = FormKeyword::where('status', 'active')->where('created_by', $user->id)
+                ->get(['id', 'keyword']);
+
+            $suggestKeywords = FormKeyword::where('status', 'active')->where('created_by', '!=', $user->id)
+                ->get(['id', 'keyword']);
+
+
+            return response()->json([
+                'blocked_keywords' => [],
+                'websites' => $websites,
+                'keywords' => $keywords,
+                'suggested_keywords' => $suggestKeywords,
+                'message' => 'Form data not available, only website data returned.',
+            ]);
+        }
+
         $websites = Website::where('user_id', $user->id)
             ->where('status', 'active')
             ->get(['id', 'website_name as name']);
@@ -98,7 +120,10 @@ class BlockKeywordController extends Controller
             $selectedForm = $forms->first();
             $defaultFormId = $selectedForm?->id;
 
-            $keywords = FormKeyword::where('status', 'active')
+            $keywords = FormKeyword::where('status', 'active')->where('created_by', $user->id)
+                ->get(['id', 'keyword']);
+
+            $suggestKeywords = FormKeyword::where('status', 'active')->where('created_by', '!=', $user->id)
                 ->get(['id', 'keyword']);
         }
 
@@ -106,6 +131,7 @@ class BlockKeywordController extends Controller
             'websites' => $websites,
             'forms' => $forms,
             'keywords' => $keywords,
+            'suggested_keywords' => $suggestKeywords,
             'default_website_id' => $selectedWebsite?->id,
             'default_form_id' => $defaultFormId,
         ]);
