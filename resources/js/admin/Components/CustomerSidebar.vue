@@ -37,11 +37,11 @@
                         </Link>
                     </li>
                     <li class="sidebar-item">
-                        <Link :href="route('app.customer.keyword.index')" class="sidebar-link gap-2" :class="{
-                            'active': route().current('app.customer.keyword.index')
+                        <Link :href="route('app.customer.block-keyword.index')" class="sidebar-link gap-2" :class="{
+                            'active': route().current('app.customer.block-keyword.index')
                         }">
                         <span><i class="ti ti-key"></i></span>
-                        <span class="hide-menu">Keyword</span>
+                        <span class="hide-menu">Block Keyword</span>
                         <span class="badge bg-light-info text-info fs-1">New</span>
                         </Link>
                     </li>

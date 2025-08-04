@@ -35,7 +35,7 @@
                         <tbody>
                             <tr v-for="(block, index) in blocked" :key="block.id">
                                 <td>{{ block.website?.website_name || 'N/A' }}</td>
-                                <td>{{ block.form?.form_name || 'N/A' }}</td>
+                                <td>{{ block.form_name || 'N/A' }}</td>
                                 <td>
                                     <span v-for="k in block.keywords" :key="k.id" class="badge bg-light text-dark me-1">
                                         {{ k.keyword }}
@@ -140,6 +140,8 @@ export default {
                 const res = await axios.get(route('api.block-keyword.index'), {
                     headers: { Authorization: `Bearer ${this.token}` }
                 });
+                console.log(res);
+                
                 this.blocked = res.data.blocked_keywords;
             } catch (err) {
                 console.error("Failed to fetch blocked keywords", err);

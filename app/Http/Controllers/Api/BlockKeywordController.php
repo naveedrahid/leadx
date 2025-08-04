@@ -11,6 +11,7 @@ use App\Models\FormKeyword;
 use App\Models\User;
 use App\Models\Website;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BlockKeywordController extends Controller
 {
@@ -35,6 +36,7 @@ class BlockKeywordController extends Controller
                     'website_name' => $block->website->website_name ?? 'N/A',
                 ],
                 'form_id' => $block->form_id,
+                'form_name' => $block->form->form_name ?? 'N/A',
                 'keywords' => collect($block->keywords ?? [])->map(function ($id) use ($allKeywords) {
                     return [
                         'id' => $id,
@@ -57,6 +59,13 @@ class BlockKeywordController extends Controller
         $data['user_id'] = auth()->id();
         $data['is_blocked'] = true;
         $data['form_id'] = $request->form_id;
+        $exists = BlockKeyword::where('form_id', $data['form_id'])->exists();
+
+        if ($exists) {
+            return response()->json([
+                'message' => 'This form already has blocked keywords.',
+            ], 422);
+        }
 
         $block = BlockKeyword::create($data);
 
@@ -66,7 +75,7 @@ class BlockKeywordController extends Controller
         ]);
     }
 
-    public function getWebsites()
+    public function getCreatePageData()
     {
         $user = auth()->user();
 
@@ -74,40 +83,77 @@ class BlockKeywordController extends Controller
             ->where('status', 'active')
             ->get(['id', 'website_name as name']);
 
-        return response()->json(['websites' => $websites]);
+        $selectedWebsite = $websites->first();
+
+        $forms = collect();
+        $keywords = collect();
+        $defaultFormId = null;
+
+        if ($selectedWebsite) {
+            $forms = CustomerForm::where('user_id', $user->id)
+                ->whereIn('website_id', $websites->pluck('id'))
+                ->where('status', 'active')
+                ->get(['id', 'form_name', 'website_id']);
+
+            $selectedForm = $forms->first();
+            $defaultFormId = $selectedForm?->id;
+
+            $keywords = FormKeyword::where('status', 'active')
+                ->get(['id', 'keyword']);
+        }
+
+        return response()->json([
+            'websites' => $websites,
+            'forms' => $forms,
+            'keywords' => $keywords,
+            'default_website_id' => $selectedWebsite?->id,
+            'default_form_id' => $defaultFormId,
+        ]);
     }
 
-    public function getForms($websiteId)
-    {
-        $user = auth()->user();
 
-        $forms = CustomerForm::where('user_id', $user->id)
-            ->where('website_id', $websiteId)
-            ->where('status', 'active')
-            ->get(['id', 'form_name']);
+    // public function getWebsites()
+    // {
+    //     $user = auth()->user();
 
-        return response()->json(['forms' => $forms]);
-    }
+    //     $websites = Website::where('user_id', $user->id)
+    //         ->where('status', 'active')
+    //         ->get(['id', 'website_name as name']);
 
-    public function getKeywords()
-    {
-        $keywords = FormKeyword::where('status', 'active')->get(['id', 'keyword']);
-        return response()->json(['keywords' => $keywords]);
-    }
+    //     return response()->json(['websites' => $websites]);
+    // }
 
-    public function getUsers()
-    {
-        $users = User::where('user_type', 'customer')
-            ->where('status', 'active')
-            ->select('id', 'first_name', 'last_name')
-            ->get()
-            ->map(function ($user) {
-                $user->fullname = $user->first_name . ' ' . $user->last_name;
-                return $user;
-            });
+    // public function getForms($websiteId)
+    // {
+    //     $user = auth()->user();
 
-        return response()->json(['users' => $users]);
-    }
+    //     $forms = CustomerForm::where('user_id', $user->id)
+    //         ->where('website_id', $websiteId)
+    //         ->where('status', 'active')
+    //         ->get(['id', 'form_name']);
+
+    //     return response()->json(['forms' => $forms]);
+    // }
+
+    // public function getKeywords()
+    // {
+    //     $keywords = FormKeyword::where('status', 'active')->get(['id', 'keyword']);
+    //     return response()->json(['keywords' => $keywords]);
+    // }
+
+    // public function getUsers()
+    // {
+    //     $users = User::where('user_type', 'customer')
+    //         ->where('status', 'active')
+    //         ->select('id', 'first_name', 'last_name')
+    //         ->get()
+    //         ->map(function ($user) {
+    //             $user->fullname = $user->first_name . ' ' . $user->last_name;
+    //             return $user;
+    //         });
+
+    //     return response()->json(['users' => $users]);
+    // }
 
     public function toggleStatus(Request $request, $id)
     {

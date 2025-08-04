@@ -43,10 +43,10 @@
                                 </div>
                             </div>
 
-                            <div class="col-12">
+                            <div class="col-6">
                                 <div class="form-group">
-                                    <label><strong>Blocked Keywords</strong></label>
-                                    <div>
+                                    <label class="form-label">Blocked Keywords</label>
+                                    <div class="form-control">
                                         <span v-for="(id, index) in form.keywords" :key="id"
                                             class="badge bg-danger text-white me-2" style="cursor:pointer;"
                                             @click="removeKeyword(index)">
@@ -56,15 +56,20 @@
                                 </div>
 
                             </div>
-                            <div class="col-12">
-                                <div class="form-group mt-4">
-                                    <label><strong>Available Keywords</strong></label>
-                                    <div>
-                                        <span v-for="keyword in filteredAvailableKeywords" :key="keyword.id"
-                                            class="badge bg-info text-white me-2" style="cursor: pointer"
-                                            @click="addKeyword(keyword.id)">
-                                            {{ keyword.keyword }} +
-                                        </span>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label class="form-label">Available Keywords</label>
+                                    <div class="form-control">
+                                        <template v-if="filteredAvailableKeywords.length > 0">
+                                            <span v-for="keyword in filteredAvailableKeywords" :key="keyword.id"
+                                                class="badge bg-info text-white me-2" style="cursor: pointer"
+                                                @click="addKeyword(keyword.id)">
+                                                {{ keyword.keyword }} +
+                                            </span>
+                                        </template>
+                                        <template v-else>
+                                            <span class="text-muted">No keywords available</span>
+                                        </template>
                                     </div>
                                 </div>
                             </div>

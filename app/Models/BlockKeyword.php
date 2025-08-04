@@ -42,10 +42,6 @@ class BlockKeyword extends Model
         return FormKeyword::whereIn('id', $this->keywords)->get();
     }
 
-    // public function keywordItems()
-    // {
-    //     return $this->hasMany(FormKeyword::class, 'id', 'keywords');
-    // }
     public function getKeywordsDetailAttribute()
     {
         return FormKeyword::whereIn('id', $this->keywords)->get();

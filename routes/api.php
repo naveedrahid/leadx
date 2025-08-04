@@ -43,10 +43,11 @@ Route::prefix('v1')->middleware(['cors', 'json.response'])->as('api.')->group(fu
 
         Route::prefix('block-keywords')->name('block-keyword.')->controller(BlockKeywordController::class)->group(function () {
             Route::get('/', 'index')->name('index');
+            Route::get('init-data', 'getCreatePageData')->name('init-data');
             Route::put('{id}', 'update')->name('update');
-            Route::get('customer-websites', 'getWebsites')->name('websites.by-user');
-            Route::get('customer-forms/{website}', 'getForms')->name('forms.by-website');
-            Route::get('form-keywords/{form}', 'getKeywords')->name('keywords.by-form');
+            // Route::get('customer-websites', 'getWebsites')->name('websites.by-user');
+            // Route::get('customer-forms/{website}', 'getForms')->name('forms.by-website');
+            // Route::get('form-keywords/{form}', 'getKeywords')->name('keywords.by-form');
             Route::post('store', 'store')->name('store');
             Route::patch('{id}/toggle-status', 'toggleStatus')->name('toggle-status');
         });

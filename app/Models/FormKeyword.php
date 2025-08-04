@@ -17,11 +17,6 @@ class FormKeyword extends Model
         'status',
     ];
 
-    public function creator()
-    {
-        return $this->belongsTo(User::class, 'created_by');
-    }
-
     public function website()
     {
         return $this->belongsTo(Website::class);
