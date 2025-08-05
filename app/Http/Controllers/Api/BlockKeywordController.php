@@ -103,7 +103,7 @@ class BlockKeywordController extends Controller
 
         $websites = Website::where('user_id', $user->id)
             ->where('status', 'active')
-            ->get(['id', 'website_name as name']);
+            ->get(['id', 'website_url as name']);
 
         $selectedWebsite = $websites->first();
 

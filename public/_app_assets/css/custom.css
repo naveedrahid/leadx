@@ -334,3 +334,28 @@ input.dp__pointer.dp__input_readonly.dp__input.dp__input_icon_pad.dp__input_focu
     white-space: normal;
     line-height: 18px;
 }
+#nav-tab button.nav-link.active:hover {
+    color: #008744 !important;
+}
+div#nav-tab .nav-link {
+    font-size: 14px !important;
+    background: transparent !important;
+    color: #000;
+    padding: 0;
+    /* margin-bottom: .5rem; */
+    font-weight: 600;
+    color: #404040;
+    margin-right: 20px;
+    border-bottom: solid 1px;
+    border-radius: 0;
+}
+
+div#nav-tab .nav-link.active {
+    color: #008744 !important;
+    border-bottom: solid 1px #008744 !important;
+}
+.addKeyword button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}

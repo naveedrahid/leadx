@@ -1,12 +1,11 @@
 <template>
 
-    <Head title="Lead Statuses" />
+    <Head title="Block Keywords" />
     <AppLayout ref="app_layout" :loader="loader">
         <div class="container-fluid">
             <Breadcrumb>
-                <template #title>Lead Statuses</template>
-                <li class="breadcrumb-item text-muted">Customer</li>
-                <li class="breadcrumb-item active" aria-current="page">Lead Statuses</li>
+                <template #title>Block Keywords</template>
+                <li class="breadcrumb-item active" aria-current="page">Block Keywords</li>
             </Breadcrumb>
 
             <div class="mb-3">

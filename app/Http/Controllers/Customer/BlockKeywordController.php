@@ -40,11 +40,13 @@ class BlockKeywordController extends Controller
     {
         $block = BlockKeyword::with(['website', 'form'])->findOrFail($id);
 
-        $websites = Website::where('user_id', auth()->id())
+        $userId = $block->user_id;
+
+        $websites = Website::where('user_id', $userId)
             ->where('status', 'active')
             ->get(['id', 'website_name']);
 
-        $forms = CustomerForm::where('user_id', auth()->id())
+        $forms = CustomerForm::where('user_id', $userId)
             ->where('website_id', $block->website_id)
             ->where('status', 'active')
             ->get(['id', 'form_name']);
@@ -55,7 +57,14 @@ class BlockKeywordController extends Controller
             ->get(['id', 'keyword']);
 
         $availableKeywords = FormKeyword::where('status', 'active')
+            ->where('created_by', $userId)
             ->whereNotIn('id', $selectedKeywordIds)
+            ->get(['id', 'keyword']);
+
+        $suggestKeywords = FormKeyword::where('status', 'active')
+            ->where('created_by', '!=', $userId)
+            ->whereNotIn('id', $selectedKeywordIds)
+            ->whereNotIn('id', $availableKeywords->pluck('id'))
             ->get(['id', 'keyword']);
 
         $block->keywords = $selectedKeywords;
@@ -65,7 +74,8 @@ class BlockKeywordController extends Controller
             'websites' => $websites,
             'forms' => $forms,
             'keywords' => $selectedKeywords,
-            'allKeywords' => $availableKeywords->concat($selectedKeywords)->unique('id')->values(),
+            'allKeywords' => $availableKeywords->values(),
+            'suggestedKeywords' => $suggestKeywords->values(),
         ]);
     }
 }

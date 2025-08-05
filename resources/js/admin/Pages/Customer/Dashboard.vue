@@ -58,6 +58,15 @@
                                 <h3 class="card-title fs-7 fw-bolder mb-0 text-dark">{{ numFormat(dashboard_count.leads.total_unviewed) }}</h3>
                             </div>
                         </div>
+                        <div class="col-lg-3 col-6">
+                            <div class="card card-body border border-2 p-3 px-4">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <p class="card-text mb-0 text-muted fs-3 fw-bolder fw-normal">Spam Leads</p>
+                                    <span class="fs-8 text-muted"><i class="ti ti-ban"></i></span>
+                                </div>
+                                <h3 class="card-title fs-7 fw-bolder mb-0 text-dark">{{ numFormat(dashboard_count.leads.is_spam) }}</h3>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-12" v-if="Object.keys(current_subscription).length>0">
@@ -193,6 +202,8 @@ export default {
                     Authorization: "Bearer " + this.token,
                 },
             }).then((response) => {
+                console.log(response.data);
+                
                 let $response = response.data;
                 this.dashboard_count = $response.data;
                 
