@@ -36,7 +36,7 @@
                                 <div class="form-control">
                                     <template v-if="selectedKeywordObjects.length > 0">
                                         <span v-for="keyword in selectedKeywordObjects" :key="keyword.id"
-                                            class="fs-2 fw-bold text-capitalize rounded-1 py-1 px-2 bg-light-danger text-danger cursor-pointer"
+                                            class="fs-2 fw-bold text-capitalize d-inline-block mb-1 rounded-1 me-1 py-1 px-2 bg-light-danger text-danger cursor-pointer"
                                             @click="toggleKeyword(keyword.id)">
                                             {{ keyword.keyword }} &times;
                                         </span>
@@ -76,7 +76,7 @@
                                             <div class="form-control">
                                                 <template v-if="filteredSuggestedKeywords.length > 0">
                                                     <span v-for="keyword in filteredSuggestedKeywords" :key="keyword.id"
-                                                        class="fs-2 fw-bold text-capitalize rounded-1 py-1 px-2 bg-light-info text-info cursor-pointer"
+                                                        class="fs-2 fw-bold me-1 mb-1 d-inline-block text-capitalize rounded-1 py-1 px-2 bg-light-info text-info cursor-pointer"
                                                         @click="addSuggestedKeyword(keyword.id)">
                                                         {{ keyword.keyword }} +</span>
                                                 </template>
@@ -93,7 +93,7 @@
                                             <div class="form-control">
                                                 <template v-if="availableKeywords.length > 0">
                                                     <span v-for="keyword in availableKeywords" :key="keyword.id"
-                                                        class="fs-2 fw-bold text-capitalize rounded-1 py-1 px-2 bg-light-info text-info cursor-pointer me-1"
+                                                        class="fs-2 fw-bold me-1 mb-1 d-inline-block text-capitalize rounded-1 py-1 px-2 bg-light-info text-info cursor-pointer me-1"
                                                         @click="toggleKeyword(keyword.id)">
                                                         {{ keyword.keyword }} +
                                                     </span>
@@ -297,8 +297,6 @@ export default {
                     console.error(error);
                 });
         }
-
-
     }
 }
 </script>

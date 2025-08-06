@@ -156,6 +156,14 @@
                         </ul>
                     </li>
                     <li class="sidebar-item">
+                        <Link :href="route('app.admin.keyword.index')" class="sidebar-link gap-2" :class="{ 
+                            'active': route().current('app.admin.keyword.index') 
+                        }">
+                            <span><i class="ti ti-key"></i></span>
+                            <span class="hide-menu">Keywords</span>
+                        </Link>
+                    </li>
+                    <li class="sidebar-item">
                         <Link :href="route('app.admin.feedback.index')" class="sidebar-link gap-2" :class="{ 
                             'active': route().current('app.admin.feedback.index') 
                         }">

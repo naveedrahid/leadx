@@ -8,9 +8,7 @@
                 <li class="breadcrumb-item text-muted">
                     <Link :href="route('app.customer.block-keyword.index')">Block Keywords</Link>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">
-                    Edit
-                </li>
+                <li class="breadcrumb-item active" aria-current="page">Edit</li>
             </Breadcrumb>
 
             <div class="card">
@@ -45,7 +43,7 @@
                                     <div class="form-control">
                                         <template v-if="form.keywords.length > 0">
                                             <span v-for="(id, index) in form.keywords" :key="id"
-                                                class="fs-2 fw-bold text-capitalize rounded-1 py-1 px-2 bg-light-danger text-danger cursor-pointer me-1"
+                                                class="fs-2 fw-bold me-1 mb-1 d-inline-block text-capitalize rounded-1 py-1 px-2 bg-light-danger text-danger cursor-pointer me-1"
                                                 @click="removeKeyword(index)">
                                                 {{ getKeywordText(id) }} &times;
                                             </span>
@@ -61,11 +59,14 @@
                                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                         <button class="nav-link active" id="nav-suggested-tab" data-bs-toggle="tab"
                                             data-bs-target="#nav-suggested" type="button" role="tab"
-                                            aria-controls="nav-suggested" aria-selected="true">Suggested
-                                            Keywords</button>
+                                            aria-controls="nav-suggested" aria-selected="true">
+                                            Suggested Keywords
+                                        </button>
                                         <button class="nav-link" id="your-keywords-tab" data-bs-toggle="tab"
                                             data-bs-target="#your-keywords" type="button" role="tab"
-                                            aria-controls="your-keywords" aria-selected="false">Your Keywords</button>
+                                            aria-controls="your-keywords" aria-selected="false">
+                                            Your Keywords
+                                        </button>
                                     </div>
                                 </nav>
                                 <div class="tab-content" id="nav-tabContent">
@@ -76,13 +77,15 @@
                                             <div class="form-control">
                                                 <template v-if="filteredSuggestedKeywords.length > 0">
                                                     <span v-for="keyword in filteredSuggestedKeywords" :key="keyword.id"
-                                                        class="fs-2 fw-bold text-capitalize rounded-1 py-1 px-2 bg-light-info text-info cursor-pointer me-1"
-                                                        @click="addSuggestedKeyword(keyword.id)">
+                                                        class="fs-2 fw-bold me-1 mb-1 d-inline-block text-capitalize rounded-1 py-1 px-2 bg-light-info text-info cursor-pointer me-1"
+                                                        @click="
+                                                            addSuggestedKeyword(keyword.id)">
                                                         {{ keyword.keyword }} +
                                                     </span>
                                                 </template>
                                                 <template v-else>
-                                                    <span class="text-muted">No suggested keywords</span>
+                                                    <span class="text-muted">No suggested
+                                                        keywords</span>
                                                 </template>
                                             </div>
                                         </div>
@@ -94,24 +97,34 @@
                                             <div class="form-control">
                                                 <template v-if="filteredAvailableKeywords.length > 0">
                                                     <span v-for="keyword in filteredAvailableKeywords" :key="keyword.id"
-                                                        class="fs-2 fw-bold text-capitalize rounded-1 py-1 px-2 bg-light-info text-info cursor-pointer me-1"
-                                                        style="cursor: pointer" @click="addKeyword(keyword.id)">
-                                                        {{ keyword.keyword }} +</span>
+                                                        class="fs-2 fw-bold me-1 mb-1 d-inline-block text-capitalize rounded-1 py-1 px-2 bg-light-info text-info cursor-pointer me-1"
+                                                        style="cursor: pointer" @click="
+                                                            addKeyword(keyword.id)">
+                                                        {{ keyword.keyword }}
+                                                        +</span>
                                                 </template>
                                                 <template v-else>
-                                                    <span class="text-muted">No keywords available</span>
+                                                    <span class="text-muted">No keywords
+                                                        available</span>
                                                 </template>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <div class="position-relative addKeyword mt-4">
+                                    <input v-model="newKeyword" class="form-control" placeholder="Add new keyword" />
+                                    <button @click="addNewKeyword" type="button" class="btn btn-primary btn-sm">
+                                        <i class="ti ti-plus"></i> Add New
+                                    </button>
+                                </div>
                             </div>
-
                             <div class="d-flex align-items-center gap-2 mt-4">
                                 <button type="submit" class="btn btn-light-primary text-primary">
                                     <i class="ti ti-refresh"></i> Update
                                 </button>
-                                <Link :href="route('app.customer.block-keyword.index')
+                                <Link :href="route(
+                                    'app.customer.block-keyword.index'
+                                )
                                     " class="btn btn-light-danger text-danger">
                                 <i class="ti ti-x"></i> Cancel
                                 </Link>
@@ -165,7 +178,8 @@ export default {
                 user_id: this.block?.user_id ?? null,
                 is_blocked: this.block?.is_blocked ?? 0,
             },
-            // suggestedKeywords: this.suggestedKeywords,
+            newKeyword: "",
+            localAllKeywords: [...this.allKeywords],
             errors: {},
             loader: false,
         };
@@ -177,10 +191,7 @@ export default {
         filteredAvailableKeywords() {
             const selectedIds = this.form.keywords;
 
-            const all = [
-                ...this.keywords,
-                ...this.allKeywords
-            ];
+            const all = [...this.keywords, ...this.localAllKeywords];
 
             const unique = [];
             const map = new Map();
@@ -191,19 +202,25 @@ export default {
                 }
             }
 
-            return unique.filter(k => !selectedIds.includes(k.id));
+            return unique.filter((k) => !selectedIds.includes(k.id));
         },
         filteredSuggestedKeywords() {
-            return this.suggestedKeywords.filter(k => !this.form.keywords.includes(k.id));
+            return this.suggestedKeywords.filter(
+                (k) => !this.form.keywords.includes(k.id)
+            );
         },
         keywordMap() {
-            const all = [...this.keywords, ...this.allKeywords, ...this.suggestedKeywords];
+            const all = [
+                ...this.keywords,
+                ...this.localAllKeywords,
+                ...this.suggestedKeywords,
+            ];
             const map = {};
             all.forEach(k => {
                 map[k.id] = k.keyword;
             });
             return map;
-        }
+        },
     },
     mounted() {
         this.$refs.app_layout.loadScript();
@@ -215,6 +232,7 @@ export default {
             user_id: this.block?.user_id ?? null,
             is_blocked: this.block?.is_blocked ?? 0,
         };
+        this.loadKeywords();
     },
     methods: {
         addSuggestedKeyword(id) {
@@ -223,7 +241,13 @@ export default {
             }
         },
         getKeywordText(id) {
-            return this.keywordMap[id] || 'Unknown';
+            const all = [
+                ...this.keywords,
+                ...this.localAllKeywords,
+                ...this.suggestedKeywords,
+            ];
+            const found = all.find(k => k.id === id);
+            return found?.keyword || 'Unknown';
         },
         addKeyword(id) {
             if (!this.form.keywords.includes(id)) {
@@ -268,6 +292,57 @@ export default {
             } finally {
                 this.loader = false;
             }
+        },
+
+        addNewKeyword() {
+            if (!this.newKeyword.trim()) {
+                toast.error("Keyword is required");
+                return;
+            }
+
+            axios
+                .post(
+                    route("api.keyword.store"),
+                    {
+                        keyword: this.newKeyword,
+                        website_id: this.form.website_id,
+                        form_id: this.form.form_id,
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${this.token}`,
+                        },
+                    }
+                )
+                .then(() => {
+                    this.newKeyword = "";
+                    this.loadKeywords();
+                    toast.success("Keyword added successfully");
+                })
+                .catch((error) => {
+                    toast.error(
+                        error.response?.data?.errors?.keyword?.[0] ||
+                        "Failed to add keyword"
+                    );
+                });
+        },
+
+        loadKeywords() {
+            axios
+                .get(route("api.keyword.index"), {
+                    params: {
+                        website_id: this.form.website_id,
+                        form_id: this.form.form_id,
+                    },
+                    headers: { Authorization: `Bearer ${this.token}` },
+                })
+                .then((res) => {
+                    this.localAllKeywords = res.data.data;
+                })
+                .catch((error) => {
+                    toast.error("Failed to load keywords");
+                    console.error(error);
+                });
         },
     },
 };

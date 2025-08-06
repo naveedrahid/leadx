@@ -10,21 +10,21 @@ use Inertia\Response;
 
 class KeywordController extends Controller
 {
-    public function index(): Response
-    {
-        return Inertia::render('Customer/Keywords/index');
-    }
+    // public function index(): Response
+    // {
+    //     return Inertia::render('Customer/Keywords/index');
+    // }
 
-    public function create(): Response
-    {
-        return Inertia::render('Customer/Keywords/Create');
-    }
+    // public function create(): Response
+    // {
+    //     return Inertia::render('Customer/Keywords/Create');
+    // }
 
-    public function edit($id)
-    {
-        $keyword = FormKeyword::findOrFail($id);
-        return Inertia::render('Customer/Keywords/Edit', [
-            'keyword' => $keyword
-        ]);
-    }
+    // public function edit($id)
+    // {
+    //     $keyword = FormKeyword::findOrFail($id);
+    //     return Inertia::render('Customer/Keywords/Edit', [
+    //         'keyword' => $keyword
+    //     ]);
+    // }
 }

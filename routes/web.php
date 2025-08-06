@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\{
     PluginController as AdminPluginController,
     FormTemplateController as AdminFormTemplateController,
     FormCategoryController as AdminFormCategoryController,
+    KeywordController as AdminKeywordController,
 };
 use App\Http\Controllers\Customer\{
     HomeController as CustomerHomeController,
@@ -47,6 +48,13 @@ use App\Http\Controllers\Auth\{
 
 Route::prefix('app')->as('app.')->group(function () {
     Route::prefix('admin')->as('admin.')->group(function () {
+
+        Route::prefix('keywords')->name('keyword.')->controller(AdminKeywordController::class)->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::get('/{id}/edit', 'edit')->name('edit');
+        });
+
         Route::controller(AdminCustomerController::class)->prefix('customer')->as('customer.')->group(function () {
             Route::get('/create', 'create')->name('create');
             Route::get('/subscription/invoice_download/{invoice_id}/{user_id}', 'invoice_download')->name('subscription.invoice_download');
@@ -115,11 +123,11 @@ Route::prefix('app')->as('app.')->group(function () {
             Route::get('/{id}/edit', 'edit')->name('edit');
         });
 
-        Route::prefix('keywords')->name('keyword.')->controller(KeywordController::class)->group(function () {
-            Route::get('/', 'index')->name('index');
-            Route::get('/create', 'create')->name('create');
-            Route::get('/{id}/edit', 'edit')->name('edit');
-        });
+        // Route::prefix('keywords')->name('keyword.')->controller(KeywordController::class)->group(function () {
+        //     Route::get('/', 'index')->name('index');
+        //     Route::get('/create', 'create')->name('create');
+        //     Route::get('/{id}/edit', 'edit')->name('edit');
+        // });
 
         Route::controller(CustomerBlockedIPController::class)->prefix('blocked-ip')->as('blocked-ip.')->group(function () {
             Route::get('/', 'index')->name('index');

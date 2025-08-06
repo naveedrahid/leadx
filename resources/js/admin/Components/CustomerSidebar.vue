@@ -127,9 +127,6 @@
                         <span class="hide-menu">Billing History</span>
                         </Link>
                     </li>
-
-
-
                     <li class="nav-small-cap">
                         <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                         <span class="hide-menu">Plugin Integration</span>
@@ -206,11 +203,11 @@
                     </li>
                     <li class="sidebar-item d-none">
                         <Link :href="route('app.customer.lead-statuses.index')" class="sidebar-link gap-2" :class="{
-                                    'active': route().current('app.customer.lead-statuses.index')
-                                }">
-                            <span><i class="ti ti-flag"></i></span>
-                            <span class="hide-menu">Lead Status</span>
-                            <span class="badge bg-light-info text-info fs-1">Coming Soon</span>
+                            'active': route().current('app.customer.lead-statuses.index')
+                        }">
+                        <span><i class="ti ti-flag"></i></span>
+                        <span class="hide-menu">Lead Status</span>
+                        <span class="badge bg-light-info text-info fs-1">Coming Soon</span>
                         </Link>
                     </li>
                     <li class="sidebar-item">

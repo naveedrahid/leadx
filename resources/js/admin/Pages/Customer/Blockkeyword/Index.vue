@@ -36,7 +36,7 @@
                                 <td>{{ block.website?.website_name || 'N/A' }}</td>
                                 <td>{{ block.form_name || 'N/A' }}</td>
                                 <td>
-                                    <span v-for="k in block.keywords" :key="k.id" class="badge bg-light text-dark me-1">
+                                    <span v-for="k in block.keywords" :key="k.id" class="fs-2 fw-bold me-1 mb-1 d-inline-block text-capitalize rounded-1 py-1 px-2 bg-light-info text-info cursor-pointer">
                                         {{ k.keyword }}
                                     </span>
                                 </td>
