@@ -230,8 +230,9 @@ Route::prefix('v1')->middleware(['cors', 'json.response'])->as('api.')->group(fu
         Route::post('/signup', 'signup')->name('signup');
     });
 
-    Route::controller(SpamKeywordController::class)->middleware('auth.license')->prefix('keyword')->as('keyword.')->group(function () {
+    Route::controller(SpamKeywordController::class)->prefix('keyword')->as('keyword.')->group(function () {
         Route::post('updateOrCreate', 'updateOrCreate');
+        Route::post('sync-from-form', 'syncFormKeywords');
         Route::get('selectBoxKeyword', 'selectBoxKeyword');
     });
 

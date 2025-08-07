@@ -13,7 +13,7 @@ use App\Http\Requests\{
     LeadStatusRequest,
     LeadBulkDeleteRequest
 };
-use App\Models\{FormSettingKeyword, Lead, Website, License, Subscription};
+use App\Models\{BlockKeyword, FormKeyword, FormSettingKeyword, Lead, Website, License, Subscription};
 
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Exports\LeadsExport;
@@ -33,18 +33,18 @@ class SpamKeywordController extends Controller
     public function __construct(Request $request)
     {
         $headers = $request->header();
-        if(isset($headers['licensekey'][0])) {
+        if (isset($headers['licensekey'][0])) {
             $license = License::bylicense($headers['licensekey'][0])->status('active')->first();
-            if(!is_null($license)) {
+            if (!is_null($license)) {
                 $this->license = $license;
                 $this->user = $license->user;
             }
         }
 
-        if(isset($headers['websiteurl'][0])) {
+        if (isset($headers['websiteurl'][0])) {
             $websiteurl = rtrim($headers['websiteurl'][0], '/');
-            $website = Website::where('website_url', 'LIKE', '%'.$websiteurl.'%')->status('active')->first();
-            if(!is_null($website)) {
+            $website = Website::where('website_url', 'LIKE', '%' . $websiteurl . '%')->status('active')->first();
+            if (!is_null($website)) {
                 $this->website = $website;
             }
         }
@@ -70,15 +70,15 @@ class SpamKeywordController extends Controller
         ];
 
 
-        $leadsQuery = Lead::with(['user', 'website','spam_keywords','spam_keyword_lists'])->byUser(auth()->id())->where('is_spam',1)->filterLeads($request)->orderBy($order->orderby, $order->order);
+        $leadsQuery = Lead::with(['user', 'website', 'spam_keywords', 'spam_keyword_lists'])->byUser(auth()->id())->where('is_spam', 1)->filterLeads($request)->orderBy($order->orderby, $order->order);
 
-        if($request->website_id) {
+        if ($request->website_id) {
             $leadsQuery->where('website_id', $request->website_id);
         }
         if ($request->filled('perpage')) {
             $leads = $leadsQuery->paginate($request->perpage);
         } else {
-            if($request->filled('limit')) {
+            if ($request->filled('limit')) {
                 $leadsQuery->limit($request->limit);
             }
 
@@ -92,15 +92,15 @@ class SpamKeywordController extends Controller
             "message" => "Leads have been successfully retrieved"
         ];
 
-        if($request->filled('perpage')) {
+        if ($request->filled('perpage')) {
             $response['paginate'] = $this->paginate($leads);
         }
         return response()->json($response, 200);
     }
 
 
-    public function updateOrCreate(Request $request){
-
+    public function updateOrCreate(Request $request)
+    {
         $rawData = $request->getContent();
         preg_match('/name="form_id"\s+(.*?)\s+--/s', $rawData, $formId);
         preg_match('/name="form_name"\s+(.*?)\s+--/s', $rawData, $formName);
@@ -110,36 +110,39 @@ class SpamKeywordController extends Controller
         $cleanData = [
             'form_id' => trim($formId[1] ?? null),
             'form_name' => trim($formName[1] ?? null),
-            'user_id' => trim($userId[1] ?? null),
         ];
 
 
         $cleanedSettings = stripslashes($settings[1]);
         $decodedSettings = json_decode($cleanedSettings, true);
         if (isset($decodedSettings['keyword_block'])) {
-            $cleanData['keyword'] = $decodedSettings['keyword_block'];
+            $cleanData['keywords'] = $decodedSettings['keyword_block'];
         }
 
-        $FormSetting = FormSettingKeyword::updateOrCreate(["form_id" => $cleanData['form_id'],"user_id"=>$cleanData["user_id"]],$cleanData);
+        if ($this->website) {
+            $cleanData['website_id'] = $this->website->id;
+             $cleanData['user_id'] = $this->website->user_id;
+        }
+
+        $FormSetting = BlockKeyword::updateOrCreate(["form_id" => $cleanData['form_id'], "user_id" => $cleanData["user_id"]], $cleanData);
         return response()->json($FormSetting);
     }
 
 
 
-    public function selectBoxKeyword(Request $request){
-        $loadKeyword = FormSettingKeyword::where('user_id', $request->user_id)
-            ->whereNotNull('keyword')
-            ->where('form_id',$request->form_id)
-            ->pluck('keyword')
-            ->toArray();
+    public function selectBoxKeyword(Request $request)
+    {
+        $loadKeyword = FormKeyword::whereNotNull('keyword')
+            ->get(['id', 'keyword'])
+            ->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'keyword' => $item->keyword,
+                ];
+            })
+            ->values();
 
-        $loadKeyword = array_filter($loadKeyword, function ($keyword) {
-            return !empty($keyword);
-        });
-
-        $loadKeyword = Arr::flatten($loadKeyword);
-
-        return response()->json(["keyword_block"=>$loadKeyword]);
+        return response()->json(["keyword_block" => $loadKeyword]);
     }
 
     public function get_by(Request $request, $id)
@@ -213,8 +216,8 @@ class SpamKeywordController extends Controller
         }
 
         $form_data = json_decode($lead->form_data);
-        if(!empty($form_data) && isset($form_data->data->file)) {
-            foreach($form_data->data->file as $key => $value) {
+        if (!empty($form_data) && isset($form_data->data->file)) {
+            foreach ($form_data->data->file as $key => $value) {
                 if (Storage::exists('/public/leads/' . $value->name)) {
                     Storage::delete('/public/leads/' . $value->name);
                 }
@@ -238,10 +241,10 @@ class SpamKeywordController extends Controller
             ], 404);
         }
 
-        foreach($leads as $lead) {
+        foreach ($leads as $lead) {
             $form_data = json_decode($lead->form_data);
-            if(!empty($form_data) && isset($form_data->data->file)) {
-                foreach($form_data->data->file as $key => $value) {
+            if (!empty($form_data) && isset($form_data->data->file)) {
+                foreach ($form_data->data->file as $key => $value) {
                     if (Storage::exists('/public/leads/' . $value->name)) {
                         Storage::delete('/public/leads/' . $value->name);
                     }
@@ -268,13 +271,13 @@ class SpamKeywordController extends Controller
         }
 
         $pdf = Pdf::loadView('leadsPDF', ['leads' => $leads]);
-        $filename = 'leads-'. Str::random(12) .'.pdf';
+        $filename = 'leads-' . Str::random(12) . '.pdf';
         $filePath = storage_path('app/public/leads_export/' . $filename);
         $pdf->save($filePath);
 
         return response()->json([
             "error" => 0,
-            "data" => asset(Storage::url('leads_export/'.$filename)),
+            "data" => asset(Storage::url('leads_export/' . $filename)),
             "message" => "Leads PDF has been generated successfully"
         ], 200);
     }
@@ -290,12 +293,12 @@ class SpamKeywordController extends Controller
             ], 404);
         }
 
-        $filename = 'leads-'. Str::random(12) .'.xlsx';
+        $filename = 'leads-' . Str::random(12) . '.xlsx';
         $filePath = 'public/leads_export/' . $filename;
 
-        if(count($request->ids) == 1) {
+        if (count($request->ids) == 1) {
             $data = [];
-            foreach($leads as $index => $lead) {
+            foreach ($leads as $index => $lead) {
                 $form_data = json_decode($lead->form_data);
                 $data[$index][]['Lead Details'] = [
                     'key' => 'Lead Details'
@@ -303,7 +306,7 @@ class SpamKeywordController extends Controller
 
                 $data[$index][]['id'] = [
                     'key' => 'Lead ID',
-                    'value' => '#' . ($lead->id > 9 ? $lead->id : '0'. $lead->id)
+                    'value' => '#' . ($lead->id > 9 ? $lead->id : '0' . $lead->id)
                 ];
 
                 $data[$index][]['wpform_name'] = [
@@ -370,28 +373,28 @@ class SpamKeywordController extends Controller
                     'value' => ($form_data->visitor_info->city !== '' && $form_data->visitor_info->city !== 'unknown') ? $form_data->visitor_info->city : 'Not Available',
                 ];
 
-                if($form_data->data) {
+                if ($form_data->data) {
                     $data[$index][]['Form Lead Details'] = [
                         'key' => 'Form Lead Details'
                     ];
 
-                    foreach($form_data->data as $field => $item) {
-                        if($field == 'checkbox-list') {
-                            foreach($item as $key => $checkbox_list) {
+                    foreach ($form_data->data as $field => $item) {
+                        if ($field == 'checkbox-list') {
+                            foreach ($item as $key => $checkbox_list) {
                                 $data[$index][][$key] = [
                                     'key' => formatText($key),
                                     'value' => implode(', ', (array) $checkbox_list),
                                 ];
                             }
-                        } elseif($field == 'file') {
-                            foreach($item as $key => $file) {
+                        } elseif ($field == 'file') {
+                            foreach ($item as $key => $file) {
                                 $data[$index][][$key] = [
                                     'key' => formatText($key),
                                     'value' => $file->url,
                                 ];
                             }
                         } else {
-                            foreach($item as $key => $value) {
+                            foreach ($item as $key => $value) {
                                 $data[$index][][$key] = [
                                     'key' => formatText($key),
                                     'value' => $value,
@@ -408,7 +411,7 @@ class SpamKeywordController extends Controller
             $headings = [];
             $titles = [];
 
-            foreach($leads as $index => $lead) {
+            foreach ($leads as $index => $lead) {
                 $form_data = json_decode($lead->form_data);
                 $titles[$lead->wpform_id] = $lead->wpform_name;
                 $headings[$lead->wpform_id] = [
@@ -428,7 +431,7 @@ class SpamKeywordController extends Controller
                 ];
 
                 $data[$lead->wpform_id][$lead->id] = [
-                    'lead_id' => '#' . ($lead->id > 9 ? $lead->id : '0'. $lead->id),
+                    'lead_id' => '#' . ($lead->id > 9 ? $lead->id : '0' . $lead->id),
                     'wpform_name' => $lead->wpform_name,
                     'lead_status' => leadStatus($lead->status),
                     'submitted_on' => $lead->created_at->format('F j, Y'),
@@ -443,20 +446,20 @@ class SpamKeywordController extends Controller
                     'visitor_city' => ($form_data->visitor_info->city !== '' && $form_data->visitor_info->city !== 'unknown') ? $form_data->visitor_info->city : 'Not Available',
                 ];
 
-                if($form_data->data) {
-                    foreach($form_data->data as $field => $item) {
-                        if($field == 'checkbox-list') {
-                            foreach($item as $key => $checkbox_list) {
+                if ($form_data->data) {
+                    foreach ($form_data->data as $field => $item) {
+                        if ($field == 'checkbox-list') {
+                            foreach ($item as $key => $checkbox_list) {
                                 $headings[$lead->wpform_id][] = formatText($key);
                                 $data[$lead->wpform_id][$lead->id][$key] = implode(', ', (array) $checkbox_list);
                             }
-                        } elseif($field == 'file') {
-                            foreach($item as $key => $file) {
+                        } elseif ($field == 'file') {
+                            foreach ($item as $key => $file) {
                                 $headings[$lead->wpform_id][] = formatText($key);
                                 $data[$lead->wpform_id][$lead->id][$key] = $file->url;
                             }
                         } else {
-                            foreach($item as $key => $value) {
+                            foreach ($item as $key => $value) {
                                 $headings[$lead->wpform_id][] = formatText($key);
                                 $data[$lead->wpform_id][$lead->id][$key] = $value;
                             }
@@ -470,7 +473,7 @@ class SpamKeywordController extends Controller
 
         return response()->json([
             "error" => 0,
-            "data" => asset(Storage::url('leads_export/'.$filename)),
+            "data" => asset(Storage::url('leads_export/' . $filename)),
             "message" => "Leads excel sheet has been generated successfully"
         ], 200);
     }
