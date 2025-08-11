@@ -8,14 +8,84 @@ use App\Http\Resources\BlockKeywordResource;
 use App\Models\BlockKeyword;
 use App\Models\CustomerForm;
 use App\Models\FormKeyword;
+use App\Models\License;
 use App\Models\User;
 use App\Models\Website;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 
 class BlockKeywordController extends Controller
 {
+    protected $user;
+    protected $license;
+    protected $website;
+
+    public function __construct(Request $request)
+    {
+        $headers = $request->header();
+
+        if (isset($headers['licensekey'][0])) {
+            $license = \App\Models\License::bylicense($headers['licensekey'][0])
+                ->status('active')
+                ->first();
+            if (!is_null($license)) {
+                $this->license = $license;
+                $this->user = $license->user;
+            }
+        }
+
+        if (isset($headers['websiteurl'][0])) {
+            $websiteurl = rtrim($headers['websiteurl'][0], '/');
+            $website = Website::where('website_url', 'LIKE', '%' . $websiteurl . '%')
+                ->status('active')
+                ->first();
+            if (!is_null($website)) {
+                $this->website = $website;
+            }
+        }
+    }
+
+    private function pushKeywordsToWordPress(int $websiteId, int $formId, array $keywordIds): void
+    {
+        $site = Website::find($websiteId);
+        if (!$site || empty($site->website_url)) return;
+
+        $base = rtrim($site->website_url, '/');
+        $base = 'http://' . preg_replace('#^https?://#i', '', $base);
+        $host = parse_url($base, PHP_URL_HOST) ?: $base;
+
+        $endpoint = $base . '/wp-admin/admin-ajax.php?action=lxf_keyword_sync';
+
+        $keywords = array_values(array_unique(array_map('strval', $keywordIds)));
+
+        $formKey = optional(CustomerForm::find($formId))->form_key;
+
+        try {
+            $res = Http::withHeaders([
+                'Accept'       => 'application/json',
+                'Content-Type' => 'application/json',
+                'websiteurl'   => $host,
+                'Host'         => $host,
+            ])
+                ->timeout(12)
+                ->asJson()
+                ->post($endpoint, [
+                    'form_id'  => (int) $formId,
+                    'form_key' => $formKey,
+                    'keywords' => $keywords,
+                ]);
+
+            Log::debug('WP keyword sync', ['status' => $res->status(), 'body' => $res->body()]);
+            $res->throw();
+        } catch (\Throwable $e) {
+            Log::warning('WP keyword sync failed: ' . $e->getMessage());
+        }
+    }
+
+
     public function index(Request $request)
     {
         $userId = $request->user()->id;
@@ -54,27 +124,60 @@ class BlockKeywordController extends Controller
         ]);
     }
 
+    // public function store(BlockKeywordRequest $request)
+    // {
+    //     $data = $request->validated();
+    //     $data['user_id'] = auth()->id();
+    //     $data['is_blocked'] = true;
+    //     $data['form_id'] = $request->form_id;
+    //     $exists = BlockKeyword::where('form_id', $data['form_id'])->exists();
+
+    //     if ($exists) {
+    //         return response()->json([
+    //             'message' => 'This form already has blocked keywords.',
+    //         ], 422);
+    //     }
+
+    //     $block = BlockKeyword::create($data);
+
+    //     return response()->json([
+    //         'message' => 'Keywords blocked successfully.',
+    //         'data' => new BlockKeywordResource($block),
+    //     ]);
+    // }
+
     public function store(BlockKeywordRequest $request)
     {
         $data = $request->validated();
-        $data['user_id'] = auth()->id();
-        $data['is_blocked'] = true;
-        $data['form_id'] = $request->form_id;
-        $exists = BlockKeyword::where('form_id', $data['form_id'])->exists();
 
+        $websiteId = (int)$data['website_id'];
+        $formId    = (int)$data['form_id'];
+        $keywordIds = $data['keywords'];
+
+        $exists = BlockKeyword::where('website_id', $websiteId)
+            ->where('form_id', $formId)
+            ->exists();
         if ($exists) {
-            return response()->json([
-                'message' => 'This form already has blocked keywords.',
-            ], 422);
+            return response()->json(['message' => 'This form already has blocked keywords.'], 422);
         }
 
-        $block = BlockKeyword::create($data);
+        $block = BlockKeyword::create([
+            'user_id'    => auth()->id(),
+            'website_id' => $websiteId,
+            'form_id'    => $formId,
+            'form_name'  => $data['form_name'] ?? null,
+            'keywords'   => $keywordIds,
+            'is_blocked' => true,
+        ])->refresh();
+
+        $this->pushKeywordsToWordPress($websiteId, $formId, $keywordIds);
 
         return response()->json([
             'message' => 'Keywords blocked successfully.',
-            'data' => new BlockKeywordResource($block),
-        ]);
+            'data'    => new BlockKeywordResource($block),
+        ], 201);
     }
+
 
     public function getCreatePageData()
     {
@@ -195,14 +298,55 @@ class BlockKeywordController extends Controller
         ]);
     }
 
+    // public function update(BlockKeywordRequest $request, $id)
+    // {
+    //     $block = BlockKeyword::findOrFail($id);
+    //     $data = $request->validated();
+    //     $data['user_id'] = auth()->id();
+
+    //     $block->update($data);
+
+    //     return response()->json(['message' => 'Block updated successfully.']);
+    // }
+
     public function update(BlockKeywordRequest $request, $id)
     {
         $block = BlockKeyword::findOrFail($id);
-        $data = $request->validated();
+        $data  = $request->validated();
+
+        // agar keywords aaye hain to normalize
+        if (array_key_exists('keywords', $data)) {
+            $data['keywords']   = array_values(array_unique(array_map('intval', $data['keywords'])));
+            $data['is_blocked'] = count($data['keywords']) > 0;
+        }
         $data['user_id'] = auth()->id();
 
-        $block->update($data);
+        // 🔹 SIMPLE: incoming form_id ko local CustomerForm.id me resolve karo
+        $incomingFormId = $data['form_id'] ?? $block->form_id; // jo aya ya jo already hai
+        $localFormId = CustomerForm::where('website_id', $block->website_id)
+            ->where(function ($q) use ($incomingFormId) {
+                $q->where('id', $incomingFormId)        // local id match
+                    ->orWhere('form_id', $incomingFormId); // WP form_id match
+            })
+            ->value('id');
 
-        return response()->json(['message' => 'Block updated successfully.']);
+        if ($localFormId) {
+            $data['form_id'] = $localFormId; // always local id store
+        }
+
+        $block->update($data);
+        $block->refresh();
+
+        // 🔹 name nikaal lo (UI me dikhane ke liye)
+        $formName = CustomerForm::where('id', $block->form_id)->value('form_name');
+
+        // WP ko push (as-is)
+        $this->pushKeywordsToWordPress($block->website_id, $block->form_id, $block->keywords ?? []);
+
+        return response()->json([
+            'message'   => 'Block updated successfully.',
+            'form_id'   => $block->form_id,
+            'form_name' => $formName,
+        ]);
     }
 }

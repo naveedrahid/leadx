@@ -13,7 +13,7 @@ use App\Http\Requests\{
     LeadStatusRequest,
     LeadBulkDeleteRequest
 };
-use App\Models\{BlockKeyword, FormKeyword, FormSettingKeyword, Lead, Website, License, Subscription};
+use App\Models\{BlockKeyword, CustomerForm, FormKeyword, FormSettingKeyword, Lead, Website, License, Subscription};
 
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Exports\LeadsExport;
@@ -21,6 +21,7 @@ use App\Exports\LeadsExport2;
 use Maatwebsite\Excel\Excel as MWExcel;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 
 class SpamKeywordController extends Controller
 {
@@ -99,36 +100,111 @@ class SpamKeywordController extends Controller
     }
 
 
+    // public function updateOrCreate(Request $request)
+    // {
+    //     $rawData = $request->getContent();
+    //     preg_match('/name="form_id"\s+(.*?)\s+--/s', $rawData, $formId);
+    //     preg_match('/name="form_name"\s+(.*?)\s+--/s', $rawData, $formName);
+    //     preg_match('/name="user_id"\s+(.*?)\s+--/s', $rawData, $userId);
+    //     preg_match('/name="setting"\s+(.*?)\s+--/s', $rawData, $settings);
+
+    //     $cleanData = [
+    //         'form_id' => trim($formId[1] ?? null),
+    //         'form_name' => trim($formName[1] ?? null),
+    //     ];
+
+
+    //     $cleanedSettings = stripslashes($settings[1]);
+    //     $decodedSettings = json_decode($cleanedSettings, true);
+    //     if (isset($decodedSettings['keyword_block'])) {
+    //         $cleanData['keywords'] = $decodedSettings['keyword_block'];
+    //     }
+
+    //     if ($this->website) {
+    //         $cleanData['website_id'] = $this->website->id;
+    //          $cleanData['user_id'] = $this->website->user_id;
+    //     }
+
+    //     $FormSetting = BlockKeyword::updateOrCreate(["form_id" => $cleanData['form_id'], "user_id" => $cleanData["user_id"]], $cleanData);
+    //     return response()->json($FormSetting);
+    // }
     public function updateOrCreate(Request $request)
     {
-        $rawData = $request->getContent();
-        preg_match('/name="form_id"\s+(.*?)\s+--/s', $rawData, $formId);
-        preg_match('/name="form_name"\s+(.*?)\s+--/s', $rawData, $formName);
-        preg_match('/name="user_id"\s+(.*?)\s+--/s', $rawData, $userId);
-        preg_match('/name="setting"\s+(.*?)\s+--/s', $rawData, $settings);
+        $payload = $request->all();
+        if (empty($payload)) {
+            $raw = $request->getContent();
+            $json = json_decode($raw, true);
+            if (is_array($json)) $payload = $json;
+            else parse_str($raw, $payload);
+        }
 
-        $cleanData = [
-            'form_id' => trim($formId[1] ?? null),
-            'form_name' => trim($formName[1] ?? null),
+        $website = $this->website ?: (isset($payload['website_id']) ? Website::find((int)$payload['website_id']) : null);
+        if (!$website) {
+            return response()->json(['message' => 'website not resolved'], 422);
+        }
+        $websiteId = (int)$website->id;
+
+        $formId  = (int)($payload['form_id'] ?? 0);
+        if (!$formId && !empty($payload['form_key'])) {
+            $formId = (int) CustomerForm::where('website_id', $websiteId)
+                ->where('form_key', $payload['form_key'])
+                ->value('id');
+        }
+        if (!$formId) {
+            return response()->json(['message' => 'form_id missing/invalid'], 422);
+        }
+
+        $settings = $payload['settings'] ?? $payload['setting'] ?? null;
+        if (is_string($settings)) {
+            $decoded = json_decode(stripslashes($settings), true);
+            $settings = is_array($decoded) ? $decoded : [];
+        } elseif (!is_array($settings)) {
+            $settings = [];
+        }
+
+        $keywordsIn = $payload['keywords'] ?? Arr::get($settings, 'keyword_block', []);
+        if (is_string($keywordsIn)) {
+            $maybe = json_decode($keywordsIn, true);
+            $keywordsIn = is_array($maybe) ? $maybe : array_filter(array_map('trim', explode(',', $keywordsIn)));
+        }
+        if (!is_array($keywordsIn)) $keywordsIn = [];
+
+        $keywordIds = [];
+        foreach ($keywordsIn as $k) {
+            if ($k === null) continue;
+
+            if (is_int($k) || (is_string($k) && ctype_digit($k))) {
+                $id = (int)$k;
+                if ($id > 0) $keywordIds[] = $id;
+                continue;
+            }
+
+            $kw = trim((string)$k);
+            if ($kw === '') continue;
+            $fk = FormKeyword::firstOrCreate(
+                ['keyword' => $kw],
+                ['created_by' => optional($this->user)->id, 'status' => 'active']
+            );
+            $keywordIds[] = (int)$fk->id;
+        }
+        $keywordIds = array_values(array_unique($keywordIds));
+
+        $data = [
+            'user_id'    => optional($this->user)->id ?: $website->user_id ?: auth()->id(),
+            'website_id' => $websiteId,
+            'form_id'    => $formId,
+            'keywords'   => $keywordIds,
+            'is_blocked' => !empty($keywordIds),
         ];
 
+        $lookup = ['website_id' => $websiteId, 'form_id' => $formId];
+        $record = BlockKeyword::updateOrCreate($lookup, $data)->refresh();
 
-        $cleanedSettings = stripslashes($settings[1]);
-        $decodedSettings = json_decode($cleanedSettings, true);
-        if (isset($decodedSettings['keyword_block'])) {
-            $cleanData['keywords'] = $decodedSettings['keyword_block'];
-        }
-
-        if ($this->website) {
-            $cleanData['website_id'] = $this->website->id;
-             $cleanData['user_id'] = $this->website->user_id;
-        }
-
-        $FormSetting = BlockKeyword::updateOrCreate(["form_id" => $cleanData['form_id'], "user_id" => $cleanData["user_id"]], $cleanData);
-        return response()->json($FormSetting);
+        return response()->json([
+            'message' => 'Block keywords updated.',
+            'data'    => new \App\Http\Resources\BlockKeywordResource($record),
+        ], 200);
     }
-
-
 
     public function selectBoxKeyword(Request $request)
     {

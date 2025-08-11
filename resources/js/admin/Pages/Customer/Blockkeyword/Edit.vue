@@ -19,22 +19,18 @@
                                 <div class="form-group mb-3">
                                     <label class="form-label">Website</label>
                                     <select class="form-control" v-model="form.website_id" disabled>
-                                        <option :value="block.website?.id">
-                                            {{
-                                                block.website?.website_url ??
-                                                "No website found"
-                                            }}
+                                        <option :value="block.website?.id || block.website_id || null">
+                                            {{ block.website?.website_url || block.website?.website_name ||
+                                                block.website_url ||
+                                                block.website_name || "No website found" }}
                                         </option>
                                     </select>
                                 </div>
                                 <div class="form-group mb-3">
                                     <label class="form-label">Form</label>
                                     <select class="form-control" v-model="form.form_id" disabled>
-                                        <option :value="block.form?.id">
-                                            {{
-                                                block.form?.form_name ??
-                                                "No form found"
-                                            }}
+                                        <option :value="form.form_id">
+                                            {{ block.form?.form_name || block.form_name || "No form found" }}
                                         </option>
                                     </select>
                                 </div>
@@ -172,8 +168,8 @@ export default {
             token: this.$cookies.get("lxf-token"),
             form: {
                 id: this.block.id,
-                website_id: this.block.website?.id || null,
-                form_id: this.block.form?.id || null,
+                website_id: this.block.website?.id || this.block.website_id || null,
+                form_id: this.block.form?.id || this.block.form_id || null,
                 keywords: this.block.keywords.map((k) => k.id),
                 user_id: this.block?.user_id ?? null,
                 is_blocked: this.block?.is_blocked ?? 0,
@@ -314,7 +310,9 @@ export default {
                         },
                     }
                 )
-                .then(() => {
+                .then((res) => {
+                    console.log('test', res);
+
                     this.newKeyword = "";
                     this.loadKeywords();
                     toast.success("Keyword added successfully");
