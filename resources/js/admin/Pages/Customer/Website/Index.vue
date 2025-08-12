@@ -79,9 +79,9 @@
                                     <th>Website</th>
                                     <th>Url</th>
                                     <th>In Subscription</th>
-                                    <th>Date</th>
+                                    <!-- <th>Date</th> -->
                                     <th>Status</th>
-                                    <th></th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <TransitionGroup tag="tbody" name="fade" class="text-dark fs-3">

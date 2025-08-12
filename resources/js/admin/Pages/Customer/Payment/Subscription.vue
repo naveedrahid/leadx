@@ -69,7 +69,7 @@
                                         <td class="align-middle">-</td>
                                         <td class="align-middle">
                                             <div class="d-flex flex-wrap align-items-center gap-2">
-                                                <Link :href="route('app.customer.subscription.billing')" class="btn btn-primary btn-sm">Billing Information</Link>
+                                                <Link :href="route('app.customer.subscription.billing')" class="btn btn-primary btn-sm">View Subscription</Link>
                                             </div>
                                         </td>
                                     </tr>
