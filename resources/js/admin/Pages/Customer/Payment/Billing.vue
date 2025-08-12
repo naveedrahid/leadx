@@ -862,15 +862,14 @@
                         <div class="d-flex flex-column gap-1">
                             <h4 class="fs-4 text-dark fw-bolder mb-0">Order Total</h4>
                             <div class="text-muted fw-bold fs-3">
-                                {{ pack.title }}
+                                {{ pack.title }} :  {{ priceFormat(displayPriceWithStrip(pack))}}
                                 <span class="text-dark fw-bold" v-if="pack.free_plan">Free</span>
-                                <span class="text-dark fw-bold d-block" v-else> {{ priceFormat(displayPriceWithStrip(pack))
-                                    }}</span>
+                                <!-- <span class="text-dark fw-bold d-block" v-else> {{ priceFormat(displayPriceWithStrip(pack))}}</span> -->
+                                <span class="fs-2  test">/ {{ pack.duration_lifetime ? 'Lifetime' :
+                                    pack.format_duration }}</span><br>
                                 <span v-if="hasStrip(pack)" class="text-muted">
                                     Handling fees: <span class="text-dark fw-bold">{{ priceFormat(handlingFeeFromStrip(pack)) }}</span>
                                 </span>
-                                <span class="fs-2 text-capitalize">/ {{ pack.duration_lifetime ? 'Lifetime' :
-                                    pack.format_duration }}</span>
                                 <template v-if="pack.trial_period_days && user.customer_details?.is_avail_trial == 0">
                                     with <span class="text-dark fw-bold">{{ pack.trial_period_days }} {{
                                         pack.trial_period_days > 1 ? 'Days' : 'Day' }} Free Trial</span>
