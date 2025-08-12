@@ -189,31 +189,3 @@ Route::get('/contact-us', [HomeController::class, 'contact'])->name('contact');
 Route::get('/features', [HomeController::class, 'featured'])->name('featured');
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
-// Route::get('/test-wp-api', function () {
-//     $url = 'https://wp-lead-forms.test/wp-admin/admin-ajax.php';
-
-//     $data = [
-//         'action' => 'lxf_form_getall',
-//         'nonce' => 'lxform-nonce', 
-//         'per_page' => 5,
-//         'paged' => 1,
-//     ];
-
-//     $ch = curl_init();
-
-//     curl_setopt($ch, CURLOPT_URL, $url);
-//     curl_setopt($ch, CURLOPT_POST, true);
-//     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-//     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // local dev only
-
-//     $response = curl_exec($ch);
-
-//     if (curl_errno($ch)) {
-//         return 'Curl error: ' . curl_error($ch);
-//     }
-
-//     curl_close($ch);
-
-//     return response()->json(json_decode($response, true));
-// });
