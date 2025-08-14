@@ -74,6 +74,18 @@
                     </li>
                     <li class="nav-small-cap">
                         <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                        <span class="hide-menu">Order Management</span>
+                    </li>
+                    <li class="sidebar-item">
+                        <Link :href="route('app.customer.order.index')" class="sidebar-link gap-2" :class="{
+                            'active': route().current('app.customer.order.index')
+                        }">
+                        <span><i class="ti ti-shopping-cart"></i></span>
+                        <span class="hide-menu">Orders</span>
+                        </Link>
+                    </li>
+                    <li class="nav-small-cap">
+                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                         <span class="hide-menu">Websites</span>
                     </li>
                     <template v-if="websites.length">

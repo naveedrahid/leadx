@@ -27,6 +27,7 @@ use App\Http\Controllers\Api\{
     LeadStatusController,
     OrderController
 };
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +45,11 @@ Route::prefix('v1')->middleware(['cors', 'json.response'])->as('api.')->group(fu
             ->name('woocommerce.checkout');
 
     Route::middleware('auth:api')->group(function () {
+
+        Route::prefix('orders')->name('order.')->controller(OrderController::class)->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('{order}', 'show')->name('show');
+        });
 
         Route::prefix('block-keywords')->name('block-keyword.')->controller(BlockKeywordController::class)->group(function () {
             Route::get('/', 'index')->name('index');

@@ -98,4 +98,9 @@ class Website extends Model
             $query->where('status', $status);
         }
     }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }

@@ -25,6 +25,7 @@ use App\Http\Controllers\Customer\{
     CustomerController as CustomersLeadDetailController,
     KeywordController,
     LeadStatusPageController,
+    OrderController,
     WebhookController as CustomerWebhookController,
     PluginController as CustomerPluginController
 };
@@ -108,6 +109,11 @@ Route::prefix('app')->as('app.')->group(function () {
     });
 
     Route::prefix('customer')->as('customer.')->group(function () {
+        Route::controller(OrderController::class)->prefix('orders')->as('order.')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('{order}', 'show')->name('show');
+        });
+        
         Route::controller(CustomerPluginController::class)->prefix('your_downloads')->as('plugin.')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/documentation', 'documentation')->name('documentation');

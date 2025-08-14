@@ -11,5 +11,12 @@ class Order extends Model
     protected $guarded = ['id'];
     protected $casts = [
         'order_data' => 'array',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
+
+    public function website()
+    {
+        return $this->belongsTo(Website::class);
+    }
 }
