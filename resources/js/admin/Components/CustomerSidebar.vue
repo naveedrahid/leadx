@@ -90,12 +90,13 @@
                     </li>
                     <template v-if="websites.length">
                         <li class="sidebar-item web-urls" v-for="(website, index) in websites" :key="index">
-                            <a href="javascript:;" class="sidebar-link gap-2">
-                                <div class="round-16 d-flex align-items-center justify-content-center">
-                                    <i class="ti ti-link text-success"></i>
-                                </div>
-                                <span class="hide-menu">{{ website.website_url }}</span>
-                            </a>
+                            <Link :href="route('app.customer.leads.index', { website_id: website.id })"
+                                class="sidebar-link gap-2">
+                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                <i class="ti ti-link text-success"></i>
+                            </div>
+                            <span class="hide-menu">{{ website.website_url }}</span>
+                            </Link>
                         </li>
                     </template>
                     <template v-else>

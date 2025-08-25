@@ -8,13 +8,15 @@
             </Breadcrumb>
             <div class="mb-3">
                 <div class="d-flex align-items-center justify-content-end gap-2">
-                    <Link :href="route('app.customer.leads.index')" class="btn btn-dark btn-sm"><i
-                        class="ti ti-refresh"></i> Reload
+                    <Link
+                        :href="website ? route('app.customer.leads.index', { website_id: website }) : route('app.customer.leads.index')"
+                        class="btn btn-dark btn-sm"
+                    >
+                        <i class="ti ti-refresh"></i> Reload
                     </Link>
+
                 </div>
             </div>
-
-            
 
             <div class="card">
                 <div class="card-body">
@@ -33,12 +35,12 @@
                                     <div class="col-md-3">
                                         <div class="mb-3">
                                             <label for="website" class="fs-1 mb-1 fw-bold">Website</label>
-                                            <select v-model="website" id="website" class="form-select form-select-sm"
-                                                    @change="handleWebsiteForms">
+                                            <select v-model="website" id="website" class="form-select form-select-sm" @change="handleWebsiteForms">
                                                 <option value="">{{ loader ? 'Loading...' : 'All Websites' }}</option>
                                                 <template v-if="!loader && websites.length>0">
-                                                    <template v-for="item in websites">
-                                                        <option :value="item.id">{{ item.name }}</option>
+                                                    <template v-for="item in websites" :key="item.id">
+                                                        <!-- BEFORE: :value="item.id" -->
+                                                        <option :value="String(item.id)">{{ item.name }}</option>
                                                     </template>
                                                 </template>
                                             </select>
@@ -497,6 +499,7 @@ export default {
             renderPaginate: true,
             forms: [],
             websites: [],
+            urlParams: new URLSearchParams(window.location.search),
             itemId: false,
             loadFormSelectBox: false,
             form: '',
@@ -1031,9 +1034,17 @@ export default {
     },
 
     created() {
-        this.getForms();
-        this.getWebsites();
-        this.getData();
+        const wid = this.urlParams.get('website_id') || this.urlParams.get('website');
+        this.website  = wid ? String(wid) : '';
+        this.showForm = !!this.website;
+
+        Promise.all([ this.getWebsites(), this.getForms() ]).finally(() => {
+            if (this.website) {
+            this.handleWebsiteForms();
+            } else {
+            this.getData();
+            }
+        });
     },
 
     mounted() {
