@@ -4,7 +4,19 @@
         <div class="container-fluid">
             <Breadcrumb>
                 <template v-slot:title>Leads</template>
-                <li class="breadcrumb-item text-muted" aria-current="page">Leads</li>
+                <template v-if="selectedWebsite">
+                    <li class="breadcrumb-item text-muted" aria-current="page">
+                        {{ selectedWebsite ? selectedWebsite.name : 'Leads' }}
+                    </li>
+                    <li class="breadcrumb-item text-muted" aria-current="page">
+                        {{ selectedWebsite ? selectedWebsite.url : 'Leads' }}
+                    </li>
+                </template>
+                <template v-else>
+                    <li class="breadcrumb-item text-muted" aria-current="page">
+                        Leads
+                    </li>
+                </template>
             </Breadcrumb>
             <div class="mb-3">
                 <div class="d-flex align-items-center justify-content-end gap-2">
@@ -1030,6 +1042,12 @@ export default {
                 });
                 toast.error(error.response.data.message);
             });
+        }
+    },
+
+    computed: {
+    selectedWebsite() {
+            return this.websites.find(w => String(w.id) === String(this.website)) || null;
         }
     },
 

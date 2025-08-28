@@ -27,8 +27,9 @@ class CustomerLeadController extends Controller
 {
     use ApiPaginate;
 
-    public function resolveUser(Request $request) {
-        if($request->filled('user_id')) {
+    public function resolveUser(Request $request)
+    {
+        if ($request->filled('user_id')) {
             return User::whereId($request->user_id)->first();
         } else {
             return $request->user();
@@ -38,7 +39,7 @@ class CustomerLeadController extends Controller
     public function get_count(Request $request)
     {
         $user = $this->resolveUser($request);
-        if(is_null($user)) {
+        if (is_null($user)) {
             return response()->json([
                 "error" => 1,
                 "message" => "Access Denied!"
@@ -58,7 +59,7 @@ class CustomerLeadController extends Controller
     public function get_all(Request $request)
     {
         $user = $this->resolveUser($request);
-        if(is_null($user)) {
+        if (is_null($user)) {
             return response()->json([
                 "error" => 1,
                 "message" => "Access Denied!"
@@ -75,7 +76,7 @@ class CustomerLeadController extends Controller
         if ($request->filled('perpage')) {
             $leads = $leadsQuery->paginate($request->perpage);
         } else {
-            if($request->filled('limit')) {
+            if ($request->filled('limit')) {
                 $leadsQuery->limit($request->limit);
             }
 
@@ -88,7 +89,7 @@ class CustomerLeadController extends Controller
             "message" => "Leads have been successfully retrieved"
         ];
 
-        if($request->filled('perpage')) {
+        if ($request->filled('perpage')) {
             $response['paginate'] = $this->paginate($leads);
         }
         return response()->json($response, 200);
@@ -97,7 +98,7 @@ class CustomerLeadController extends Controller
     public function get_by(Request $request, $id)
     {
         $user = $this->resolveUser($request);
-        if(is_null($user)) {
+        if (is_null($user)) {
             return response()->json([
                 "error" => 1,
                 "message" => "Access Denied!"
@@ -119,20 +120,21 @@ class CustomerLeadController extends Controller
         ], 200);
     }
 
-    public function website_forms(Request $request){
+    public function website_forms(Request $request)
+    {
         $user = $this->resolveUser($request);
-        if(is_null($user)) {
+        if (is_null($user)) {
             return response()->json([
                 "error" => 1,
                 "message" => "Access Denied!"
             ], 404);
         }
-        $leads = Lead::byUser($user->id)->where('website_id',$request->website_id)->get();
+        $leads = Lead::byUser($user->id)->where('website_id', $request->website_id)->get();
         $forms = [];
         $usedForms = [];
-        if($leads->count()) {
-            foreach($leads as $lead) {
-                if ( !in_array($lead->wpform_id, $usedForms) ) {
+        if ($leads->count()) {
+            foreach ($leads as $lead) {
+                if (!in_array($lead->wpform_id, $usedForms)) {
                     $usedForms[] = $lead->wpform_id;
                     $forms[] = [
                         'id' => $lead->wpform_id,
@@ -147,12 +149,11 @@ class CustomerLeadController extends Controller
             "data" => $forms,
             "message" => "The website forms have been successfully retrieved"
         ], 200);
-
     }
     public function get_forms(Request $request)
     {
         $user = $this->resolveUser($request);
-        if(is_null($user)) {
+        if (is_null($user)) {
             return response()->json([
                 "error" => 1,
                 "message" => "Access Denied!"
@@ -162,9 +163,9 @@ class CustomerLeadController extends Controller
         $leads = Lead::byUser($user->id)->get();
         $forms = [];
         $usedForms = [];
-        if($leads->count()) {
-            foreach($leads as $lead) {
-                if ( !in_array($lead->wpform_id, $usedForms) ) {
+        if ($leads->count()) {
+            foreach ($leads as $lead) {
+                if (!in_array($lead->wpform_id, $usedForms)) {
                     $usedForms[] = $lead->wpform_id;
                     $forms[] = [
                         'id' => $lead->wpform_id,
@@ -184,7 +185,7 @@ class CustomerLeadController extends Controller
     public function get_websites(Request $request)
     {
         $user = $this->resolveUser($request);
-        if(is_null($user)) {
+        if (is_null($user)) {
             return response()->json([
                 "error" => 1,
                 "message" => "Access Denied!"
@@ -192,10 +193,11 @@ class CustomerLeadController extends Controller
         }
         $websites = Website::byUser($user->id)->has('leads')->get();
         $websiteHas = [];
-        foreach($websites as $website) {
+        foreach ($websites as $website) {
             $websiteHas[] = [
                 'id' => $website->id,
-                'name' => $website->website_name
+                'name' => $website->website_name,
+                'url'  => $website->website_url
             ];
         }
 
@@ -210,7 +212,7 @@ class CustomerLeadController extends Controller
     public function status(LeadStatusRequest $request, $id)
     {
         $user = $this->resolveUser($request);
-        if(is_null($user)) {
+        if (is_null($user)) {
             return response()->json([
                 "error" => 1,
                 "message" => "Access Denied!"
@@ -239,7 +241,7 @@ class CustomerLeadController extends Controller
     public function view(Request $request, $id)
     {
         $user = $this->resolveUser($request);
-        if(is_null($user)) {
+        if (is_null($user)) {
             return response()->json([
                 "error" => 1,
                 "message" => "Access Denied!"
@@ -268,7 +270,7 @@ class CustomerLeadController extends Controller
     public function delete(Request $request, $id)
     {
         $user = $this->resolveUser($request);
-        if(is_null($user)) {
+        if (is_null($user)) {
             return response()->json([
                 "error" => 1,
                 "message" => "Access Denied!"
@@ -284,8 +286,8 @@ class CustomerLeadController extends Controller
         }
 
         $form_data = json_decode($lead->form_data);
-        if(!empty($form_data) && isset($form_data->data->file)) {
-            foreach($form_data->data->file as $key => $value) {
+        if (!empty($form_data) && isset($form_data->data->file)) {
+            foreach ($form_data->data->file as $key => $value) {
                 if (Storage::exists('/public/leads/' . $value->name)) {
                     Storage::delete('/public/leads/' . $value->name);
                 }
@@ -303,7 +305,7 @@ class CustomerLeadController extends Controller
     public function bulk_delete(LeadBulkDeleteRequest $request)
     {
         $user = $this->resolveUser($request);
-        if(is_null($user)) {
+        if (is_null($user)) {
             return response()->json([
                 "error" => 1,
                 "message" => "Access Denied!"
@@ -321,13 +323,13 @@ class CustomerLeadController extends Controller
         $deletedCount = 0;
         $failedToDelete = [];
 
-        foreach($leads as $lead) {
+        foreach ($leads as $lead) {
             try {
                 DB::beginTransaction();
 
                 $form_data = json_decode($lead->form_data);
-                if(!empty($form_data) && isset($form_data->data->file)) {
-                    foreach($form_data->data->file as $key => $value) {
+                if (!empty($form_data) && isset($form_data->data->file)) {
+                    foreach ($form_data->data->file as $key => $value) {
                         if (Storage::exists('/public/leads/' . $value->name)) {
                             Storage::delete('/public/leads/' . $value->name);
                         }
@@ -362,7 +364,8 @@ class CustomerLeadController extends Controller
         ], 200);
     }
 
-    public function generate_pdf(Request $request) {
+    public function generate_pdf(Request $request)
+    {
         $user = $this->resolveUser($request);
         $leads = Lead::byUser($user->id)->whereIn('id', $request->ids)->get();
         if (!$leads->count()) {
@@ -373,20 +376,21 @@ class CustomerLeadController extends Controller
         }
 
         $pdf = Pdf::loadView('leadsPDF', ['leads' => $leads]);
-        $filename = 'leads-'. Str::random(12) .'.pdf';
+        $filename = 'leads-' . Str::random(12) . '.pdf';
         $filePath = storage_path('app/public/leads_export/' . $filename);
         $pdf->save($filePath);
 
         return response()->json([
             "error" => 0,
-            "data" => asset(Storage::url('leads_export/'.$filename)),
+            "data" => asset(Storage::url('leads_export/' . $filename)),
             "message" => "Leads PDF has been generated successfully"
         ], 200);
     }
 
-    public function generate_excel(Request $request) {
+    public function generate_excel(Request $request)
+    {
         $user = $this->resolveUser($request);
-        if(!$request->has('ids')) {
+        if (!$request->has('ids')) {
             return response()->json([
                 "error" => 1,
                 "message" => "Leads Not Found!"
@@ -401,12 +405,12 @@ class CustomerLeadController extends Controller
             ], 404);
         }
 
-        $filename = 'leads-'. Str::random(12) .'.xlsx';
+        $filename = 'leads-' . Str::random(12) . '.xlsx';
         $filePath = 'public/leads_export/' . $filename;
 
-        if(count($request->ids) == 1) {
+        if (count($request->ids) == 1) {
             $data = [];
-            foreach($leads as $index => $lead) {
+            foreach ($leads as $index => $lead) {
                 $form_data = json_decode($lead->form_data);
                 $data[$index][]['Lead Details'] = [
                     'key' => 'Lead Details'
@@ -414,7 +418,7 @@ class CustomerLeadController extends Controller
 
                 $data[$index][]['id'] = [
                     'key' => 'Lead ID',
-                    'value' => '#' . ($lead->id > 9 ? $lead->id : '0'. $lead->id)
+                    'value' => '#' . ($lead->id > 9 ? $lead->id : '0' . $lead->id)
                 ];
 
                 $data[$index][]['wpform_name'] = [
@@ -481,28 +485,28 @@ class CustomerLeadController extends Controller
                     'value' => ($form_data->visitor_info->city !== '' && $form_data->visitor_info->city !== 'unknown') ? $form_data->visitor_info->city : 'Not Available',
                 ];
 
-                if($form_data->data) {
+                if ($form_data->data) {
                     $data[$index][]['Form Lead Details'] = [
                         'key' => 'Form Lead Details'
                     ];
 
-                    foreach($form_data->data as $field => $item) {
-                        if($field == 'checkbox-list') {
-                            foreach($item as $key => $checkbox_list) {
+                    foreach ($form_data->data as $field => $item) {
+                        if ($field == 'checkbox-list') {
+                            foreach ($item as $key => $checkbox_list) {
                                 $data[$index][][$key] = [
                                     'key' => formatText($key),
                                     'value' => implode(', ', (array) $checkbox_list),
                                 ];
                             }
-                        } elseif($field == 'file') {
-                            foreach($item as $key => $file) {
+                        } elseif ($field == 'file') {
+                            foreach ($item as $key => $file) {
                                 $data[$index][][$key] = [
                                     'key' => formatText($key),
                                     'value' => $file->url,
                                 ];
                             }
                         } else {
-                            foreach($item as $key => $value) {
+                            foreach ($item as $key => $value) {
                                 $data[$index][][$key] = [
                                     'key' => formatText($key),
                                     'value' => $value,
@@ -519,7 +523,7 @@ class CustomerLeadController extends Controller
             $headings = [];
             $titles = [];
 
-            foreach($leads as $index => $lead) {
+            foreach ($leads as $index => $lead) {
                 $form_data = json_decode($lead->form_data);
                 $titles[$lead->wpform_id] = $lead->wpform_name;
                 $headings[$lead->wpform_id] = [
@@ -539,7 +543,7 @@ class CustomerLeadController extends Controller
                 ];
 
                 $data[$lead->wpform_id][$lead->id] = [
-                    'lead_id' => '#' . ($lead->id > 9 ? $lead->id : '0'. $lead->id),
+                    'lead_id' => '#' . ($lead->id > 9 ? $lead->id : '0' . $lead->id),
                     'wpform_name' => $lead->wpform_name,
                     'lead_status' => leadStatus($lead->status),
                     'submitted_on' => $lead->created_at->format('F j, Y'),
@@ -554,20 +558,20 @@ class CustomerLeadController extends Controller
                     'visitor_city' => ($form_data->visitor_info->city !== '' && $form_data->visitor_info->city !== 'unknown') ? $form_data->visitor_info->city : 'Not Available',
                 ];
 
-                if($form_data->data) {
-                    foreach($form_data->data as $field => $item) {
-                        if($field == 'checkbox-list') {
-                            foreach($item as $key => $checkbox_list) {
+                if ($form_data->data) {
+                    foreach ($form_data->data as $field => $item) {
+                        if ($field == 'checkbox-list') {
+                            foreach ($item as $key => $checkbox_list) {
                                 $headings[$lead->wpform_id][] = formatText($key);
                                 $data[$lead->wpform_id][$lead->id][$key] = implode(', ', (array) $checkbox_list);
                             }
-                        } elseif($field == 'file') {
-                            foreach($item as $key => $file) {
+                        } elseif ($field == 'file') {
+                            foreach ($item as $key => $file) {
                                 $headings[$lead->wpform_id][] = formatText($key);
                                 $data[$lead->wpform_id][$lead->id][$key] = $file->url;
                             }
                         } else {
-                            foreach($item as $key => $value) {
+                            foreach ($item as $key => $value) {
                                 $headings[$lead->wpform_id][] = formatText($key);
                                 $data[$lead->wpform_id][$lead->id][$key] = $value;
                             }
@@ -581,7 +585,7 @@ class CustomerLeadController extends Controller
 
         return response()->json([
             "error" => 0,
-            "data" => asset(Storage::url('leads_export/'.$filename)),
+            "data" => asset(Storage::url('leads_export/' . $filename)),
             "message" => "Leads excel sheet has been generated successfully"
         ], 200);
     }
