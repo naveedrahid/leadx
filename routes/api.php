@@ -20,6 +20,7 @@ use App\Http\Controllers\Api\{
     FormTemplateController,
     BlockedIPController,
     BlockKeywordController,
+    ChatbotController,
     CustomerFormController,
     SpamKeywordController,
     CustomerLeadDetailController,
@@ -42,7 +43,7 @@ use Illuminate\Support\Facades\Auth;
 
 Route::prefix('v1')->middleware(['cors', 'json.response'])->as('api.')->group(function () {
     Route::post('/order/checkout', [OrderController::class, 'checkout'])
-            ->name('woocommerce.checkout');
+        ->name('woocommerce.checkout');
 
     Route::middleware('auth:api')->group(function () {
 
@@ -203,6 +204,14 @@ Route::prefix('v1')->middleware(['cors', 'json.response'])->as('api.')->group(fu
             Route::get('{id}/edit', 'edit')->name('edit');
             Route::put('{id}', 'update')->name('update');
             Route::patch('{id}/toggle-status', 'toggleStatus')->name('toggle-status');
+        });
+
+        Route::controller(ChatbotController::class)->prefix('chatbots')->as('chatbot.')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::post('/', 'store')->name('store');
+            Route::post('{chatbot}/qa/bulk', 'storeBulk')->name('qa.bulk');
+            Route::post('{chatbot}/qa', 'storeQA')->name('qa.store');
+            Route::post('/uploads/logo', 'uploadLogo')->name('upload.logo');
         });
     });
 

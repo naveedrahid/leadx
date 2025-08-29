@@ -21,6 +21,7 @@ use App\Http\Controllers\Customer\{
     LeadsController as CustomerLeadsController,
     BlockedIPController as CustomerBlockedIPController,
     BlockKeywordController,
+    ChatbotController,
     SpamKeywordController as CustomerSpamKeywordController,
     CustomerController as CustomersLeadDetailController,
     KeywordController,
@@ -112,6 +113,11 @@ Route::prefix('app')->as('app.')->group(function () {
         Route::controller(OrderController::class)->prefix('orders')->as('order.')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('{order}', 'show')->name('show');
+        });
+
+        Route::controller(ChatbotController::class)->prefix('chatbots')->as('chatbot.')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
         });
         
         Route::controller(CustomerPluginController::class)->prefix('your_downloads')->as('plugin.')->group(function () {
